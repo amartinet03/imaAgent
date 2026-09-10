@@ -1,0 +1,81 @@
+{
+  "@odata.context": "https://graph.microsoft.com/v1.0/$metadata#Collection(microsoft.graph.driveItem)",
+  "value": [
+    {
+      "createdDateTime": "2026-06-11T11:20:42Z",
+      "id": "01S7IRDT3M6JYDU4IDWFBKUQVQOKAASX3Q",
+      "lastModifiedDateTime": "2026-06-11T11:20:42Z",
+      "name": "BD Ausentismo Enfermedades.xlsx",
+      "webUrl": "https://imasi-my.sharepoint.com/personal/sebastien_martinet_ima-si_com_ar/_layouts/15/Doc.aspx?sourcedoc=%7B3A70F26C-0371-42B1-AA42-B07280095F70%7D&file=BD%20Ausentismo%20Enfermedades.xlsx&action=default&mobileredirect=true&DefaultItemOpen=1",
+      "size": 210652,
+      "createdBy": {
+        "user": {
+          "email": "sebastien.martinet@ima-si.com.ar",
+          "displayName": "Sebastien Martinet (IMA Argentina - Holdas Latam)"
+        }
+      },
+      "lastModifiedBy": {
+        "user": {
+          "email": "sebastien.martinet@ima-si.com.ar",
+          "displayName": "Sebastien Martinet (IMA Argentina - Holdas Latam)"
+        }
+      },
+      "parentReference": {
+        "driveType": "business",
+        "driveId": "b!fMzp-uROEE6jEoHmmHaMtTYMuKHeNRtMg3mQH2xE8UigVMJPwm0SQr6PZcx4s6FC",
+        "id": "01S7IRDTZTXRXTPJ7TOVD37X56565NJFEC",
+        "siteId": "fae9cc7c-4ee4-4e10-a312-81e698768cb5"
+      },
+      "file": {
+        "mimeType": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "hashes": {}
+      },
+      "fileSystemInfo": {
+        "createdDateTime": "2026-06-11T11:20:42Z",
+        "lastModifiedDateTime": "2026-06-11T11:20:42Z"
+      },
+      "searchResult": {},
+      "shared": {
+        "scope": "users"
+      }
+    },
+    {
+      "createdDateTime": "2020-04-10T11:42:07Z",
+      "id": "01S7IRDT6BJ4KSWS7XUZCJBS4QY77KX2AK",
+      "lastModifiedDateTime": "2019-09-23T10:33:28Z",
+      "name": "1- OT.zip",
+      "webUrl": "https://imasi-my.sharepoint.com/personal/sebastien_martinet_ima-si_com_ar/Documents/09-%20PERU/01-%20Comercial/0005%20-%20Endesa%20Peru%202019%20(PER000236570)/Propuesta%20IMA/1-%20OT/1-%20OT.zip",
+      "size": 53222940,
+      "createdBy": {
+        "user": {
+          "email": "sebastien.martinet@ima-si.com.ar",
+          "displayName": "Sebastien Martinet (IMA Argentina - Holdas Latam)"
+        }
+      },
+      "lastModifiedBy": {
+        "user": {
+          "email": "sebastien.martinet@ima-si.com.ar",
+          "displayName": "Sebastien Martinet (IMA Argentina - Holdas Latam)"
+        }
+      },
+      "parentReference": {
+        "driveType": "business",
+        "driveId": "b!fMzp-uROEE6jEoHmmHaMtTYMuKHeNRtMg3mQH2xE8UigVMJPwm0SQr6PZcx4s6FC",
+        "id": "01S7IRDT7UNJQ3OLR4SVC2QKB7L3E2NSLG",
+        "siteId": "fae9cc7c-4ee4-4e10-a312-81e698768cb5"
+      },
+      "file": {
+        "mimeType": "application/zip",
+        "hashes": {}
+      },
+      "fileSystemInfo": {
+        "createdDateTime": "2020-04-10T11:42:07Z",
+        "lastModifiedDateTime": "2019-09-23T10:33:28Z"
+      },
+      "searchResult": {},
+      "shared": {
+        "scope": "users"
+      }
+    }
+  ]
+}

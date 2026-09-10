@@ -1,0 +1,104 @@
+Reunion Inicio PPS
+mar, 23 jun 2026
+
+Resumen:
+
+La reunión revisó el flujo operativo actual de recepción y preparación de licitaciones y evaluó el diseño e integraciones necesarias para un agente basado en IA que apoye ese proceso. Agustina consultó sobre software, interfaces y entradas/salidas; Sebastien mostró el flujo actual y pidió retroalimentación mientras compartía pantalla.
+
+Flujo operativo: las oportunidades llegan por correo o desde plataformas cliente (p. ej. SAP Ariba); Sebastien registra oportunidades en un formulario que dispara un Power Automate para crear carpetas en SharePoint y registros en el CRM PadDrive, asignando número y descripción de oferta. PadDrive gestiona estados (oportunidad calificada, cotizada, negociación, ganada) y Power BI consume esos datos para reportes de cotizaciones, pérdidas y resultados. La estructura de SharePoint es automática (ET, OT, OC, elementos de estudio) y se reutilizan propuestas previas como base.
+
+Funcionalidad de IA: actualmente se usa una solución en la nube para subir pliegos, resumirlos y generar consultas al cliente; la IA también produce un Excel con requerimientos mínimos (vehículos, dotación) que el equipo ajusta por costos e impuestos. El proceso de licitación es no lineal: recepción de pliegos, visitas a planta, consultas, aclaraciones y sucesivas iteraciones antes de la oferta técnica y económica.
+
+Integración y alcance del agente: se discutió centralizar ofertas técnicas, económicas y hojas de cálculo en un flujo automatizado y que el agente genere preguntas progresivas a medida que se incorporan documentos. El agente debe poder leer correos y extraer adjuntos, pero no seguir enlaces que requieran acceso manual a otras plataformas. Se evaluó la relación del agente con sistemas existentes (mantener o sustituir FOMS/CRM) sin decisión final.
+
+Requerimientos técnicos y datos: el agente necesita acceso autorizado a Microsoft 365/Teams y al correo, uso de clave API y mantener archivos base en SharePoint o PadDrive; Sebastien ofreció organizar SharePoint y facilitar credenciales. Se identificó la necesidad crítica de datos históricos y numerosos pliegos/ejemplos para entrenar al modelo y reproducir formatos clientes. Acuerdos operativos menores incluyeron dar de alta a Agustina y la intención de mostrar avances posteriormente.
+
+
+Capítulos y Temas:
+
+Inicio y planteamiento de requerimientos
+Se inicia la reunión con intercambio informal y Agustina plantea la necesidad de entender qué tipo de software, qué interfaz y qué datos de entrada/salida requiere el proyecto. Sebastien responde que mostrará cómo están trabajando actualmente para clarificar esos puntos.
+* Agustina solicitó conocer el tipo de software, la interfaz y las entradas/salidas esperadas para el proyecto.
+* Sebastien se comprometió a mostrar el flujo de trabajo actual en vivo para clarificar el proceso.
+
+Ejemplo inicial y llegada de solicitudes
+Sebastien muestra un ejemplo práctico y comenta una conversación sobre operaciones bancarias como anécdota; luego introduce cómo la información de licitaciones puede llegar desde distintos sistemas o por mail, citando SAP Ariba como uno de los principales orígenes. También señala que algunas conexiones no serán posibles sin API.
+
+Registro de oportunidades y automatización
+Se detalla el flujo operativo: ingreso de oportunidades mediante un formulario, generación de procesos con Power Automate que crean carpetas en SharePoint y negocios en PadDrive, y la generación automática de números y descripciones de oferta para seguimiento.
+* El proceso actual automatiza la creación de carpetas en SharePoint y negocios en PadDrive desde un formulario y Power Automate.
+
+CRM, estados y reporting
+Sebastien explica el uso de PadDrive como CRM y los distintos estados de la oportunidad (calificada, cotizada, negociando, ganada), y cómo Power BI toma esos datos para generar reportes sobre cotizaciones, pérdidas y resultados. También menciona que actualmente no han ganado ofertas de mantenimiento mencionadas y cómo registran ofertas perdidas.
+* PadDrive actúa como CRM y Power BI consume sus datos para reportar cotizaciones, pérdidas y resultados.
+
+Documentación, visitas y consultas al cliente
+Se describe la estructura de carpetas automáticas en SharePoint (ET, OT, OC, elementos de estudio) y los tipos de archivos que se alojan, además de la práctica de revisar pliegos, coordinar visitas a planta y realizar consultas al cliente cuyas respuestas suelen publicarse de manera anónima para todos los oferentes.
+* En SharePoint se generan carpetas estándar (ET, OT, OC, elementos de estudio) que contienen archivos técnicos, comerciales y procedimentales.
+
+Proceso no lineal y uso de IA en redacción de ofertas
+Sebastien enfatiza que el proceso de licitación no es lineal y detalla cómo alimenta progresivamente la IA con pliegos, visitas y respuestas para que genere consultas y redacte una oferta técnica a partir de una base previa; también menciona limitaciones para que la IA acceda directamente a ciertos sistemas y la posibilidad de integración vía API y Power Automate.
+* Las licitaciones llegan mayoritariamente por mail y ocasionalmente desde sistemas como SAP Ariba, lo que complica conexiones directas sin API.
+* El flujo de preparación de ofertas es no lineal e incluye visitas a planta, consultas al cliente y reiteradas revisiones antes de la oferta técnica y económica.
+* Están probando una solución en la nube basada en chat/IA que resume pliegos, genera consultas y prepara borradores de oferta técnica.
+
+Generación de costos y adaptación a formatos cliente
+La discusión se centra en cómo la IA puede producir un Excel con cantidades y requerimientos mínimos que luego el equipo de cotización debe revisar y ajustar por costos locales e impuestos, y en la necesidad de adaptar los resultados al formato exigido por cada cliente antes del envío final.
+* La IA también puede generar un Excel de requerimientos que el equipo de cotización debe ajustar por costos locales e impuestos.
+* Los formatos solicitados por cada cliente varían y requieren adecuaciones antes del envío final.
+
+Formatos y carga inicial de documentos
+Se identificó que los clientes manejan varios formatos y se preguntó cómo subir esos documentos al sistema o enviarlos por correo. Agustina explicó que se pueden preparar plantillas con oferta técnica, oferta económica y un Excel de costos para facilitar la carga inicial.
+* Centralizar ofertas técnicas, económicas y hojas de costos en el sistema es viable y necesario para automatizar licitaciones
+* El agente debe generar consultas progresivas a medida que se añade información a una propuesta
+
+Generación progresiva de consultas
+Se describió que el agente puede generar consultas automáticas a medida que se añade información a una licitación y preguntar si debe volver a generar nuevas consultas cuando cambian los datos. Esto permite un flujo incremental de recolección de requisitos.
+* El agente puede leer correos y extraer adjuntos, pero no puede seguir enlaces que requieran entrar a otra plataforma sin intervención manual
+
+Integración con correo y límites de automatización
+Se discutió cómo conectar el agente al correo para detectar nuevas propuestas y aclaraciones; el agente puede leer correos y extraer adjuntos, pero no puede abrir enlaces que requieran navegar a otra plataforma sin que los archivos se carguen manualmente.
+* El proceso debe ser iterativo y no completamente lineal; las revisiones dependen de respuestas y visitas de terreno
+
+Naturaleza iterativa del agente y flujo de trabajo
+Se acordó que el proceso debe ser iterativo con idas y vueltas basadas en respuestas y visitas de terreno, y que el agente debe permitir revisiones progresivas de ofertas técnicas y comerciales hasta la aprobación final.
+* Se requieren datos históricos y múltiples pliegos para entrenar el modelo a replicar el formato deseado
+
+Datos para entrenamiento y visibilidad de KPIs
+Se señaló la necesidad de muchos datos históricos y pliegos para entrenar el modelo y enseñar el formato deseado. También se propuso conectar todo con Power BI para mantener estadísticas y KPIs de proyectos y procesos.
+* Hay que decidir si integrar con el CRM, evitar el FOMS o delegar la gestión al sistema de IA; se acordó investigar esa opción
+
+Requisitos técnicos y almacenamiento
+Se detallaron requisitos técnicos: el agente debe tener habilitación de Microsoft 365/Teams para acceder al correo, usar una clave API para integraciones y mantener los archivos base en SharePoint o PadDrive, con Sebastien ofreciendo credenciales de PadDrive.
+* El agente debe tener habilitación para Microsoft 365 y usar una clave API; Sebastien facilitará credenciales de PadDrive y mantendrá archivos en SharePoint
+
+Operaciones finales y cierre
+Se confirmó que Alina está gestionando el alta de Agustina y se acordó que Agustina mostrará avances posteriormente, cerrando la reunión con mensajes informales de despedida.
+
+
+Puntos de Acción:
+
+* Sebastien Martinet: Mostrar en detalle cómo trabajan hoy el flujo y las herramientas en una sesión de demostración
+* Agustina Martinet: Anotar y registrar la referencia a "PadDrive" como sistema relevante para el proyecto
+* Sebastien Martinet: Presentar el Power BI y la integración con PadDrive en la próxima revisión
+* Sebastien Martinet: Documentar y mostrar cómo Power Automate crea carpetas en SharePoint y el negocio en PadDrive
+* Sebastien Martinet: Proveer un ejemplo de un pliego y el resultado generado por la IA (resumen y consulta) para validar el flujo
+* Sebastien Martinet: Investigar la posibilidad de evitar FOMS o de que la IA reemplace o gestione el CRM y reportar resultados
+* Sebastien Martinet: Facilitar la usuario y contraseña de PadDrive para integrar el almacenamiento de propuestas
+* Alina: Dar de alta a Agustina en la IRT según lo conversado
+* Agustina Martinet: Mostrar avances del desarrollo o prototipo en la próxima interacción
+
+
+Preguntas clave:
+
+* ¿Qué tipo de software, qué interfaz y qué datos de entrada y salida se necesitan para el proyecto?
+* ¿Cómo se puede sacar plata con la tarjeta de crédito?
+* ¿El sistema qué hace con el formulario y la oportunidad?
+* ¿Cómo está trabajando hoy Agustina y cómo funciona el proceso actual en la nube?
+* ¿Debo yo subir los documentos al sistema del cliente o enviarlos por correo?
+* ¿Qué puede optimizar el agente de todo lo que acabamos de ver?
+
+
+Bloc de notas:
+
+* No hay notas

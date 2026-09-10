@@ -1,0 +1,2420 @@
+{
+  "@odata.context": "https://graph.microsoft.com/v1.0/$metadata#sites",
+  "@odata.nextLink": "https://graph.microsoft.com/v1.0/sites?search=*&$skiptoken=s!MjAwO2QyNDZkMjYxLTQ5OTgtNDY2OC1hODNjLTZjMDE3MGExZjk2MA",
+  "value": [
+    {
+      "createdDateTime": "2021-04-25T17:05:24Z",
+      "id": "imasi.sharepoint.com,bff03e62-5db9-4541-ada4-26664f35101c,b751cf74-4575-4930-b5de-a7dddd7dba59",
+      "lastModifiedDateTime": "2026-08-27T13:04:45.3369134Z",
+      "name": "ServicioBANCOR-Certificacion-Facturacion",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioBANCOR-Certificacion-Facturacion",
+      "displayName": "Servicio BANCOR-Certificacion-Facturacion",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2020-06-11T22:51:13Z",
+      "description": "Intranet IMA Servicios Industriales",
+      "id": "imasi.sharepoint.com,b2d6e155-bded-49c8-b24d-ec8bc87bcf57,8e985277-5384-44db-afbd-7f94aba3fb8d",
+      "lastModifiedDateTime": "2026-05-23T23:33:31.1020535Z",
+      "name": "Intranet",
+      "webUrl": "https://imasi.sharepoint.com/sites/Intranet",
+      "displayName": "Intranet",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2020-09-14T13:19:26Z",
+      "description": "Gestion Recursos Humanos",
+      "id": "imasi.sharepoint.com,a0b19b37-ea4c-4018-83f6-27b275d9dd30,53e8b3ed-d954-4060-877a-12a2d656521d",
+      "lastModifiedDateTime": "2025-04-07T16:09:28Z",
+      "name": "GestionRecursosHumanos",
+      "webUrl": "https://imasi.sharepoint.com/sites/GestionRecursosHumanos",
+      "displayName": "Gestion Recursos Humanos",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2026-06-01T12:44:10Z",
+      "id": "imasi.sharepoint.com,756ebcb9-a3d3-4d74-b2d4-2001c2d56d36,5fb60176-08df-400b-9504-406e5f0f308a",
+      "lastModifiedDateTime": "2026-05-22T02:15:34Z",
+      "name": "ServicioAXLIM-SIGI",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioAXLIM-SIGI",
+      "displayName": "Servicio AXLIM-SIGI",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2026-01-12T11:05:26Z",
+      "id": "imasi.sharepoint.com,42cc8ccb-7246-41f3-a0a7-eb74d57f8fbc,cf1c41ac-5426-47ae-a216-78ef3a736f94",
+      "lastModifiedDateTime": "2026-01-11T06:34:28Z",
+      "name": "EstudioPropuestas2026",
+      "webUrl": "https://imasi.sharepoint.com/sites/EstudioPropuestas2026",
+      "displayName": "Estudio Propuestas 2026",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2021-04-23T19:36:47Z",
+      "id": "imasi.sharepoint.com,0b4bf0f7-b8c0-40d7-99c5-5dc521d057ba,36280ab4-d73d-46d4-80a1-dcf41a842577",
+      "lastModifiedDateTime": "2026-07-13T06:57:57.4465306Z",
+      "name": "ServicioBANCOR",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioBANCOR",
+      "displayName": "Servicio BANCOR",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2026-05-14T13:36:19Z",
+      "id": "imasi.sharepoint.com,64e3b40d-76ac-4f25-b18a-9e180f067ff4,c7a19f11-5e87-4189-a626-7ee966ab9844",
+      "lastModifiedDateTime": "2026-05-03T02:12:53Z",
+      "name": "ServicioAXTSL-SIGI",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioAXTSL-SIGI",
+      "displayName": "Servicio AXTSL-SIGI",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2026-09-02T13:25:46Z",
+      "id": "imasi.sharepoint.com,bc99bb5d-237e-4ca6-a364-5f803ece64e5,f86072b9-c1df-4f06-8b21-29d0d646707c",
+      "lastModifiedDateTime": "2026-09-02T13:30:26.7272562Z",
+      "name": "coJsE0OdIkqu2uEOCncHOSBuBHrqXCVClJTLsHbdsYk",
+      "webUrl": "https://imasi.sharepoint.com/contentstorage/coJsE0OdIkqu2uEOCncHOSBuBHrqXCVClJTLsHbdsYk",
+      "displayName": "la Biblioteca de documentos",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2024-07-11T13:35:37Z",
+      "id": "imasi.sharepoint.com,42a3d9fb-a60d-462d-b092-32bea5b14960,230f1af7-981f-47e9-892d-28acf4c1ab74",
+      "lastModifiedDateTime": "2024-06-16T05:34:25Z",
+      "name": "ServicioSEMAB-SIGI",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioSEMAB-SIGI",
+      "displayName": "Servicio SEMAB-SIGI",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2025-12-11T14:59:07Z",
+      "id": "imasi.sharepoint.com,d34cc614-1b94-4fa4-8f8e-80a6fe003921,97f7761c-7960-4168-9c53-56eeb0c65fbf",
+      "lastModifiedDateTime": "2025-10-31T05:21:32Z",
+      "name": "ServicioAXAER9-RecursosHumanos",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioAXAER9-RecursosHumanos",
+      "displayName": "Servicio AXAER-Recursos Humanos",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2026-05-14T13:24:07Z",
+      "description": "Servicio YPSAN",
+      "id": "imasi.sharepoint.com,54b99128-df4f-45f8-a47b-0d6b86ae5e36,a30fa2a9-f0fe-4bfa-a787-04c185540133",
+      "lastModifiedDateTime": "2026-05-03T02:04:30Z",
+      "name": "ServicioAXTSL",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioAXTSL",
+      "displayName": "Servicio AXTSL",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2024-07-11T13:34:50Z",
+      "id": "imasi.sharepoint.com,252fadf5-9890-4fbf-aba7-9a49204988e4,230f1af7-981f-47e9-892d-28acf4c1ab74",
+      "lastModifiedDateTime": "2024-06-16T05:34:25Z",
+      "name": "ServicioSEMAB-RecursosHumanos",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioSEMAB-RecursosHumanos",
+      "displayName": "Servicio SEMAB-Recursos Humanos",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2026-05-14T13:34:42Z",
+      "id": "imasi.sharepoint.com,e68494fe-4bef-433e-af88-70c9a27ebdca,c7a19f11-5e87-4189-a626-7ee966ab9844",
+      "lastModifiedDateTime": "2026-05-03T02:12:53Z",
+      "name": "ServicioAXTSL-RecursosHumanos",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioAXTSL-RecursosHumanos",
+      "displayName": "Servicio AXTSL-Recursos Humanos",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2026-02-07T20:20:58Z",
+      "id": "imasi.sharepoint.com,0684eb77-a01b-478a-b6ca-1916b92096ff,ca8c7228-8f32-4f36-8fd6-cf9680fd2799",
+      "lastModifiedDateTime": "2026-06-19T08:52:31.2000049Z",
+      "name": "coJsE0OdIkqu2uEOCncHObFWgdB2H3lLpO5xJ5uaFvs",
+      "webUrl": "https://imasi.sharepoint.com/contentstorage/coJsE0OdIkqu2uEOCncHObFWgdB2H3lLpO5xJ5uaFvs",
+      "displayName": "Designer",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2020-08-04T16:52:24Z",
+      "id": "imasi.sharepoint.com,6433a77c-cce5-427b-a33c-e6009052e41e,d3d39ac5-babf-47ff-88d1-829ed8eec908",
+      "lastModifiedDateTime": "2025-07-08T12:01:10Z",
+      "name": "ServicioTELEC-SIGI",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioTELEC-SIGI",
+      "displayName": "Servicio TELEC-SIGI",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2026-08-14T20:48:22Z",
+      "id": "imasi.sharepoint.com,27f2fc85-e290-49e6-aaee-312242e42d62,12cd136c-5e35-436c-a6dd-8d0128ad64c3",
+      "lastModifiedDateTime": "2026-08-14T20:50:53.4484694Z",
+      "name": "coJsE0OdIkqu2uEOCncHOV51hWIiqMlBiYZN_dnC_qQ",
+      "webUrl": "https://imasi.sharepoint.com/contentstorage/coJsE0OdIkqu2uEOCncHOV51hWIiqMlBiYZN_dnC_qQ",
+      "displayName": "Designer",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2025-01-20T15:05:45Z",
+      "id": "imasi.sharepoint.com,0d1c1cf7-2730-4687-9734-462f4430d448,3c6ee3e2-c0cd-4394-859b-5e9cf54278af",
+      "lastModifiedDateTime": "2025-01-19T06:38:57Z",
+      "name": "EstudioPropuestas20252",
+      "webUrl": "https://imasi.sharepoint.com/sites/EstudioPropuestas20252",
+      "displayName": "Estudio Propuestas 2025",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2026-08-11T16:14:28Z",
+      "id": "imasi.sharepoint.com,0ea3e49e-8a89-454c-9952-56cc5cdfe7ca,7b65b018-47c1-4dab-befd-ebb6aa0c7f8c",
+      "lastModifiedDateTime": "2026-08-11T16:18:30.7839637Z",
+      "name": "coJsE0OdIkqu2uEOCncHOaEhLLTGGCNAsntzmjpHUy0",
+      "webUrl": "https://imasi.sharepoint.com/contentstorage/coJsE0OdIkqu2uEOCncHOaEhLLTGGCNAsntzmjpHUy0",
+      "displayName": "Designer",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2026-08-05T15:32:19Z",
+      "id": "imasi.sharepoint.com,c6801c2a-853a-4f8a-8ccb-4f33b1ded814,7903c9c9-5928-4835-b12b-bf7bfa0a0d8e",
+      "lastModifiedDateTime": "2026-08-05T15:36:42.6661808Z",
+      "name": "coJsE0OdIkqu2uEOCncHObqY2AGtxzxClRzN8wgC254",
+      "webUrl": "https://imasi.sharepoint.com/contentstorage/coJsE0OdIkqu2uEOCncHObqY2AGtxzxClRzN8wgC254",
+      "displayName": "Designer",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2024-01-16T12:57:51Z",
+      "id": "imasi.sharepoint.com,6f00b9be-ecb4-4097-b455-adc805da5d6b,cd6f6931-f3b8-46c6-8f4a-255f384a1fbc",
+      "lastModifiedDateTime": "2024-01-14T06:08:26Z",
+      "name": "ServicioYPSAN-AdministracionServicio",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioYPSAN-AdministracionServicio",
+      "displayName": "Servicio YPSAN-Administracion Servicio",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2023-06-23T12:56:50Z",
+      "id": "imasi.sharepoint.com,35b9f936-008c-4e80-8152-9f1fd58639c5,66944c2f-4d4b-44ac-a487-f139c7eadabd",
+      "lastModifiedDateTime": "2023-06-10T14:42:12Z",
+      "name": "ServicioACVC22-RecursosHumanos",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioACVC22-RecursosHumanos",
+      "displayName": "Servicio ACVC2-Recursos Humanos",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2024-01-16T12:57:29Z",
+      "id": "imasi.sharepoint.com,fd127a25-16c9-44b8-b491-b431df65f16c,cd6f6931-f3b8-46c6-8f4a-255f384a1fbc",
+      "lastModifiedDateTime": "2024-01-14T06:08:26Z",
+      "name": "ServicioYPSAN-SIGI",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioYPSAN-SIGI",
+      "displayName": "Servicio YPSAN-SIGI",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2024-01-16T12:55:15Z",
+      "id": "imasi.sharepoint.com,86ff6a4c-253b-4cb0-a184-cb0e9e082b78,cd6f6931-f3b8-46c6-8f4a-255f384a1fbc",
+      "lastModifiedDateTime": "2024-01-14T06:08:26Z",
+      "name": "ServicioYPSAN-RecursosHumanos",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioYPSAN-RecursosHumanos",
+      "displayName": "Servicio YPSAN-Recursos Humanos",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2025-12-15T10:29:11Z",
+      "id": "imasi.sharepoint.com,5eca3883-26d6-44d4-82f1-20975757cdc5,97f7761c-7960-4168-9c53-56eeb0c65fbf",
+      "lastModifiedDateTime": "2025-10-31T05:21:32Z",
+      "name": "ServicioAXAER9-AdministracionServicio",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioAXAER9-AdministracionServicio",
+      "displayName": "Servicio AXAER-Administracion Servicio",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2024-08-12T13:29:46Z",
+      "id": "imasi.sharepoint.com,829f95d3-f8c1-490e-909d-6d772644a71a,480c409a-236e-49ae-a39f-1adec90f221e",
+      "lastModifiedDateTime": "2024-08-11T05:07:48Z",
+      "name": "ComunicacionClientes",
+      "webUrl": "https://imasi.sharepoint.com/sites/ComunicacionClientes",
+      "displayName": "Comunicacion Clientes",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2026-08-04T14:45:10Z",
+      "id": "imasi.sharepoint.com,70168b2c-3f3c-4ff6-bc85-99f9cf33e424,7903c9c9-5928-4835-b12b-bf7bfa0a0d8e",
+      "lastModifiedDateTime": "2026-08-04T14:49:49.8371781Z",
+      "name": "coJsE0OdIkqu2uEOCncHOQlz0A7XbM5JpTNNAG4khU8",
+      "webUrl": "https://imasi.sharepoint.com/contentstorage/coJsE0OdIkqu2uEOCncHOQlz0A7XbM5JpTNNAG4khU8",
+      "displayName": "Designer",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2025-06-12T10:46:46Z",
+      "id": "imasi.sharepoint.com,fc1a8e7e-d472-4268-93e6-31cacbce133c,f20ac833-fc56-4453-b153-d8c0c2086499",
+      "lastModifiedDateTime": "2026-03-26T04:46:25.7783518Z",
+      "name": "coJsE0OdIkqu2uEOCncHObJ6iea89lVHommWD4GjuLE",
+      "webUrl": "https://imasi.sharepoint.com/contentstorage/coJsE0OdIkqu2uEOCncHObJ6iea89lVHommWD4GjuLE",
+      "displayName": "Designer",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2024-01-16T12:55:36Z",
+      "id": "imasi.sharepoint.com,61d825de-00fb-4336-a163-0ad122135397,cd6f6931-f3b8-46c6-8f4a-255f384a1fbc",
+      "lastModifiedDateTime": "2024-01-14T06:08:26Z",
+      "name": "ServicioYPSAN-Gerencia",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioYPSAN-Gerencia",
+      "displayName": "Servicio YPSAN-Gerencia",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2026-02-19T17:04:06Z",
+      "id": "imasi.sharepoint.com,a73db64b-42f3-4578-a322-3c919f9aedf4,69bae4b6-6712-4242-80c3-a855ac61bf88",
+      "lastModifiedDateTime": "2026-02-19T17:11:56.9816625Z",
+      "name": "coJsE0OdIkqu2uEOCncHObt2qLbICbpElgtrFfG2--8",
+      "webUrl": "https://imasi.sharepoint.com/contentstorage/coJsE0OdIkqu2uEOCncHObt2qLbICbpElgtrFfG2--8",
+      "displayName": "Designer",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2026-03-10T18:54:07Z",
+      "id": "imasi.sharepoint.com,17534784-8cf4-464a-9cc6-548a48d9801d,672bccdb-c2cb-4d12-b266-7ea29575ef55",
+      "lastModifiedDateTime": "2026-03-10T19:02:54.4909717Z",
+      "name": "coJsE0OdIkqu2uEOCncHOTvhhC2f-fNHlvrTVFWaBQw",
+      "webUrl": "https://imasi.sharepoint.com/contentstorage/coJsE0OdIkqu2uEOCncHOTvhhC2f-fNHlvrTVFWaBQw",
+      "displayName": "Designer",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2020-06-18T17:37:57Z",
+      "description": "Administracion General",
+      "id": "imasi.sharepoint.com,925430eb-efbc-470d-8073-5e57003f9dc2,131b5171-c58d-4276-9213-183a60512a05",
+      "lastModifiedDateTime": "2021-10-21T18:20:58Z",
+      "name": "AdministracionGeneral",
+      "webUrl": "https://imasi.sharepoint.com/sites/AdministracionGeneral",
+      "displayName": "Administracion General",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2022-06-10T16:57:02Z",
+      "id": "imasi.sharepoint.com,01f0fe2a-0f81-47d1-9f1e-503e5a52a4b6,4e8ff367-72aa-419a-817d-96a5f9687de2",
+      "lastModifiedDateTime": "2022-06-05T05:37:20Z",
+      "name": "ServicioSERMET-SIGI",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioSERMET-SIGI",
+      "displayName": "Servicio SERMET-SIGI",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2022-01-17T14:35:59Z",
+      "id": "imasi.sharepoint.com,540208fb-ce7b-456a-9d26-68fd89d50cb0,cf7a0870-1ec0-43d2-805b-dce6411143a2",
+      "lastModifiedDateTime": "2021-12-12T06:15:01Z",
+      "name": "ServicioRACORP-Certificacion-Facturacion",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioRACORP-Certificacion-Facturacion",
+      "displayName": "Servicio RACORP-Certificacion-Facturacion",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2026-06-01T14:02:59Z",
+      "id": "imasi.sharepoint.com,ddce9e67-7e3c-47cd-bdf1-fa4f478dac84,5fb60176-08df-400b-9504-406e5f0f308a",
+      "lastModifiedDateTime": "2026-05-22T02:15:34Z",
+      "name": "ServicioAXLIM-Operacion",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioAXLIM-Operacion",
+      "displayName": "Servicio AXLIM-Operacion",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2026-06-01T13:31:14Z",
+      "id": "imasi.sharepoint.com,6951be4f-6a61-4371-b85d-5e66b1f0f7ec,5fb60176-08df-400b-9504-406e5f0f308a",
+      "lastModifiedDateTime": "2026-05-22T02:15:34Z",
+      "name": "ServicioAXLIM-Compras",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioAXLIM-Compras",
+      "displayName": "Servicio AXLIM-Compras",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2026-04-10T17:39:15Z",
+      "id": "imasi.sharepoint.com,edeff798-8615-47f0-a01b-752949d7bdc3,f029ed14-8396-4158-8ba6-390ce838779b",
+      "lastModifiedDateTime": "2026-04-10T17:42:31.3006465Z",
+      "name": "coJsE0OdIkqu2uEOCncHOR1zGKC606ZHj4DIAL0LEG0",
+      "webUrl": "https://imasi.sharepoint.com/contentstorage/coJsE0OdIkqu2uEOCncHOR1zGKC606ZHj4DIAL0LEG0",
+      "displayName": "Designer",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2025-11-26T20:11:41Z",
+      "id": "imasi.sharepoint.com,f549c992-1f39-4884-b588-415c9f65524f,7c64efa6-af1b-44b8-8fbc-995781841cdc",
+      "lastModifiedDateTime": "2025-11-26T20:42:38.9695858Z",
+      "name": "coJsE0OdIkqu2uEOCncHOXeetaYI_wBOplmiRaGArZw",
+      "webUrl": "https://imasi.sharepoint.com/contentstorage/coJsE0OdIkqu2uEOCncHOXeetaYI_wBOplmiRaGArZw",
+      "displayName": "Designer",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2026-05-10T19:17:14Z",
+      "id": "imasi.sharepoint.com,4a1ade98-67ee-48ab-9687-286940435769,d30d53b5-eb8d-4760-8a59-1368cd457223",
+      "lastModifiedDateTime": "2026-05-10T19:20:07.469198Z",
+      "name": "coJsE0OdIkqu2uEOCncHOalm7YGkNghBuWebe7qJPXc",
+      "webUrl": "https://imasi.sharepoint.com/contentstorage/coJsE0OdIkqu2uEOCncHOalm7YGkNghBuWebe7qJPXc",
+      "displayName": "Designer",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2026-04-07T14:32:23Z",
+      "id": "imasi.sharepoint.com,c32f8d22-bbaa-4f80-a6f0-733bfe335601,7e6bdf0f-efcf-4b51-a352-dae31ebcc943",
+      "lastModifiedDateTime": "2026-04-05T05:39:13Z",
+      "name": "GestionComercial-ProyectoNOA2026",
+      "webUrl": "https://imasi.sharepoint.com/sites/GestionComercial-ProyectoNOA2026",
+      "displayName": "Gestion Comercial-Proyecto NOA 2026",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2026-06-01T13:32:05Z",
+      "id": "imasi.sharepoint.com,febd1aad-b883-49a3-ae16-0a4bcdf6c9bf,5fb60176-08df-400b-9504-406e5f0f308a",
+      "lastModifiedDateTime": "2026-05-22T02:15:34Z",
+      "name": "ServicioAXLIM-Gerencia",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioAXLIM-Gerencia",
+      "displayName": "Servicio AXLIM-Gerencia",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2026-06-01T13:30:25Z",
+      "id": "imasi.sharepoint.com,1e06ff24-b9d6-413d-b495-fc4a4345b808,5fb60176-08df-400b-9504-406e5f0f308a",
+      "lastModifiedDateTime": "2026-05-22T02:15:34Z",
+      "name": "ServicioAXLIM-Certificacion-Facturacion",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioAXLIM-Certificacion-Facturacion",
+      "displayName": "Servicio AXLIM-Certificacion-Facturacion",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2026-06-09T13:23:37Z",
+      "id": "imasi.sharepoint.com,024aac9b-d46b-431f-bdb1-d72e69900621,63b327e8-ca6f-490e-8b99-7cd0a3b44ec9",
+      "lastModifiedDateTime": "2026-06-10T01:27:24.209062Z",
+      "name": "coJsE0OdIkqu2uEOCncHOd6gjayPOnJFmVEtKSELBNE",
+      "webUrl": "https://imasi.sharepoint.com/contentstorage/coJsE0OdIkqu2uEOCncHOd6gjayPOnJFmVEtKSELBNE",
+      "displayName": "Designer",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2020-05-28T14:50:47Z",
+      "description": "Gestion Compras",
+      "id": "imasi.sharepoint.com,7767d77c-f87c-4597-a64d-0dc3ae479de1,3f1c6f8e-dd00-48ef-a128-cd8c8c43497c",
+      "lastModifiedDateTime": "2023-12-27T11:37:23Z",
+      "name": "GestionCompras",
+      "webUrl": "https://imasi.sharepoint.com/sites/GestionCompras",
+      "displayName": "Gestion Compras",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2026-06-22T15:01:17Z",
+      "id": "imasi.sharepoint.com,ffc74550-e842-4f11-9532-a26d1b5e6e4b,d1722ba2-8fc9-4104-b3bf-e2600196d519",
+      "lastModifiedDateTime": "2026-06-22T15:05:11.9747981Z",
+      "name": "coJsE0OdIkqu2uEOCncHOQrl9rzjTWRMh_g-EoJ1nyc",
+      "webUrl": "https://imasi.sharepoint.com/contentstorage/coJsE0OdIkqu2uEOCncHOQrl9rzjTWRMh_g-EoJ1nyc",
+      "displayName": "Designer",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2026-06-01T12:45:47Z",
+      "id": "imasi.sharepoint.com,e2617526-514c-4126-8568-c23c99a55864,5fb60176-08df-400b-9504-406e5f0f308a",
+      "lastModifiedDateTime": "2026-05-22T02:15:34Z",
+      "name": "ServicioAXLIM-RecursosHumanos",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioAXLIM-RecursosHumanos",
+      "displayName": "Servicio AXLIM-Recursos Humanos",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2026-05-16T10:49:48Z",
+      "id": "imasi.sharepoint.com,9e8d02f8-06ce-42a6-ab65-dc456965fdd7,a3b8111d-5a3c-4e56-b418-8d9a4b2c9b0f",
+      "lastModifiedDateTime": "2026-05-16T02:05:08Z",
+      "name": "ServicioAXTSL-Gerencia",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioAXTSL-Gerencia",
+      "displayName": "Servicio AXTSL-Gerencia",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2026-06-01T13:29:45Z",
+      "id": "imasi.sharepoint.com,18300dff-6b25-46f0-99e9-73f9d7e248f6,5fb60176-08df-400b-9504-406e5f0f308a",
+      "lastModifiedDateTime": "2026-05-22T02:15:34Z",
+      "name": "ServicioAXLIM-AdministracionServicio",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioAXLIM-AdministracionServicio",
+      "displayName": "Servicio AXLIM-Administracion Servicio",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2026-05-16T10:50:09Z",
+      "id": "imasi.sharepoint.com,a122af0e-f272-4abe-83ba-0cfabf4982a4,a3b8111d-5a3c-4e56-b418-8d9a4b2c9b0f",
+      "lastModifiedDateTime": "2026-05-16T02:05:08Z",
+      "name": "ServicioAXTSL-Operacion",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioAXTSL-Operacion",
+      "displayName": "Servicio AXTSL-Operacion",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2026-05-16T10:49:21Z",
+      "id": "imasi.sharepoint.com,7a31213c-fa8f-48ae-adf9-6730c6a0757f,a3b8111d-5a3c-4e56-b418-8d9a4b2c9b0f",
+      "lastModifiedDateTime": "2026-05-16T02:05:08Z",
+      "name": "ServicioAXTSL-Compras",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioAXTSL-Compras",
+      "displayName": "Servicio AXTSL-Compras",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2021-04-16T16:27:41Z",
+      "description": "Servicio Mitte",
+      "id": "imasi.sharepoint.com,1db2893d-83e5-4cf5-9363-a788a5e145a2,36280ab4-d73d-46d4-80a1-dcf41a842577",
+      "lastModifiedDateTime": "2021-04-11T06:53:12Z",
+      "name": "ServicioMitte",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioMitte",
+      "displayName": "Servicio MITTE",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2026-05-16T10:49:04Z",
+      "id": "imasi.sharepoint.com,557b3433-2d3f-4ff8-982d-b3c79095b258,a3b8111d-5a3c-4e56-b418-8d9a4b2c9b0f",
+      "lastModifiedDateTime": "2026-05-16T02:05:08Z",
+      "name": "ServicioAXTSL-Certificacion-Facturacion",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioAXTSL-Certificacion-Facturacion",
+      "displayName": "Servicio AXTSL-Certificacion-Facturacion",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2025-10-02T17:49:18Z",
+      "id": "imasi.sharepoint.com,2b4a9157-7119-48ea-a686-0bfb94e491b5,f3cfeb8f-4751-4224-8800-04162fb1161a",
+      "lastModifiedDateTime": "2025-10-02T18:05:11.8987684Z",
+      "name": "coJsE0OdIkqu2uEOCncHOU2MhCpMTw9JtbIz2YFXyPs",
+      "webUrl": "https://imasi.sharepoint.com/contentstorage/coJsE0OdIkqu2uEOCncHOU2MhCpMTw9JtbIz2YFXyPs",
+      "displayName": "Designer",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2025-10-28T12:38:28Z",
+      "id": "imasi.sharepoint.com,4aeb2af0-814f-420a-af27-67bd89fcfabd,531cecf5-de79-4ec4-a238-ff08e04a5fd7",
+      "lastModifiedDateTime": "2025-10-28T12:49:57.871552Z",
+      "name": "coJsE0OdIkqu2uEOCncHOX-xzxHKZRxEgoo87Wo70yA",
+      "webUrl": "https://imasi.sharepoint.com/contentstorage/coJsE0OdIkqu2uEOCncHOX-xzxHKZRxEgoo87Wo70yA",
+      "displayName": "Designer",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2025-11-04T18:08:13Z",
+      "id": "imasi.sharepoint.com,043ba004-d301-4ba5-a933-7162793dc3ce,7c64efa6-af1b-44b8-8fbc-995781841cdc",
+      "lastModifiedDateTime": "2025-11-04T18:17:38.5344046Z",
+      "name": "coJsE0OdIkqu2uEOCncHOTNvgG_zzqtGk8fTH2pul40",
+      "webUrl": "https://imasi.sharepoint.com/contentstorage/coJsE0OdIkqu2uEOCncHOTNvgG_zzqtGk8fTH2pul40",
+      "displayName": "Designer",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2025-12-11T14:56:35Z",
+      "id": "imasi.sharepoint.com,73b73f5b-5939-47e9-aa6b-faed0d534601,ed91711a-bc46-40fa-9da1-84326cd0a8f3",
+      "lastModifiedDateTime": "2025-10-31T05:12:42Z",
+      "name": "ServicioAXAER9",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioAXAER9",
+      "displayName": "Servicio AXAER",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2025-12-15T10:33:02Z",
+      "id": "imasi.sharepoint.com,ad04396b-cc6b-4394-ba48-d713a6d151c1,97f7761c-7960-4168-9c53-56eeb0c65fbf",
+      "lastModifiedDateTime": "2025-10-31T05:21:32Z",
+      "name": "ServicioAXAER9-SIGI",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioAXAER9-SIGI",
+      "displayName": "Servicio AXAER-SIGI",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2026-06-01T12:10:16Z",
+      "description": "Servicio AXAER",
+      "id": "imasi.sharepoint.com,a695d885-990f-401a-8c70-fdf600e141d4,5d0bb5ee-965e-4cad-beed-b8c861e2a864",
+      "lastModifiedDateTime": "2026-05-22T02:05:34Z",
+      "name": "ServicioAXLIM",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioAXLIM",
+      "displayName": "Servicio AXLIM",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2023-12-12T12:55:29Z",
+      "id": "imasi.sharepoint.com,e08c6d0d-e829-40d0-a257-bf82b27826c5,91113374-2812-4dc2-a0cd-dbc9782c99f7",
+      "lastModifiedDateTime": "2023-12-10T06:11:06Z",
+      "name": "EstudioPropuestas2024",
+      "webUrl": "https://imasi.sharepoint.com/sites/EstudioPropuestas2024",
+      "displayName": "Estudio Propuestas 2024",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2025-09-02T19:14:43Z",
+      "id": "imasi.sharepoint.com,569cca23-0aaa-43c9-b6a5-df2163faa4c9,3d5d38d0-68c5-4df6-abba-b867bd6dcee3",
+      "lastModifiedDateTime": "2025-09-02T19:25:15.6147908Z",
+      "name": "coJsE0OdIkqu2uEOCncHOdMmaA6qIlRArJVc1l8GOaM",
+      "webUrl": "https://imasi.sharepoint.com/contentstorage/coJsE0OdIkqu2uEOCncHOdMmaA6qIlRArJVc1l8GOaM",
+      "displayName": "Designer",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2025-09-02T14:31:17Z",
+      "id": "imasi.sharepoint.com,10b72872-51a7-4e35-8e3c-02d3447f23e9,3d5d38d0-68c5-4df6-abba-b867bd6dcee3",
+      "lastModifiedDateTime": "2025-09-02T14:35:27.9333003Z",
+      "name": "coJsE0OdIkqu2uEOCncHOcgxlSQYOmJLnxVPXd-CnUk",
+      "webUrl": "https://imasi.sharepoint.com/contentstorage/coJsE0OdIkqu2uEOCncHOcgxlSQYOmJLnxVPXd-CnUk",
+      "displayName": "Designer",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2021-04-25T17:05:24Z",
+      "id": "imasi.sharepoint.com,04ce1d6e-76d5-4789-a68a-a1d0eb691054,b751cf74-4575-4930-b5de-a7dddd7dba59",
+      "lastModifiedDateTime": "2021-04-11T06:36:25Z",
+      "name": "ServicioBANCOR-RecursosHumanos",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioBANCOR-RecursosHumanos",
+      "displayName": "Servicio BANCOR-Recursos Humanos",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2026-05-16T10:48:26Z",
+      "id": "imasi.sharepoint.com,3d2ebd41-09a3-445c-8229-7af764f1b92f,a3b8111d-5a3c-4e56-b418-8d9a4b2c9b0f",
+      "lastModifiedDateTime": "2026-05-16T02:05:08Z",
+      "name": "ServicioAXTSL-AdministracionServicio",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioAXTSL-AdministracionServicio",
+      "displayName": "Servicio AXTSL-Administracion Servicio",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2020-04-06T01:03:35Z",
+      "description": "INFORMATIVO PARA ADM CONTRATOS LAF",
+      "id": "imasi.sharepoint.com,2492a49e-2605-48cb-b2a8-2f278df94d59,4f33571e-9b22-4722-b6ff-d889c0921768",
+      "lastModifiedDateTime": "2026-07-22T19:09:27.7458105Z",
+      "name": "LAFADM",
+      "webUrl": "https://imasi.sharepoint.com/sites/LAFADM",
+      "displayName": "LAF / ADM",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2025-05-16T10:58:53Z",
+      "id": "imasi.sharepoint.com,b2483256-1e3e-49b0-aad4-e4d5b57b69f1,f2f5eee3-1d7b-465e-a7d5-d865be96ea2c",
+      "lastModifiedDateTime": "2025-05-11T05:11:28Z",
+      "name": "ServicioMANTAL-SIGI",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioMANTAL-SIGI",
+      "displayName": "Servicio MANTAL-SIGI",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2025-05-19T11:46:20Z",
+      "id": "imasi.sharepoint.com,057bf5e2-c244-4f67-be23-16e1153b44ec,2e9e05d9-8ee4-496c-9510-834d5274198f",
+      "lastModifiedDateTime": "2025-05-18T05:29:12Z",
+      "name": "ServicioMANTAL-Gerencia",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioMANTAL-Gerencia",
+      "displayName": "Servicio MANTAL-Gerencia",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2025-12-11T15:00:11Z",
+      "id": "imasi.sharepoint.com,84a33ae2-93ec-4b2d-a740-fe592ad98ed1,97f7761c-7960-4168-9c53-56eeb0c65fbf",
+      "lastModifiedDateTime": "2025-10-31T05:21:32Z",
+      "name": "ServicioAXAER9-Operacin",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioAXAER9-Operacin",
+      "displayName": "Servicio AXAER-Operaci\u00f3n",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2025-12-15T10:30:43Z",
+      "id": "imasi.sharepoint.com,6da13cd5-84f6-4edc-9d75-d291d8ac5989,97f7761c-7960-4168-9c53-56eeb0c65fbf",
+      "lastModifiedDateTime": "2025-10-31T05:21:32Z",
+      "name": "ServicioAXAER9-Gerencia",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioAXAER9-Gerencia",
+      "displayName": "Servicio AXAER-Gerencia",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2025-12-15T10:30:26Z",
+      "id": "imasi.sharepoint.com,d0e3327b-f4a1-46e0-9340-c3a9c4a7ae3e,97f7761c-7960-4168-9c53-56eeb0c65fbf",
+      "lastModifiedDateTime": "2025-10-31T05:21:32Z",
+      "name": "ServicioAXAER9-Compras",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioAXAER9-Compras",
+      "displayName": "Servicio AXAER-Compras",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2026-07-28T11:37:46Z",
+      "id": "imasi.sharepoint.com,7c2aa67b-4d90-4b4f-8e0a-1c614a59b22f,7903c9c9-5928-4835-b12b-bf7bfa0a0d8e",
+      "lastModifiedDateTime": "2026-07-28T11:45:03.0677995Z",
+      "name": "x8FNO-xtskuCRX2_fMTHLSjAASJKO5FKuksuSIR-d0w",
+      "webUrl": "https://imasi.sharepoint.com/contentstorage/x8FNO-xtskuCRX2_fMTHLSjAASJKO5FKuksuSIR-d0w",
+      "displayName": "Mi \u00e1rea de trabajo",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2020-06-22T11:41:33Z",
+      "id": "imasi.sharepoint.com,ef64ae37-bdbd-458c-8efd-e3ac1f2f1191,698bc019-5007-41ec-b8ba-9327d61065b6",
+      "lastModifiedDateTime": "2020-06-21T06:00:32Z",
+      "name": "ServicioFADMA-SIGI",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioFADMA-SIGI",
+      "displayName": "Servicio FADMA-SIGI",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2023-01-05T14:22:58Z",
+      "description": "Estudio Propuestas 2023",
+      "id": "imasi.sharepoint.com,67809825-ced5-46a0-8676-b96e0b80a214,6897e09a-1741-43e2-85a9-02a626704041",
+      "lastModifiedDateTime": "2022-10-23T05:00:55Z",
+      "name": "EstudioPropuestas2023",
+      "webUrl": "https://imasi.sharepoint.com/sites/EstudioPropuestas2023",
+      "displayName": "Estudio Propuestas 2023",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2021-04-25T17:05:24Z",
+      "id": "imasi.sharepoint.com,c176670c-a7b3-4b27-8541-75f66b47fe67,b751cf74-4575-4930-b5de-a7dddd7dba59",
+      "lastModifiedDateTime": "2021-04-11T06:36:25Z",
+      "name": "ServicioBANCOR-AdministracionServicio",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioBANCOR-AdministracionServicio",
+      "displayName": "Servicio BANCOR-Administracion Servicio",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2025-06-07T16:06:50Z",
+      "id": "imasi.sharepoint.com,912e7e8c-0517-4f03-b0c1-6c8a4d02bd43,f20ac833-fc56-4453-b153-d8c0c2086499",
+      "lastModifiedDateTime": "2025-06-07T16:22:36.766413Z",
+      "name": "coJsE0OdIkqu2uEOCncHObhxzTYZxBxGsArnrLPoOXs",
+      "webUrl": "https://imasi.sharepoint.com/contentstorage/coJsE0OdIkqu2uEOCncHObhxzTYZxBxGsArnrLPoOXs",
+      "displayName": "Designer",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2025-06-07T22:22:04Z",
+      "id": "imasi.sharepoint.com,0c784717-0ff7-4fab-8eed-002cf979dd84,f20ac833-fc56-4453-b153-d8c0c2086499",
+      "lastModifiedDateTime": "2025-06-07T22:37:31.777156Z",
+      "name": "coJsE0OdIkqu2uEOCncHOQ4kEFKTiZxHhC_NZS3vlsI",
+      "webUrl": "https://imasi.sharepoint.com/contentstorage/coJsE0OdIkqu2uEOCncHOQ4kEFKTiZxHhC_NZS3vlsI",
+      "displayName": "Designer",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2025-06-26T15:52:20Z",
+      "id": "imasi.sharepoint.com,dd56c3ca-10ec-4dd2-8929-b598fc9b91a3,98abc6b3-2270-4130-9f4f-8f0cc6d2eebe",
+      "lastModifiedDateTime": "2025-06-26T16:03:20.4630367Z",
+      "name": "coJsE0OdIkqu2uEOCncHOUue8V1PEfhApnXTDy4ljyE",
+      "webUrl": "https://imasi.sharepoint.com/contentstorage/coJsE0OdIkqu2uEOCncHOUue8V1PEfhApnXTDy4ljyE",
+      "displayName": "Designer",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2025-06-13T10:50:36Z",
+      "id": "imasi.sharepoint.com,21fe9b25-c948-48ed-87be-3656cdf1880e,f20ac833-fc56-4453-b153-d8c0c2086499",
+      "lastModifiedDateTime": "2025-06-13T11:06:16.3987975Z",
+      "name": "coJsE0OdIkqu2uEOCncHOQyefvmnJ4xPu9wnzEGdbso",
+      "webUrl": "https://imasi.sharepoint.com/contentstorage/coJsE0OdIkqu2uEOCncHOQyefvmnJ4xPu9wnzEGdbso",
+      "displayName": "Designer",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2025-07-16T17:41:39Z",
+      "id": "imasi.sharepoint.com,7f4b8358-fe14-4afb-8c8c-d0d8b3509179,2b62cf9d-d231-476b-ae06-1fc5a6dfb4af",
+      "lastModifiedDateTime": "2025-07-16T17:56:02.6553234Z",
+      "name": "coJsE0OdIkqu2uEOCncHOWTmuwckIc1NtJVNepauyIA",
+      "webUrl": "https://imasi.sharepoint.com/contentstorage/coJsE0OdIkqu2uEOCncHOWTmuwckIc1NtJVNepauyIA",
+      "displayName": "Designer",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2025-07-04T13:29:29Z",
+      "id": "imasi.sharepoint.com,d8a31d1e-2269-4051-8365-dede76345649,2b62cf9d-d231-476b-ae06-1fc5a6dfb4af",
+      "lastModifiedDateTime": "2025-07-04T13:38:41.2008527Z",
+      "name": "coJsE0OdIkqu2uEOCncHOZuqesB9dQpIgmLYDQk_yss",
+      "webUrl": "https://imasi.sharepoint.com/contentstorage/coJsE0OdIkqu2uEOCncHOZuqesB9dQpIgmLYDQk_yss",
+      "displayName": "Designer",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2025-05-29T10:18:05Z",
+      "id": "imasi.sharepoint.com,73611496-fc4c-49e9-8008-7a64768380e6,1e46bb38-1f9f-4eba-beb4-e4973c0c8e8c",
+      "lastModifiedDateTime": "2025-05-29T10:33:40.3236878Z",
+      "name": "coJsE0OdIkqu2uEOCncHOeRc9AxQmptEij-bfzTWwnc",
+      "webUrl": "https://imasi.sharepoint.com/contentstorage/coJsE0OdIkqu2uEOCncHOeRc9AxQmptEij-bfzTWwnc",
+      "displayName": "Designer",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2025-05-29T11:30:31Z",
+      "id": "imasi.sharepoint.com,6f3fbf53-f485-47ac-9b62-791ee6768f0a,1e46bb38-1f9f-4eba-beb4-e4973c0c8e8c",
+      "lastModifiedDateTime": "2025-05-29T11:46:48.0933806Z",
+      "name": "coJsE0OdIkqu2uEOCncHOX9SvuT77b5Ehphr5PmUUwI",
+      "webUrl": "https://imasi.sharepoint.com/contentstorage/coJsE0OdIkqu2uEOCncHOX9SvuT77b5Ehphr5PmUUwI",
+      "displayName": "Designer",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2025-05-30T13:16:13Z",
+      "id": "imasi.sharepoint.com,3a54c8ee-0099-4edd-8c90-bb2abf1150f7,1e46bb38-1f9f-4eba-beb4-e4973c0c8e8c",
+      "lastModifiedDateTime": "2025-05-30T13:32:19.176593Z",
+      "name": "coJsE0OdIkqu2uEOCncHOU-z14JvWKBHhcA0OU2XGo0",
+      "webUrl": "https://imasi.sharepoint.com/contentstorage/coJsE0OdIkqu2uEOCncHOU-z14JvWKBHhcA0OU2XGo0",
+      "displayName": "Designer",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2025-05-28T17:49:28Z",
+      "id": "imasi.sharepoint.com,115668e8-839c-481e-9ad3-9217bd2ebb0b,1e46bb38-1f9f-4eba-beb4-e4973c0c8e8c",
+      "lastModifiedDateTime": "2025-05-28T18:12:41.0548056Z",
+      "name": "coJsE0OdIkqu2uEOCncHOQuoxH8661pGrQ-z-vgdeEQ",
+      "webUrl": "https://imasi.sharepoint.com/contentstorage/coJsE0OdIkqu2uEOCncHOQuoxH8661pGrQ-z-vgdeEQ",
+      "displayName": "Designer",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2025-05-28T23:59:56Z",
+      "id": "imasi.sharepoint.com,959f2520-ecdf-465a-93d2-824be367cd7a,1e46bb38-1f9f-4eba-beb4-e4973c0c8e8c",
+      "lastModifiedDateTime": "2025-05-29T00:15:25.1285131Z",
+      "name": "coJsE0OdIkqu2uEOCncHObvDPXs2XH5Bt6ntBGCjVeM",
+      "webUrl": "https://imasi.sharepoint.com/contentstorage/coJsE0OdIkqu2uEOCncHObvDPXs2XH5Bt6ntBGCjVeM",
+      "displayName": "Designer",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2025-05-30T18:11:42Z",
+      "id": "imasi.sharepoint.com,b38d8cd9-4700-4d4c-8fc5-0ba2de853d06,1e46bb38-1f9f-4eba-beb4-e4973c0c8e8c",
+      "lastModifiedDateTime": "2025-05-30T18:29:18.125068Z",
+      "name": "coJsE0OdIkqu2uEOCncHObj1pXkdvJ9MhNIGRqOnvV8",
+      "webUrl": "https://imasi.sharepoint.com/contentstorage/coJsE0OdIkqu2uEOCncHObj1pXkdvJ9MhNIGRqOnvV8",
+      "displayName": "Designer",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2025-06-03T19:56:23Z",
+      "id": "imasi.sharepoint.com,88935e93-2c5c-46ab-84fc-abb188963eb9,f20ac833-fc56-4453-b153-d8c0c2086499",
+      "lastModifiedDateTime": "2025-06-03T20:21:02.860473Z",
+      "name": "coJsE0OdIkqu2uEOCncHObm4gqeOYVRBv-neAmcflDo",
+      "webUrl": "https://imasi.sharepoint.com/contentstorage/coJsE0OdIkqu2uEOCncHObm4gqeOYVRBv-neAmcflDo",
+      "displayName": "Designer",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2025-06-03T22:30:55Z",
+      "id": "imasi.sharepoint.com,08aa9b71-88f6-4725-b583-c23296de3104,f20ac833-fc56-4453-b153-d8c0c2086499",
+      "lastModifiedDateTime": "2025-06-03T23:05:03.5449521Z",
+      "name": "coJsE0OdIkqu2uEOCncHOS5Vf6wdWLxHpM1UwbYs9wI",
+      "webUrl": "https://imasi.sharepoint.com/contentstorage/coJsE0OdIkqu2uEOCncHOS5Vf6wdWLxHpM1UwbYs9wI",
+      "displayName": "Designer",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2025-06-02T19:41:36Z",
+      "id": "imasi.sharepoint.com,34250573-65a7-4419-821a-3d42948e33e5,f20ac833-fc56-4453-b153-d8c0c2086499",
+      "lastModifiedDateTime": "2025-06-02T21:39:27.3171671Z",
+      "name": "coJsE0OdIkqu2uEOCncHOSBnSnhUzNtDgBaBHyPIFzI",
+      "webUrl": "https://imasi.sharepoint.com/contentstorage/coJsE0OdIkqu2uEOCncHOSBnSnhUzNtDgBaBHyPIFzI",
+      "displayName": "Designer",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2021-04-25T16:24:16Z",
+      "id": "imasi.sharepoint.com,f73035e2-92c5-4c3c-aab4-2ca383796e41,b751cf74-4575-4930-b5de-a7dddd7dba59",
+      "lastModifiedDateTime": "2021-04-11T06:36:25Z",
+      "name": "ServicioBANCOR-Cotizaciones",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioBANCOR-Cotizaciones",
+      "displayName": "Servicio BANCOR-Cotizaciones",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2023-06-22T18:10:56Z",
+      "id": "imasi.sharepoint.com,5fde3dc7-083e-4eec-a47c-8470fa639ecb,66944c2f-4d4b-44ac-a487-f139c7eadabd",
+      "lastModifiedDateTime": "2023-06-10T14:42:12Z",
+      "name": "ServicioACVC22-SIGI",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioACVC22-SIGI",
+      "displayName": "Servicio ACVC2-SIGI",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2018-10-11T12:38:06Z",
+      "id": "imasi.sharepoint.com,577b4c0e-f782-4a0a-aff7-d1ec4c525e61,78cbeda8-c6d6-4de5-9753-9002f172a288",
+      "lastModifiedDateTime": "2020-09-26T04:27:28Z",
+      "name": "imasi.sharepoint.com",
+      "webUrl": "https://imasi.sharepoint.com",
+      "displayName": "Sitio de grupo",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2024-07-11T13:21:30Z",
+      "description": "Servicio MABE",
+      "id": "imasi.sharepoint.com,4387856b-fa75-423e-9695-0ac98bcac653,8a6d9656-893e-456c-95f6-6d052317f3d6",
+      "lastModifiedDateTime": "2024-06-16T05:41:05Z",
+      "name": "ServicioSEMAB",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioSEMAB",
+      "displayName": "Servicio SEMAB",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2025-11-14T12:53:01Z",
+      "id": "imasi.sharepoint.com,07f773ba-9522-4ca0-9585-2a903ecab090,ed91711a-bc46-40fa-9da1-84326cd0a8f3",
+      "lastModifiedDateTime": "2025-11-14T12:53:12Z",
+      "name": "SHMPersonal",
+      "webUrl": "https://imasi.sharepoint.com/sites/SHMPersonal",
+      "displayName": "SHM (Personal)",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2021-01-05T01:30:35Z",
+      "id": "imasi.sharepoint.com,7f1de6ca-1bed-4905-acfd-9c84dfb63e1d,e8302072-74d6-408b-9414-7efde95e64cd",
+      "lastModifiedDateTime": "2020-12-20T06:48:19Z",
+      "name": "ServicioADMAT-SIGI",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioADMAT-SIGI",
+      "displayName": "Servicio ADMAT-SIGI",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2025-12-15T10:30:08Z",
+      "id": "imasi.sharepoint.com,af9f2a1d-a352-4345-a13f-9fc4a2c89337,97f7761c-7960-4168-9c53-56eeb0c65fbf",
+      "lastModifiedDateTime": "2025-10-31T05:21:32Z",
+      "name": "ServicioAXAER9-Certificacion-Facturacion",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioAXAER9-Certificacion-Facturacion",
+      "displayName": "Servicio AXAER-Certificacion-Facturacion",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2025-05-09T13:15:38Z",
+      "id": "imasi.sharepoint.com,09ed122b-3f6e-4e47-b78e-84a6d485425d,95da83b9-9f06-42f0-b450-05dbd09e4dc5",
+      "lastModifiedDateTime": "2025-05-09T13:31:16.2947075Z",
+      "name": "x8FNO-xtskuCRX2_fMTHLX-xzxHKZRxEgoo87Wo70yA",
+      "webUrl": "https://imasi.sharepoint.com/contentstorage/x8FNO-xtskuCRX2_fMTHLX-xzxHKZRxEgoo87Wo70yA",
+      "displayName": "Pages",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2026-02-26T10:52:05Z",
+      "id": "imasi.sharepoint.com,7ebd71ff-2022-4b08-a1e7-11aff86e313f,30655921-9efc-427f-a346-be4c2348e0ff",
+      "lastModifiedDateTime": "2026-02-26T10:56:11.433475Z",
+      "name": "x8FNO-xtskuCRX2_fMTHLZuqesB9dQpIgmLYDQk_yss",
+      "webUrl": "https://imasi.sharepoint.com/contentstorage/x8FNO-xtskuCRX2_fMTHLZuqesB9dQpIgmLYDQk_yss",
+      "displayName": "Mi \u00e1rea de trabajo",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2023-06-23T12:56:50Z",
+      "id": "imasi.sharepoint.com,8077f355-7e2f-4c72-92f8-5913732ab863,66944c2f-4d4b-44ac-a487-f139c7eadabd",
+      "lastModifiedDateTime": "2023-06-10T14:42:12Z",
+      "name": "ServicioACVC22-Operacion",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioACVC22-Operacion",
+      "displayName": "Servicio ACVC2-Operacion",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2026-07-14T15:28:01Z",
+      "id": "imasi.sharepoint.com,73245cdc-5f53-45e7-af5a-815fd5a2ac2f,56501168-510f-4aae-a28f-ff6bd408dd91",
+      "lastModifiedDateTime": "2026-07-14T15:33:29.2143913Z",
+      "name": "x8FNO-xtskuCRX2_fMTHLZcVyuATj-xGujHiqzgGvNs",
+      "webUrl": "https://imasi.sharepoint.com/contentstorage/x8FNO-xtskuCRX2_fMTHLZcVyuATj-xGujHiqzgGvNs",
+      "displayName": "8943b68e-61cc-43bc-b107-2eb3b42a81e1",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2026-06-09T20:50:54Z",
+      "id": "imasi.sharepoint.com,21ef9156-cec6-449c-945c-eef750fc095b,63b327e8-ca6f-490e-8b99-7cd0a3b44ec9",
+      "lastModifiedDateTime": "2026-06-09T20:54:28.9534832Z",
+      "name": "x8FNO-xtskuCRX2_fMTHLbqY2AGtxzxClRzN8wgC254",
+      "webUrl": "https://imasi.sharepoint.com/contentstorage/x8FNO-xtskuCRX2_fMTHLbqY2AGtxzxClRzN8wgC254",
+      "displayName": "Mi \u00e1rea de trabajo",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2025-05-16T11:00:56Z",
+      "id": "imasi.sharepoint.com,080ea4bd-26a9-48ad-870f-e38554292ca0,f2f5eee3-1d7b-465e-a7d5-d865be96ea2c",
+      "lastModifiedDateTime": "2025-05-11T05:11:28Z",
+      "name": "ServicioMANTAL-RecursosHumanos",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioMANTAL-RecursosHumanos",
+      "displayName": "Servicio MANTAL-Recursos Humanos",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2026-06-17T12:26:52Z",
+      "id": "imasi.sharepoint.com,5fa13dff-5a21-4330-bd4e-56cce0fd80cc,e56990f9-65cf-4607-b68a-727f94be6b70",
+      "lastModifiedDateTime": "2026-06-17T12:30:30.8049248Z",
+      "name": "x8FNO-xtskuCRX2_fMTHLUfhEMusuclKnMmqrX2BUfk",
+      "webUrl": "https://imasi.sharepoint.com/contentstorage/x8FNO-xtskuCRX2_fMTHLUfhEMusuclKnMmqrX2BUfk",
+      "displayName": "Mi \u00e1rea de trabajo",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2026-06-25T18:08:24Z",
+      "id": "imasi.sharepoint.com,6a4ad159-379a-4786-8113-148bac2a1337,d1722ba2-8fc9-4104-b3bf-e2600196d519",
+      "lastModifiedDateTime": "2026-06-25T18:12:34.4252623Z",
+      "name": "x8FNO-xtskuCRX2_fMTHLV-TRJB4fYlPgnthvxCl7no",
+      "webUrl": "https://imasi.sharepoint.com/contentstorage/x8FNO-xtskuCRX2_fMTHLV-TRJB4fYlPgnthvxCl7no",
+      "displayName": "My workspace",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2026-03-10T18:54:12Z",
+      "id": "imasi.sharepoint.com,885846da-98dc-4a1a-a612-5d9c0dde9c76,672bccdb-c2cb-4d12-b266-7ea29575ef55",
+      "lastModifiedDateTime": "2026-03-10T19:02:53.9936066Z",
+      "name": "x8FNO-xtskuCRX2_fMTHLTvhhC2f-fNHlvrTVFWaBQw",
+      "webUrl": "https://imasi.sharepoint.com/contentstorage/x8FNO-xtskuCRX2_fMTHLTvhhC2f-fNHlvrTVFWaBQw",
+      "displayName": "fe6fe9d1-8560-49af-a73f-c5fa502715ca",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2023-06-22T11:19:39Z",
+      "description": "Acindar Villa Constitucion",
+      "id": "imasi.sharepoint.com,d6a9cf11-8565-4cfd-98cb-7d9976c4c293,bc562a18-6006-4e3b-9af4-e1556f964883",
+      "lastModifiedDateTime": "2023-06-10T14:35:41Z",
+      "name": "ServicioACVC22",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioACVC22",
+      "displayName": "Servicio ACVC2",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2025-01-15T15:48:38Z",
+      "id": "imasi.sharepoint.com,264a6992-627e-47e4-95d5-99b2596e341f,20615f54-b8a1-4d4b-8486-643855877a82",
+      "lastModifiedDateTime": "2025-01-15T16:04:38.8764791Z",
+      "name": "x8FNO-xtskuCRX2_fMTHLan3lHE_Y4pOvx2kTiAFbww",
+      "webUrl": "https://imasi.sharepoint.com/contentstorage/x8FNO-xtskuCRX2_fMTHLan3lHE_Y4pOvx2kTiAFbww",
+      "displayName": "Pages",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2021-04-16T16:38:09Z",
+      "id": "imasi.sharepoint.com,ecfdfe31-2b0c-4581-af0b-b054507ab7c8,b751cf74-4575-4930-b5de-a7dddd7dba59",
+      "lastModifiedDateTime": "2021-04-11T06:36:25Z",
+      "name": "ServicioMitte-SIGI",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioMitte-SIGI",
+      "displayName": "Servicio MITTE-SIGI",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2025-05-16T11:05:53Z",
+      "id": "imasi.sharepoint.com,2711c5f8-123d-45ee-8934-ee936e727e5d,f2f5eee3-1d7b-465e-a7d5-d865be96ea2c",
+      "lastModifiedDateTime": "2025-05-11T05:11:28Z",
+      "name": "ServicioMANTAL-Operacion",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioMANTAL-Operacion",
+      "displayName": "Servicio MANTAL-Operacion",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2020-06-22T17:19:19Z",
+      "id": "imasi.sharepoint.com,cdbce8c8-74dd-4616-8255-d89f126805d2,698bc019-5007-41ec-b8ba-9327d61065b6",
+      "lastModifiedDateTime": "2020-06-21T06:00:32Z",
+      "name": "ServicioNCAR-SIGI",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioNCAR-SIGI",
+      "displayName": "Servicio NCAR-SIGI",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2026-04-10T17:39:17Z",
+      "id": "imasi.sharepoint.com,97d2f39f-7ee8-4f8b-a142-acab8343653a,f029ed14-8396-4158-8ba6-390ce838779b",
+      "lastModifiedDateTime": "2026-04-10T17:42:31.3051532Z",
+      "name": "x8FNO-xtskuCRX2_fMTHLR1zGKC606ZHj4DIAL0LEG0",
+      "webUrl": "https://imasi.sharepoint.com/contentstorage/x8FNO-xtskuCRX2_fMTHLR1zGKC606ZHj4DIAL0LEG0",
+      "displayName": "Mi \u00e1rea de trabajo",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2026-07-08T04:42:56Z",
+      "id": "imasi.sharepoint.com,b8f93ae4-c7eb-454d-b134-12a10fec3f3c,357208cc-e8df-4470-9547-58a5ebb56273",
+      "lastModifiedDateTime": "2026-07-04T02:17:08Z",
+      "name": "AllCompany.20216201216.qnnniklr",
+      "webUrl": "https://imasi.sharepoint.com/sites/AllCompany.20216201216.qnnniklr",
+      "displayName": "All Company",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2026-07-08T04:42:59Z",
+      "id": "imasi.sharepoint.com,26f008a3-ce25-405e-8106-a746d174b5b8,357208cc-e8df-4470-9547-58a5ebb56273",
+      "lastModifiedDateTime": "2026-07-04T02:17:08Z",
+      "name": "AllCompany.20216201216.mxoqvpmd",
+      "webUrl": "https://imasi.sharepoint.com/sites/AllCompany.20216201216.mxoqvpmd",
+      "displayName": "All Company",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2024-09-27T15:21:20Z",
+      "id": "imasi.sharepoint.com,a6e33e17-ec73-44c2-927a-c52252b43c38,00a5e27c-ebe7-4182-852f-61b5c5cfa93d",
+      "lastModifiedDateTime": "2024-09-27T15:36:53.2946253Z",
+      "name": "CSP_a6e33e17-ec73-44c2-927a-c52252b43c38",
+      "webUrl": "https://imasi.sharepoint.com/contentstorage/CSP_a6e33e17-ec73-44c2-927a-c52252b43c38",
+      "displayName": "Ideas",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2025-05-16T11:08:34Z",
+      "id": "imasi.sharepoint.com,4d27dbf1-ca64-4429-8a39-9fad63e3f686,f2f5eee3-1d7b-465e-a7d5-d865be96ea2c",
+      "lastModifiedDateTime": "2025-05-11T05:11:28Z",
+      "name": "ServicioMANTAL-Certificacion-Facturacion",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioMANTAL-Certificacion-Facturacion",
+      "displayName": "Servicio MANTAL-Certificacion-Facturacion",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2026-02-19T17:05:21Z",
+      "id": "imasi.sharepoint.com,a93511df-f5b7-4487-b1ce-2e43c4c81afb,69bae4b6-6712-4242-80c3-a855ac61bf88",
+      "lastModifiedDateTime": "2026-02-19T17:12:00.7287992Z",
+      "name": "x8FNO-xtskuCRX2_fMTHLbt2qLbICbpElgtrFfG2--8",
+      "webUrl": "https://imasi.sharepoint.com/contentstorage/x8FNO-xtskuCRX2_fMTHLbt2qLbICbpElgtrFfG2--8",
+      "displayName": "Mi \u00e1rea de trabajo",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2025-05-16T11:03:25Z",
+      "id": "imasi.sharepoint.com,467838ee-d358-4903-8528-14944d10e475,f2f5eee3-1d7b-465e-a7d5-d865be96ea2c",
+      "lastModifiedDateTime": "2025-05-11T05:11:28Z",
+      "name": "ServicioMANTAL-Compras",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioMANTAL-Compras",
+      "displayName": "Servicio MANTAL-Compras",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2020-03-25T00:25:53Z",
+      "description": "IMA S.I. Argentina S.A.",
+      "id": "imasi.sharepoint.com,dd99dda9-111a-448c-9273-0ca8e0704c1a,32300c47-2274-4bda-8815-39a80fb3ac29",
+      "lastModifiedDateTime": "2020-03-08T06:35:15Z",
+      "name": "IMAS.I.ArgentinaS.A",
+      "webUrl": "https://imasi.sharepoint.com/sites/IMAS.I.ArgentinaS.A",
+      "displayName": "IMA S.I. Argentina S.A.",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2025-05-16T11:07:05Z",
+      "id": "imasi.sharepoint.com,20d0ff49-d409-402f-9cf7-6cdc9d2d4964,f2f5eee3-1d7b-465e-a7d5-d865be96ea2c",
+      "lastModifiedDateTime": "2025-05-11T05:11:28Z",
+      "name": "ServicioMANTAL-AdministracionServicio",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioMANTAL-AdministracionServicio",
+      "displayName": "Servicio MANTAL-Administracion Servicio",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2024-01-16T12:49:14Z",
+      "id": "imasi.sharepoint.com,fd7afedb-c7ba-421b-99ce-83f2bffe218c,4eccfebe-f43f-49d6-a7be-0f56766edcbb",
+      "lastModifiedDateTime": "2024-01-14T06:02:43Z",
+      "name": "ServicioYPSAN",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioYPSAN",
+      "displayName": "Servicio YPSAN",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2020-04-17T17:51:32Z",
+      "description": "Sistema Integrado Gesti\u00f3n IMA",
+      "id": "imasi.sharepoint.com,7a07a86e-049e-42d1-9dd9-23cfa8c635ae,4f33571e-9b22-4722-b6ff-d889c0921768",
+      "lastModifiedDateTime": "2020-05-21T17:46:29Z",
+      "name": "SIGI",
+      "webUrl": "https://imasi.sharepoint.com/sites/SIGI",
+      "displayName": "SIGI",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2025-05-16T10:53:56Z",
+      "description": "Mantenimiento ALUAR",
+      "id": "imasi.sharepoint.com,2fbcf889-337f-4e43-8e1b-6bac4ed7cb9f,ff63545a-0ef6-4099-b3e5-4c0c3c31a1bd",
+      "lastModifiedDateTime": "2025-05-11T05:03:58Z",
+      "name": "ServicioMANTAL",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioMANTAL",
+      "displayName": "Servicio MANTAL",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2023-06-23T12:56:50Z",
+      "id": "imasi.sharepoint.com,6c351caf-bde1-4b22-ad6f-8565607ae64f,66944c2f-4d4b-44ac-a487-f139c7eadabd",
+      "lastModifiedDateTime": "2023-06-10T14:42:12Z",
+      "name": "ServicioACVC22-Gerencia",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioACVC22-Gerencia",
+      "displayName": "Servicio ACVC2-Gerencia",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2026-01-15T14:56:11Z",
+      "id": "imasi.sharepoint.com,ab408fa0-362f-46c3-8bf6-6f586b69fc64,d88d549f-a300-4626-9a03-04fe1ae543c9",
+      "lastModifiedDateTime": "2026-01-15T20:27:55.831183Z",
+      "name": "x8FNO-xtskuCRX2_fMTHLYNrrFfMojJBtOOYKTZq15s",
+      "webUrl": "https://imasi.sharepoint.com/contentstorage/x8FNO-xtskuCRX2_fMTHLYNrrFfMojJBtOOYKTZq15s",
+      "displayName": "e0b4a33c-f93b-4b74-8086-f98bcc1e51d7",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2020-04-18T15:46:39Z",
+      "description": "Nuevo Central Argentino Rosario",
+      "id": "imasi.sharepoint.com,7a07a86e-049e-42d1-9dd9-23cfa8c635ae,e6caa3a1-a6c7-4d5f-b241-2d58c20732ad",
+      "lastModifiedDateTime": "2020-05-26T16:40:46Z",
+      "name": "NCAR",
+      "webUrl": "https://imasi.sharepoint.com/sites/SIGI/NCAR",
+      "displayName": "NCAR"
+    },
+    {
+      "createdDateTime": "2020-04-05T11:11:30Z",
+      "description": "Gestion Comercial Ima 2020",
+      "id": "imasi.sharepoint.com,a78e6ee5-db65-4f29-b34f-cb57d81ec23c,4f33571e-9b22-4722-b6ff-d889c0921768",
+      "lastModifiedDateTime": "2021-06-03T11:38:57Z",
+      "name": "GestionComercialIma2020",
+      "webUrl": "https://imasi.sharepoint.com/sites/GestionComercialIma2020",
+      "displayName": "Gestion Comercial",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2020-10-03T23:39:10Z",
+      "id": "imasi.sharepoint.com,925430eb-efbc-470d-8073-5e57003f9dc2,7e6cc09e-2cfc-406d-bec9-3a36559a169d",
+      "lastModifiedDateTime": "2026-07-14T07:20:06.9862428Z",
+      "name": "MuhimbiApp",
+      "webUrl": "https://imasi.sharepoint.com/sites/AdministracionGeneral/MuhimbiApp",
+      "displayName": "Muhimbi PDF Converter for SharePoint Online"
+    },
+    {
+      "createdDateTime": "2024-07-11T13:26:35Z",
+      "id": "imasi.sharepoint.com,e9264ea9-8144-4dd4-8452-1aa74a095fe3,230f1af7-981f-47e9-892d-28acf4c1ab74",
+      "lastModifiedDateTime": "2024-06-16T05:34:25Z",
+      "name": "ServicioSEMAB-AdministracionServicio",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioSEMAB-AdministracionServicio",
+      "displayName": "Servicio SEMAB-Administracion Servicio",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2024-07-11T13:29:01Z",
+      "id": "imasi.sharepoint.com,9dc2653d-a7f1-43ac-b77b-ee01d47c109a,230f1af7-981f-47e9-892d-28acf4c1ab74",
+      "lastModifiedDateTime": "2024-06-16T05:34:25Z",
+      "name": "ServicioSEMAB-Certificacion-Facturacion",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioSEMAB-Certificacion-Facturacion",
+      "displayName": "Servicio SEMAB-Certificacion-Facturacion",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2022-01-17T14:41:25Z",
+      "id": "imasi.sharepoint.com,2c335b77-cfaa-4e73-a8a6-b7764494bb65,cf7a0870-1ec0-43d2-805b-dce6411143a2",
+      "lastModifiedDateTime": "2021-12-12T06:15:01Z",
+      "name": "ServicioRACORP-SIGI",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioRACORP-SIGI",
+      "displayName": "Servicio RACORP-SIGI",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2026-01-20T16:31:55Z",
+      "id": "imasi.sharepoint.com,eed4023c-87c8-44c8-92e4-0397fbf2f985,d88d549f-a300-4626-9a03-04fe1ae543c9",
+      "lastModifiedDateTime": "2026-01-20T21:28:50.9425504Z",
+      "name": "x8FNO-xtskuCRX2_fMTHLbhxzTYZxBxGsArnrLPoOXs",
+      "webUrl": "https://imasi.sharepoint.com/contentstorage/x8FNO-xtskuCRX2_fMTHLbhxzTYZxBxGsArnrLPoOXs",
+      "displayName": "Mi \u00e1rea de trabajo",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2021-04-25T17:05:25Z",
+      "id": "imasi.sharepoint.com,13159180-2ee7-4abf-b94b-d5519914c82c,b751cf74-4575-4930-b5de-a7dddd7dba59",
+      "lastModifiedDateTime": "2021-04-11T06:36:25Z",
+      "name": "ServicioBANCOR-SIGI",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioBANCOR-SIGI",
+      "displayName": "Servicio BANCOR-SIGI",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2023-06-23T12:56:50Z",
+      "id": "imasi.sharepoint.com,614bc098-b3e6-4189-b313-2c22a6b2c5a7,66944c2f-4d4b-44ac-a487-f139c7eadabd",
+      "lastModifiedDateTime": "2023-06-10T14:42:12Z",
+      "name": "ServicioACVC22-Certificacion-Facturacion",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioACVC22-Certificacion-Facturacion",
+      "displayName": "Servicio ACVC2-Certificacion-Facturacion",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2024-08-12T15:47:53Z",
+      "id": "imasi.sharepoint.com,47d6ddf0-b613-4fe1-8bb3-54183df2fce3,e6c8a062-66a1-418f-8e77-a140039042c9",
+      "lastModifiedDateTime": "2024-08-11T05:01:44Z",
+      "name": "ComunicacionClientes-InformacionBancor",
+      "webUrl": "https://imasi.sharepoint.com/sites/ComunicacionClientes-InformacionBancor",
+      "displayName": "Comunicacion Clientes-Informacion Bancor",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2020-07-18T12:25:31Z",
+      "description": "Grupo de Directorio de IMA Argentina",
+      "id": "imasi.sharepoint.com,54be5e5c-73d4-402e-a648-73e39012e61d,509f9973-2839-4aef-806d-e9f600445e00",
+      "lastModifiedDateTime": "2020-07-12T05:48:23Z",
+      "name": "IMADirectorio",
+      "webUrl": "https://imasi.sharepoint.com/sites/IMADirectorio",
+      "displayName": "IMA Directorio",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2024-07-11T13:34:06Z",
+      "id": "imasi.sharepoint.com,625d53b3-243b-49cb-ada3-901afcfc2d9c,230f1af7-981f-47e9-892d-28acf4c1ab74",
+      "lastModifiedDateTime": "2024-06-16T05:34:25Z",
+      "name": "ServicioSEMAB-Operacion",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioSEMAB-Operacion",
+      "displayName": "Servicio SEMAB-Operacion",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2020-06-18T16:13:44Z",
+      "description": "Grupo de An\u00e1lisis y Estudio de Propuestas de Servicios - A\u00f1o 2020",
+      "id": "imasi.sharepoint.com,7d48f2ca-8fd4-477b-af76-e88ed3303155,131b5171-c58d-4276-9213-183a60512a05",
+      "lastModifiedDateTime": "2020-06-14T05:40:33Z",
+      "name": "EstudioPropuestas2020",
+      "webUrl": "https://imasi.sharepoint.com/sites/EstudioPropuestas2020",
+      "displayName": "Estudio Propuestas 2020",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2023-06-23T12:56:50Z",
+      "id": "imasi.sharepoint.com,dfe5e6fc-f519-489e-966e-7c3904f178e3,66944c2f-4d4b-44ac-a487-f139c7eadabd",
+      "lastModifiedDateTime": "2023-06-10T14:42:12Z",
+      "name": "ServicioACVC22-AdministracionServicio",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioACVC22-AdministracionServicio",
+      "displayName": "Servicio ACVC2-Administracion Servicio",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2024-07-11T13:31:29Z",
+      "id": "imasi.sharepoint.com,b54d12df-9bdf-4f35-bfdd-641c245ac8ed,230f1af7-981f-47e9-892d-28acf4c1ab74",
+      "lastModifiedDateTime": "2024-06-16T05:34:25Z",
+      "name": "ServicioSEMAB-Gerencia",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioSEMAB-Gerencia",
+      "displayName": "Servicio SEMAB-Gerencia",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2021-12-17T17:07:39Z",
+      "id": "imasi.sharepoint.com,94829310-87d8-4c99-aade-baa4fd2b4a19,5200e535-a2db-49a7-a339-0dd6893c95fe",
+      "lastModifiedDateTime": "2021-12-12T06:23:55Z",
+      "name": "EstudioPropuestas202232",
+      "webUrl": "https://imasi.sharepoint.com/sites/EstudioPropuestas202232",
+      "displayName": "Estudio Propuestas 2022",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2020-08-04T16:51:21Z",
+      "id": "imasi.sharepoint.com,967dac6b-5e47-41fa-9f81-c4547330204d,d3d39ac5-babf-47ff-88d1-829ed8eec908",
+      "lastModifiedDateTime": "2020-08-02T06:40:24Z",
+      "name": "ServicioTELEC-RecursosHumanos",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioTELEC-RecursosHumanos",
+      "displayName": "Servicio TELEC-Recursos Humanos",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2022-01-17T14:40:28Z",
+      "id": "imasi.sharepoint.com,7d868b4a-f5a7-4737-b71a-801c866accf3,cf7a0870-1ec0-43d2-805b-dce6411143a2",
+      "lastModifiedDateTime": "2021-12-12T06:15:01Z",
+      "name": "ServicioRACORP-RecursosHumanos",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioRACORP-RecursosHumanos",
+      "displayName": "Servicio RACORP-Recursos Humanos",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2024-08-20T12:53:15Z",
+      "id": "imasi.sharepoint.com,fec33952-9be9-422f-b98e-60c03b0be165,de0434e3-3d96-48fa-a7e3-26d66f2b6330",
+      "lastModifiedDateTime": "2024-08-18T05:59:26Z",
+      "name": "ComunicacionClientes-InformacionSEMAB",
+      "webUrl": "https://imasi.sharepoint.com/sites/ComunicacionClientes-InformacionSEMAB",
+      "displayName": "Comunicacion Clientes-Informacion SEMAB",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2022-06-10T16:40:49Z",
+      "id": "imasi.sharepoint.com,ec350e25-3a72-4f5b-bd6d-708aeb3f7fea,4e8ff367-72aa-419a-817d-96a5f9687de2",
+      "lastModifiedDateTime": "2022-06-05T05:37:20Z",
+      "name": "ServicioSERMET-RecursosHumanos",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioSERMET-RecursosHumanos",
+      "displayName": "Servicio SERMET-Recursos Humanos",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2020-06-22T17:11:14Z",
+      "id": "imasi.sharepoint.com,3d445b22-5bd6-434b-994d-d3332de8a37c,d31abed4-6667-4438-8c70-638d24d76d1c",
+      "lastModifiedDateTime": "2020-06-21T05:35:02Z",
+      "name": "ServicioFASER",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioFASER",
+      "displayName": "Servicio FASER",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2022-06-10T16:40:33Z",
+      "id": "imasi.sharepoint.com,f3e9aec2-cbfe-4cf8-9989-f6cf7c3d7ba9,4e8ff367-72aa-419a-817d-96a5f9687de2",
+      "lastModifiedDateTime": "2022-06-05T05:37:20Z",
+      "name": "ServicioSERMET-AdministracionServicio",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioSERMET-AdministracionServicio",
+      "displayName": "Servicio SERMET-Administracion Servicio",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2022-01-17T14:31:48Z",
+      "id": "imasi.sharepoint.com,7ab2b049-7a59-4ec8-9540-c940c9f7610e,5200e535-a2db-49a7-a339-0dd6893c95fe",
+      "lastModifiedDateTime": "2021-12-12T06:23:55Z",
+      "name": "ServicioRACORP",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioRACORP",
+      "displayName": "Servicio RACORP",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2023-12-20T18:32:00Z",
+      "id": "imasi.sharepoint.com,4333087a-932c-4f5f-9d4c-7c0d6ba110e3,d37f15d6-56ab-4eec-a4bb-01b7bb80d8bd",
+      "lastModifiedDateTime": "2023-12-17T06:24:37Z",
+      "name": "ServicioBANCOR-DIFUSINBANCOR",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioBANCOR-DIFUSINBANCOR",
+      "displayName": "Servicio BANCOR-Difusion Bancor",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2022-04-13T17:50:14Z",
+      "id": "imasi.sharepoint.com,3337fc23-7688-4499-a009-27b253970737,ba4eeb52-fb9f-4df5-816c-a64fed269823",
+      "lastModifiedDateTime": "2022-03-27T11:53:55Z",
+      "name": "ServicioSERAC-SIGI",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioSERAC-SIGI",
+      "displayName": "Servicio SERAC-SIGI",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2022-06-11T12:56:06Z",
+      "id": "imasi.sharepoint.com,50ae6e5e-e6d0-40dd-a557-44b3eacc57e4,4e8ff367-72aa-419a-817d-96a5f9687de2",
+      "lastModifiedDateTime": "2022-06-05T05:37:20Z",
+      "name": "ServicioSERMET-Certificacin-Facturacin",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioSERMET-Certificacin-Facturacin",
+      "displayName": "Servicio SERMET-Certificaci\u00f3n-Facturaci\u00f3n",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2024-05-08T09:20:19Z",
+      "id": "imasi.sharepoint.com,516f89c0-e544-4599-a844-7cec1423c3c0,04883c07-1245-4a6b-9e9a-5d93060c5f3e",
+      "lastModifiedDateTime": "2024-05-05T06:12:58Z",
+      "name": "ServicioTELEC-APERCIBIMIENTOSPERSONALTELEC",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioTELEC-APERCIBIMIENTOSPERSONALTELEC",
+      "displayName": "Servicio TELEC-APERCIBIMIENTOS PERSONAL TELEC",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2020-10-18T14:25:06Z",
+      "id": "imasi.sharepoint.com,7b34fb6d-abe0-48af-8630-c90b67012001,b8e52ad6-df9f-4dc7-b9b8-f7e8dbb22871",
+      "lastModifiedDateTime": "2020-11-16T23:03:14Z",
+      "name": "GestionActivos",
+      "webUrl": "https://imasi.sharepoint.com/sites/GestionActivos",
+      "displayName": "Gestion Activos",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2021-06-29T11:31:55Z",
+      "id": "imasi.sharepoint.com,8398fbd8-ac11-40c9-b82b-3500aaa6e49f,5fc878ab-573d-4412-b543-bda508e221bc",
+      "lastModifiedDateTime": "2021-06-20T05:34:41Z",
+      "name": "ServicioYPCO-Cotizaciones",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioYPCO-Cotizaciones",
+      "displayName": "Servicio YPCO-Cotizaciones",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2022-06-10T16:39:21Z",
+      "id": "imasi.sharepoint.com,2cec464f-739d-452b-b059-0453ad3c390b,4e8ff367-72aa-419a-817d-96a5f9687de2",
+      "lastModifiedDateTime": "2022-06-05T05:37:20Z",
+      "name": "ServicioSERMET-Gerencia",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioSERMET-Gerencia",
+      "displayName": "Servicio SERMET-Gerencia",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2024-07-11T13:30:11Z",
+      "id": "imasi.sharepoint.com,8f8954a5-f190-4f6b-9d5e-032ca8fd7e20,230f1af7-981f-47e9-892d-28acf4c1ab74",
+      "lastModifiedDateTime": "2024-06-16T05:34:25Z",
+      "name": "ServicioSEMAB-Compras",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioSEMAB-Compras",
+      "displayName": "Servicio SEMAB-Compras",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2022-09-22T12:59:15Z",
+      "id": "imasi.sharepoint.com,5f134dd4-3392-4fbc-8f5d-f80cf3cd4828,2800bc4d-560e-4134-bc6a-092246a90715",
+      "lastModifiedDateTime": "2022-09-11T05:05:27Z",
+      "name": "ServicioBANCOR-ZonasBancor",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioBANCOR-ZonasBancor",
+      "displayName": "Servicio BANCOR-Zonas Bancor",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2023-01-16T11:53:40Z",
+      "id": "imasi.sharepoint.com,5721c454-3d40-46c1-a369-abffa6011acd,3e64f869-376e-48e7-b9b4-f6f50ec7c498",
+      "lastModifiedDateTime": "2022-10-23T05:12:42Z",
+      "name": "ServicioSERAC-CotizacionesOOCC",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioSERAC-CotizacionesOOCC",
+      "displayName": "Servicio SERAC-Cotizaciones OOCC",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2021-04-06T12:40:00Z",
+      "id": "imasi.sharepoint.com,7180cf12-cea7-4567-aaca-3472ca471e0c,3cbc0756-3bb5-4727-a90e-ed5a6d7ccae7",
+      "lastModifiedDateTime": "2021-04-04T05:44:07Z",
+      "name": "ServicioGERMA-SIGI",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioGERMA-SIGI",
+      "displayName": "Servicio GERMA-SIGI",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2021-04-25T17:05:25Z",
+      "id": "imasi.sharepoint.com,fa11c134-c236-458d-b576-e14fe3507d26,b751cf74-4575-4930-b5de-a7dddd7dba59",
+      "lastModifiedDateTime": "2021-04-11T06:36:25Z",
+      "name": "ServicioBANCOR-Operacion",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioBANCOR-Operacion",
+      "displayName": "Servicio BANCOR-Operacion",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2022-01-17T14:34:59Z",
+      "id": "imasi.sharepoint.com,456b28f4-c95d-4809-a6a7-b834f9d16809,cf7a0870-1ec0-43d2-805b-dce6411143a2",
+      "lastModifiedDateTime": "2021-12-12T06:15:01Z",
+      "name": "ServicioRACORP-AdministracionServicio",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioRACORP-AdministracionServicio",
+      "displayName": "Servicio RACORP-Administracion Servicio",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2022-06-07T12:00:24Z",
+      "description": "Servicio Metrogas",
+      "id": "imasi.sharepoint.com,af1da8a3-7301-4828-956e-415a44779a64,8a9bc022-4d41-43f5-8325-b833aef3f2f8",
+      "lastModifiedDateTime": "2022-06-05T05:26:58Z",
+      "name": "ServicioSERMET",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioSERMET",
+      "displayName": "Servicio SERMET",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2023-06-23T12:56:50Z",
+      "id": "imasi.sharepoint.com,3d1c12b5-5f8e-4d90-aacf-f50464e673f7,66944c2f-4d4b-44ac-a487-f139c7eadabd",
+      "lastModifiedDateTime": "2023-06-10T14:42:12Z",
+      "name": "ServicioACVC22-Compras",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioACVC22-Compras",
+      "displayName": "Servicio ACVC2-Compras",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2022-08-24T12:49:47Z",
+      "id": "imasi.sharepoint.com,f9915388-463c-40a5-b62e-c31b7efa4edc,9723b186-87ec-411d-8d4a-0e7acae396f8",
+      "lastModifiedDateTime": "2022-07-31T05:12:23Z",
+      "name": "IMAAdministracin-ActualizacinServicios",
+      "webUrl": "https://imasi.sharepoint.com/sites/IMAAdministracin-ActualizacinServicios",
+      "displayName": "IMA Administraci\u00f3n-Actualizaci\u00f3n Servicios",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2020-06-22T16:15:35Z",
+      "description": "Servicio NCAR",
+      "id": "imasi.sharepoint.com,12b02114-9e9c-4a6c-89b9-616ac6584ac9,d31abed4-6667-4438-8c70-638d24d76d1c",
+      "lastModifiedDateTime": "2020-06-21T05:35:02Z",
+      "name": "ServicioNCAR",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioNCAR",
+      "displayName": "Servicio NCAR",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2021-04-16T16:36:26Z",
+      "id": "imasi.sharepoint.com,af81b996-0bea-403f-834d-654ee1590f15,b751cf74-4575-4930-b5de-a7dddd7dba59",
+      "lastModifiedDateTime": "2021-04-11T06:36:25Z",
+      "name": "ServicioMitte-RecursosHumanos",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioMitte-RecursosHumanos",
+      "displayName": "Servicio MITTE-Recursos Humanos",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2020-12-15T16:06:10Z",
+      "id": "imasi.sharepoint.com,55b6b318-839f-4905-8d79-da0f978e551b,415317ce-36c7-47d9-ae5f-7bea86c1aa67",
+      "lastModifiedDateTime": "2020-12-06T08:04:12Z",
+      "name": "EstudioPropuestas2021",
+      "webUrl": "https://imasi.sharepoint.com/sites/EstudioPropuestas2021",
+      "displayName": "Estudio Propuestas 2021",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2022-06-10T16:39:52Z",
+      "id": "imasi.sharepoint.com,b6185363-6152-48cc-9e80-d850c9474c99,4e8ff367-72aa-419a-817d-96a5f9687de2",
+      "lastModifiedDateTime": "2022-06-05T05:37:20Z",
+      "name": "ServicioSERMET-Operacion",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioSERMET-Operacion",
+      "displayName": "Servicio SERMET-Operacion",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2022-01-17T14:37:24Z",
+      "id": "imasi.sharepoint.com,442d3800-4050-4780-a1dd-df319cb7360b,cf7a0870-1ec0-43d2-805b-dce6411143a2",
+      "lastModifiedDateTime": "2021-12-12T06:15:01Z",
+      "name": "ServicioRACORP-Compras",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioRACORP-Compras",
+      "displayName": "Servicio RACORP-Compras",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2022-04-13T17:44:21Z",
+      "id": "imasi.sharepoint.com,b1cb575d-b82a-45b7-a692-c4fe7bafd38e,ba4eeb52-fb9f-4df5-816c-a64fed269823",
+      "lastModifiedDateTime": "2022-03-27T11:53:55Z",
+      "name": "ServicioSERAC-AdministracionServicio",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioSERAC-AdministracionServicio",
+      "displayName": "Servicio SERAC-Administracion Servicio",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2021-04-22T14:05:30Z",
+      "id": "imasi.sharepoint.com,b2bdefac-c899-4627-829e-f078a00cb219,b751cf74-4575-4930-b5de-a7dddd7dba59",
+      "lastModifiedDateTime": "2021-04-11T06:36:25Z",
+      "name": "ServicioYPCO-SIGI",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioYPCO-SIGI",
+      "displayName": "Servicio YPCO-SIGI",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2023-02-06T14:55:37Z",
+      "id": "imasi.sharepoint.com,099e6c2f-70b3-411b-9f05-8c0daccfbbdf,f7da0b49-4484-4c27-9544-c7688f54b321",
+      "lastModifiedDateTime": "2023-02-05T06:01:09Z",
+      "name": "ServicioBANCOR-CotizacionesOOCCAguasCordobesas",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioBANCOR-CotizacionesOOCCAguasCordobesas",
+      "displayName": "Servicio BANCOR-Cotizaciones OOCC Aguas Cordobesas",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2023-07-27T18:41:37Z",
+      "id": "imasi.sharepoint.com,a8a4061e-91a0-4378-b115-8ac718dd464f,e67d8398-a638-4c35-93a8-68abbdf0115a",
+      "lastModifiedDateTime": "2023-07-23T05:16:25Z",
+      "name": "ServicioTELEC-COMPRASTELEC",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioTELEC-COMPRASTELEC",
+      "displayName": "Servicio TELEC-COMPRAS TELEC",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2021-11-10T16:49:23Z",
+      "id": "imasi.sharepoint.com,d8717819-5e83-4c70-8aa8-06d9bbf1ae12,3f1ddbfc-75a2-4bc8-b209-cfebdb1b39f1",
+      "lastModifiedDateTime": "2021-11-07T05:33:02Z",
+      "name": "ServicioSICAN-Operacion",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioSICAN-Operacion",
+      "displayName": "Servicio SICAN-Operacion",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2022-01-17T15:22:20Z",
+      "id": "imasi.sharepoint.com,360c9435-84f3-4ddc-a30f-50cdf10e1954,cf7a0870-1ec0-43d2-805b-dce6411143a2",
+      "lastModifiedDateTime": "2021-12-12T06:15:01Z",
+      "name": "ServicioSIHAE-RecursosHumanos",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioSIHAE-RecursosHumanos",
+      "displayName": "Servicio SIHAE-Recursos Humanos",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2020-08-03T16:08:35Z",
+      "description": "Homogeneizacion de Propuestas, Presentaciones, Desarrollo Sitio Web Nuevo - Desarrollo Marca Holdas",
+      "id": "imasi.sharepoint.com,f3a4ab2a-2b6c-43ff-a3af-9b82dc0dcc0f,aa22a27b-a3fe-4dd9-a58e-69484421d78f",
+      "lastModifiedDateTime": "2020-08-02T05:23:25Z",
+      "name": "GrupoHoldas-Comercializacion",
+      "webUrl": "https://imasi.sharepoint.com/sites/GrupoHoldas-Comercializacion",
+      "displayName": "Grupo Holdas - Comercializacion",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2022-01-17T14:39:33Z",
+      "id": "imasi.sharepoint.com,29b59ab6-8842-487f-b710-3e1b17bf9839,cf7a0870-1ec0-43d2-805b-dce6411143a2",
+      "lastModifiedDateTime": "2021-12-12T06:15:01Z",
+      "name": "ServicioRACORP-Operacion",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioRACORP-Operacion",
+      "displayName": "Servicio RACORP-Operacion",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2021-04-16T16:32:48Z",
+      "id": "imasi.sharepoint.com,044c4a71-59bd-43e9-9847-54b0764c2740,b751cf74-4575-4930-b5de-a7dddd7dba59",
+      "lastModifiedDateTime": "2021-04-11T06:36:25Z",
+      "name": "ServicioMitte-Operacin",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioMitte-Operacin",
+      "displayName": "Servicio MITTE-Operaci\u00f3n",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2021-04-06T12:38:53Z",
+      "id": "imasi.sharepoint.com,12799efb-5a37-41b8-8db8-666634d34cee,3cbc0756-3bb5-4727-a90e-ed5a6d7ccae7",
+      "lastModifiedDateTime": "2021-04-04T05:44:07Z",
+      "name": "ServicioGERMA-RecursosHumanos",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioGERMA-RecursosHumanos",
+      "displayName": "Servicio GERMA-Recursos Humanos",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2025-06-03T19:54:48Z",
+      "id": "imasi.sharepoint.com,9c4cd257-b739-4d64-b27d-4abbd70432d6,f20ac833-fc56-4453-b153-d8c0c2086499",
+      "lastModifiedDateTime": "2025-06-03T20:15:30.5595786Z",
+      "name": "x8FNO-xtskuCRX2_fMTHLTNvgG_zzqtGk8fTH2pul40",
+      "webUrl": "https://imasi.sharepoint.com/contentstorage/x8FNO-xtskuCRX2_fMTHLTNvgG_zzqtGk8fTH2pul40",
+      "displayName": "Mi \u00e1rea de trabajo",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2021-11-10T16:49:23Z",
+      "id": "imasi.sharepoint.com,c5393b32-18f5-446e-947f-be3ad517e841,3f1ddbfc-75a2-4bc8-b209-cfebdb1b39f1",
+      "lastModifiedDateTime": "2021-11-07T05:33:02Z",
+      "name": "ServicioSICAN-Certificacion-Facturacion",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioSICAN-Certificacion-Facturacion",
+      "displayName": "Servicio SICAN-Certificacion-Facturacion",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2022-01-17T15:29:48Z",
+      "id": "imasi.sharepoint.com,808d576d-5246-412e-861f-2860a23216fe,cf7a0870-1ec0-43d2-805b-dce6411143a2",
+      "lastModifiedDateTime": "2021-12-12T06:15:01Z",
+      "name": "ServicioSIHAE-AdministracionServicio",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioSIHAE-AdministracionServicio",
+      "displayName": "Servicio SIHAE-Administracion Servicio",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2021-11-10T16:49:23Z",
+      "id": "imasi.sharepoint.com,bc1bb556-3367-4022-833f-e3a07f50fd0b,3f1ddbfc-75a2-4bc8-b209-cfebdb1b39f1",
+      "lastModifiedDateTime": "2021-11-07T05:33:02Z",
+      "name": "ServicioSICAN-Gerencia",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioSICAN-Gerencia",
+      "displayName": "Servicio SICAN-Gerencia",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2022-04-13T17:45:56Z",
+      "id": "imasi.sharepoint.com,9d0c86b7-21f4-407d-89e6-c9fb6cbba4c7,ba4eeb52-fb9f-4df5-816c-a64fed269823",
+      "lastModifiedDateTime": "2022-03-27T11:53:55Z",
+      "name": "ServicioSERAC-Certificacion-Facturacion",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioSERAC-Certificacion-Facturacion",
+      "displayName": "Servicio SERAC-Certificacion-Facturacion",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2022-01-17T15:27:37Z",
+      "id": "imasi.sharepoint.com,e0d4e45b-a464-4a8d-8b18-cc3bcae0d856,cf7a0870-1ec0-43d2-805b-dce6411143a2",
+      "lastModifiedDateTime": "2021-12-12T06:15:01Z",
+      "name": "ServicioSIHAE-SIGI",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioSIHAE-SIGI",
+      "displayName": "Servicio SIHAE-SIGI",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2021-11-10T16:49:23Z",
+      "id": "imasi.sharepoint.com,e882f429-1420-416f-9b94-0bb4473ffae0,3f1ddbfc-75a2-4bc8-b209-cfebdb1b39f1",
+      "lastModifiedDateTime": "2021-11-07T05:33:02Z",
+      "name": "ServicioSICAN-SIGI",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioSICAN-SIGI",
+      "displayName": "Servicio SICAN-SIGI",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2021-04-06T12:34:35Z",
+      "id": "imasi.sharepoint.com,6271118e-a306-4d38-9d2d-246dda8b25bd,3cbc0756-3bb5-4727-a90e-ed5a6d7ccae7",
+      "lastModifiedDateTime": "2021-04-04T05:44:07Z",
+      "name": "ServicioGERMA-Gerencia",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioGERMA-Gerencia",
+      "displayName": "Servicio GERMA-Gerencia",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2022-01-17T14:38:36Z",
+      "id": "imasi.sharepoint.com,cbff67bd-3ef0-4cba-850e-591c09ba40ee,cf7a0870-1ec0-43d2-805b-dce6411143a2",
+      "lastModifiedDateTime": "2021-12-12T06:15:01Z",
+      "name": "ServicioRACORP-Gerencia",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioRACORP-Gerencia",
+      "displayName": "Servicio RACORP-Gerencia",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2021-11-10T16:49:23Z",
+      "id": "imasi.sharepoint.com,22d457a2-05d4-4038-830f-7e100ec00676,3f1ddbfc-75a2-4bc8-b209-cfebdb1b39f1",
+      "lastModifiedDateTime": "2021-11-07T05:33:02Z",
+      "name": "ServicioSICAN-AdministracionServicio",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioSICAN-AdministracionServicio",
+      "displayName": "Servicio SICAN-Administracion Servicio",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2021-04-06T12:43:09Z",
+      "id": "imasi.sharepoint.com,90b77980-42ea-4c98-9442-29faa8dc01c7,3cbc0756-3bb5-4727-a90e-ed5a6d7ccae7",
+      "lastModifiedDateTime": "2021-04-04T05:44:07Z",
+      "name": "ServicioGERMA-Compras",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioGERMA-Compras",
+      "displayName": "Servicio GERMA-Compras",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2022-04-13T17:48:39Z",
+      "id": "imasi.sharepoint.com,a335b295-4ff8-4248-bce5-1c5a13450a4d,ba4eeb52-fb9f-4df5-816c-a64fed269823",
+      "lastModifiedDateTime": "2022-03-27T11:53:55Z",
+      "name": "ServicioSERAC-Gerencia",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioSERAC-Gerencia",
+      "displayName": "Servicio SERAC-Gerencia",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2021-11-10T12:19:03Z",
+      "id": "imasi.sharepoint.com,884e4c21-cf63-4717-94e9-0271468578ce,3f1ddbfc-75a2-4bc8-b209-cfebdb1b39f1",
+      "lastModifiedDateTime": "2021-11-07T05:33:02Z",
+      "name": "ServicioSICAN-RecursosHumanos",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioSICAN-RecursosHumanos",
+      "displayName": "Servicio SICAN-Recursos Humanos",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2022-04-13T17:49:22Z",
+      "id": "imasi.sharepoint.com,efd8532c-aa6a-4f0d-8891-50950c739bbb,ba4eeb52-fb9f-4df5-816c-a64fed269823",
+      "lastModifiedDateTime": "2022-03-27T11:53:55Z",
+      "name": "ServicioSERAC-RecursosHumanos",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioSERAC-RecursosHumanos",
+      "displayName": "Servicio SERAC-Recursos Humanos",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2021-04-06T12:37:44Z",
+      "id": "imasi.sharepoint.com,2ab3c0cc-0c64-4635-84f2-b93268ac6b08,3cbc0756-3bb5-4727-a90e-ed5a6d7ccae7",
+      "lastModifiedDateTime": "2021-04-04T05:44:07Z",
+      "name": "ServicioGERMA-Operacin",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioGERMA-Operacin",
+      "displayName": "Servicio GERMA-Operaci\u00f3n",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2020-06-22T17:19:19Z",
+      "id": "imasi.sharepoint.com,cf822fff-fc97-4a9b-9b58-fcff58fa539d,698bc019-5007-41ec-b8ba-9327d61065b6",
+      "lastModifiedDateTime": "2020-06-21T06:00:32Z",
+      "name": "ServicioNCAR-RecursosHumanos",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioNCAR-RecursosHumanos",
+      "displayName": "Servicio NCAR-Recursos Humanos",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2020-06-24T10:18:07Z",
+      "id": "imasi.sharepoint.com,8b972005-da37-4eb5-b915-47f7ee6ec260,698bc019-5007-41ec-b8ba-9327d61065b6",
+      "lastModifiedDateTime": "2020-06-21T06:00:32Z",
+      "name": "ServicioFASER-SIGI",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioFASER-SIGI",
+      "displayName": "Servicio FASER-SIGI",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2021-11-08T11:45:11Z",
+      "description": "Siderar Canning",
+      "id": "imasi.sharepoint.com,ff29deab-c0a5-44fa-9593-ef7d154c2b1a,239f4287-1cdd-44c0-b355-e88b98eed514",
+      "lastModifiedDateTime": "2021-11-07T05:28:42Z",
+      "name": "ServicioSICAN",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioSICAN",
+      "displayName": "Servicio SICAN",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2021-04-22T14:04:04Z",
+      "id": "imasi.sharepoint.com,38c744d4-fc74-432c-9a82-d4c682bb7d60,b751cf74-4575-4930-b5de-a7dddd7dba59",
+      "lastModifiedDateTime": "2021-04-11T06:36:25Z",
+      "name": "ServicioYPCO-RecursosHumanos",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioYPCO-RecursosHumanos",
+      "displayName": "Servicio YPCO-Recursos Humanos",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2022-01-17T19:36:20Z",
+      "id": "imasi.sharepoint.com,c339f5a3-9ef4-4439-a76c-12a270409d1e,cf7a0870-1ec0-43d2-805b-dce6411143a2",
+      "lastModifiedDateTime": "2021-12-12T06:15:01Z",
+      "name": "ServicioSIHAE-Operacion",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioSIHAE-Operacion",
+      "displayName": "Servicio SIHAE-Operacion",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2021-09-08T11:52:08Z",
+      "id": "imasi.sharepoint.com,d4568d8c-4199-4408-a9d1-97f5395027dc,4d9d3fd2-36fb-4941-8249-95f6b2ff2d85",
+      "lastModifiedDateTime": "2021-09-05T05:10:40Z",
+      "name": "ServicioEDSER-SIGI",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioEDSER-SIGI",
+      "displayName": "Servicio EDSER-SIGI",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2022-01-17T14:46:37Z",
+      "id": "imasi.sharepoint.com,a11c29b6-129d-4ed8-aa20-a334c514e0af,5200e535-a2db-49a7-a339-0dd6893c95fe",
+      "lastModifiedDateTime": "2021-12-12T06:23:55Z",
+      "name": "ServicioSIHAE",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioSIHAE",
+      "displayName": "Servicio SIHAE",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2020-06-24T16:59:48Z",
+      "id": "imasi.sharepoint.com,df2bfdfe-2fd6-4d0e-a49d-fcd36f0458ae,698bc019-5007-41ec-b8ba-9327d61065b6",
+      "lastModifiedDateTime": "2020-06-21T06:00:32Z",
+      "name": "IMAAdministracin-OficinaCordoba",
+      "webUrl": "https://imasi.sharepoint.com/sites/IMAAdministracin-OficinaCordoba",
+      "displayName": "IMA Administraci\u00f3n-Oficina Cordoba",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    },
+    {
+      "createdDateTime": "2022-04-13T17:51:02Z",
+      "id": "imasi.sharepoint.com,ea7ad76a-3d71-464e-a967-f20d66498135,ba4eeb52-fb9f-4df5-816c-a64fed269823",
+      "lastModifiedDateTime": "2022-03-27T11:53:55Z",
+      "name": "ServicioSERAC-Operacion",
+      "webUrl": "https://imasi.sharepoint.com/sites/ServicioSERAC-Operacion",
+      "displayName": "Servicio SERAC-Operacion",
+      "root": {},
+      "siteCollection": {
+        "hostname": "imasi.sharepoint.com"
+      }
+    }
+  ]
+}

@@ -1,0 +1,290 @@
+Reunion Inicio PPS
+mar, 23 jun 2026
+
+0:02 - Orador no identificado
+¿Cómo estás?
+
+0:13 - Orador no identificado
+Bien, me dormí.
+
+0:31 - Orador no identificado
+¿Dormiste?
+
+0:31 - Agustina Martinet
+Sí, qué suerte que la moviste.
+
+0:34 - Orador no identificado
+Bueno, dime qué necesitas saber.
+
+0:37 - Agustina Martinet
+Bueno, primero necesito saber qué tipo de software estás pensando y por qué tipo de interfaz, qué sería lo que yo tendría que ingresarle y qué sería lo que vos querés como resultado, tipo la salida.
+
+0:55 - Sebastien Martinet
+Bien, yo te voy a mostrar cómo estamos trabajando hoy. Avísame cómo ves.
+
+1:04 - Agustina Martinet
+Para que ya no me suelten.
+
+1:10 - Orador no identificado
+¿Ves o no?
+
+1:12 - Orador no identificado
+Está así.
+
+1:14 - Orador no identificado
+Bien.
+
+1:15 - Orador no identificado
+¿Qué está diciendo ahora?
+
+1:19 - Sebastien Martinet
+Está en el banco.
+
+1:22 - Sebastien Martinet
+Tu hermano quiere Quiere sacar plata con la tarjeta de crédito. Le dije que no lo podía hacer, pero lo quiere hacer a lo mismo.
+
+1:36 - Orador no identificado
+¿Pero cómo sacas plata con la tarjeta de crédito?
+
+1:39 - Sebastien Martinet
+No se puede. Sí, se puede. Se llama adelanto de plata, pero hay que generar un código y no lo tengo el código. No sé cómo se genera. Tiene que haber generado antes de salir. Nosotros no llegan información O del sistema informatizado de los clientes, que te llega uno de los más importantes, que se llama SAP Ariba, que es un sistema que lo muestro. Ese sistema no va a poder conectarnos. Pero son varios clientes y cada cliente tiene licitaciones. Por ejemplo, acá hay una licuación de pisos. Entonces, lo que yo hago, la información me puede venir de algún sistema informatizado de algún cliente. Uno es SAP Ariba, puede ser un mail con archivos. Lo que yo hago es lo siguiente. Yo renego a través de un form, una oportunidad de comerciales.
+
+2:51 - Orador no identificado
+¿OK?
+
+2:51 - Orador no identificado
+OK.
+
+2:53 - Sebastien Martinet
+Bien, cuando hago eso, ¿qué le cargo básicamente? Le cargo la descripción del servicio, qué cliente es, quién es el comprador, qué tipo de servicio es. Si algún promotor, por ejemplo, ya no se usa más cuando alguien te traía el negocio y le pagaba una comisión. Tiene la competencia, normalmente cuando se arranca el proceso no sabe quién es la competencia todavía, qué probabilidad le estimas, el estimo yo que podría ganar, cuándo hay que mantener la oferta, y acá le subo todos los archivos de la licitación, ¿ok? Ok. Bien. ¿El sistema qué hace? El sistema, a un flujo de Power Automate, ¿ok? Vale. Y me genera en un chat point una carpeta con un número de oferta y una descripción, ¿está bien? Entonces, yo sé que la oferta 1234 de IPF y el tema es adecuación de pisos, ¿eh? ¿Sí? Sí, sí, sí. Bien. Después tenemos otro sistema que lo usamos muy poco, que se llama PadDrive.
+
+4:28 - Orador no identificado
+PadDrive.
+
+4:28 - Orador no identificado
+¿Lo anotas?
+
+4:30 - Agustina Martinet
+Sí, sí.
+
+4:31 - Sebastien Martinet
+Yo te muestro cómo estamos trabajando hoy. Después lo vemos, ¿OK? PadDrive te pone, cuando yo mando el flujo, lo pone en oportunidad calificada, lo pone acá. La que estoy trabajando, la pongo acá. Cuando ya la tengo cotizada, la pongo acá. Y cuando ya estoy negociando con clientes, la pongo acá. Ok, y cuando la gano, digo ganaste. Ok, y que me permite eso me permite tener un PowerPoint, un Power BI que toma la información de eso y me dice cuánto cotización hice, por qué perdí y que se te la acepten, ¿ok?
+
+5:20 - Orador no identificado
+Para que respondan WhatsApp acá.
+
+5:25 - Orador no identificado
+¿Ok?
+
+5:26 - Sebastien Martinet
+Tengo un padre que te lo voy a mostrar acá. Un Power BI, no un Pathline. Un Power BI está acá. Acá tengo todos los contratos y servicios mantimiento, si después, si adicional contrato, si están en preparación, si están cotizados, si están en negociación, cuánto gané. Hay que ver de qué año es.
+
+6:20 - Agustina Martinet
+Vamos a poner solamente este año.
+
+6:24 - Sebastien Martinet
+No gané ninguna todavía. Todos servicios de mentimiento tengo cuatro servicios de mentimiento abiertos no gané ninguno todavía hay dos que están cotizados y son esos dos después tengo ofertas perdidas porque cada vez que pilla una oferta pongo la perdí La gran mayoría porque no cotizamos. Acá cuando estoy perdido por plata, pongo acá y acá cuando perdí porque no participé, fíjate que no quise participar y está todo en cero porque a veces nos llega oferta de renta que no queremos cotizar y aún así nos lo ponemos en el sistema. Eso es la parte, vamos a decir, que hago yo. Recibo la propuesta. La subo al sistema, al Fonds, después le digo si la voy a cotizar o no, y llega en PathWide. Llega acá. Se crea la oferta. ¿OK? ¿Hola? Sí, sí.
+
+7:42 - Orador no identificado
+Bien.
+
+7:43 - Sebastien Martinet
+Después, en el SharePoint, o sea, el Fonds genera dos cosas, genera una carpeta en SharePoint y genera un negocio en PadDrive, ok? Ok. En PadDrive es el CRM, que es Customer Relationship Management, ok? Bien. Después, en automático me genera estas cuatro carpetas. ET, que es oferta y especificación técnica. OT, que es oferta técnica. OC, que es oferta comercial. Y el tercero es elementos de estudio. Esto es lo que voy poniendo acá cuando voy a presupuestos de los... ¿Cómo se llama? Si hay que comprar vehículos, presupuestos de vehículos o cotizaciones de información o rendimientos. Bueno, esa casi no la uso, pero esas tres las uso sí. Siempre. Te muestro, por ejemplo, una que estoy cotizando ahora. Que la hice con la intendencia que fue sobre.
+
+8:59 - Orador no identificado
+Esa.
+
+9:00 - Orador no identificado
+La ganamos, de hecho.
+
+9:05 - Sebastien Martinet
+Tengo todos los archivos. Tengo todos los archivos. Bien. Hay archivos que son técnicos, hay archivos que son seguros, hay archivos que son de seguridad para ingresar a la planta y otros son procedimientos. Hay un montón de cosas que normalmente no las leo nunca. Leo la que dice pliego, la que dice la cosa que me importa el animal. La abro, pero lo que es anexo, anexo, no lo leo directamente.
+
+9:51 - Orador no identificado
+¿Estás anotando?
+
+9:52 - Sebastien Martinet
+Sí. Bien. De todo eso, además, el cliente me dice, bueno, muchas veces hay que hacer una visita de terreno, entonces hay que coordinar, para ir a la planta a conocerla o hablar con el cliente. Eso le permite a ellos después que no digas que no sabías en qué te metiste. Ok. Después. Ahí. Vos le puedes hacer consultas sobre el pliego. Cosa que no entendiste. Ok. Lo puede ser vos o lo puede hacer otros oferentes. Otras empresas que participan en el proceso. Ok.
+
+10:37 - Agustina Martinet
+Y ellos te devuelven la respuesta.
+
+10:39 - Sebastien Martinet
+Normalmente devuelven la respuesta. Si hay dos empresas, la A y la B, cada uno hace una consulta. Son dos consultas. Normalmente devuelven la consulta sin decir quién la hizo, pero devuelven la consulta y la respuesta de la consulta a las dos empresas. Ok.
+
+11:00 - Agustina Martinet
+Ah, bien.
+
+11:01 - Sebastien Martinet
+O sea, te devuelven una circular o una aclaración, es como esa, por ejemplo, ¿ok?
+
+11:09 - Orador no identificado
+Bueno.
+
+11:09 - Sebastien Martinet
+A veces vos haces 10 preguntas y te responden 4, 5, porque hay respuestas que no te quieren dar, porque saben que no le conviene que lo sepas. O no responden, no le responden de manera directa, autogencial, o con datos precisos y son evasivos, ¿ok? Ok. Bien. Entonces, resumiendo, me llega una licitación. Genera el S1. Genera el forms. Se descarga. Sí.
+
+11:41 - Sebastien Martinet
+S1 es uno de los sistemas, no es el único.
+
+11:47 - Sebastien Martinet
+O puede llegar por mail. O puede llegar por mail. Normalmente llega todo por mail, porque te avisan de que en el sistema hay algo cargado a través de un mail. Vamos a decir que casi todo llega por mail. O llega por mail un email con archivos diciendo, che, cotízame eso. O te llega un mail de un sistema, que hay varios, pero el que más se usa, que usamos nosotros, que los clientes nuestros usan, es SAP Arriba. Te llega un mail diciendo, che, hay una licitación nueva. Entonces, vamos a decir, casi todo lo que llega, llega a través del mail. Que puede ser desde una persona humana o de un sistema, ¿ok? Se genera el FOMS, el FOMS genera una carpeta en Japón y genera en el CRM una acción, un negocio nuevo, ¿ok?
+
+12:42 - Orador no identificado
+Bien.
+
+12:43 - Orador no identificado
+Bien.
+
+12:43 - Sebastien Martinet
+Después, yo bajo la información del pliego y como hacía yo anteriormente, copiaba una propuesta en términos propuesta anterior, porque esa propuesta por ahí la habíamos cotizado hace dos o tres años antes, entonces tomaba la de dos otros años antes y la adecuaba al al sistema, a la a la licitación nueva, por ahí cambian algunos algunos equipos son nuevos, ponen equipos nuevos, dan de barra equipos, antes te piden una dotación de diez personas, ahora te piden ocho, entonces yo tomaba como base la licitación ¿OK?
+
+13:22 - Orador no identificado
+Bien.
+
+13:23 - Orador no identificado
+Bien.
+
+13:24 - Sebastien Martinet
+Hacia una propuesta técnica, una propuesta económica. ¿Y se la subía al sistema de ellos o se la mandaban por mail? ¿OK? Hola. ¿Quién dice? Bien. Bueno, respóndeme. Cuando yo, cuando yo, entonces, no es un proceso lineal que arranca algo y se algo, entra algo, lo tiene que analizar, tiene que ir a la visita del terreno, tiene que consultar, esperar las respuestas, volver a analizar, volver a consultar si te queda todavía duda, después prepara una oferta técnica y prepara una oferta económica, ¿ok?
+
+14:09 - Agustina Martinet
+Bien. Pero a mí ya me debería entrar mínimo el pliego.
+
+14:15 - Orador no identificado
+¿Cómo?
+
+14:15 - Agustina Martinet
+O sea, mínimo Tengo que tener pliego.
+
+14:18 - Sebastien Martinet
+Sí, por eso. Lo vas a tener.
+
+14:21 - Agustina Martinet
+Claro, todas esas cosas. Yo, ¿cómo estoy trabajando hoy?
+
+14:25 - Sebastien Martinet
+¿Cómo estaba trabajando antes y ahora cómo trabajo hoy? Voy a Cloud. Yo lo hablo como chat. No tengo un agente. ¿Está bien? Bien.
+
+14:36 - Orador no identificado
+Bien.
+
+14:37 - Sebastien Martinet
+Yo tengo Cloud y genero, por ejemplo, un proyecto. Acá tengo mezclado cosas cosa de golpear. Pero toma esa propia, la que vimos recién, licitación PAE. Entonces, ¿le pongo en contexto todos los archivos? Bueno, acá no se ve bien, pero No sé cómo llegué a arriba. Ahí está. Le subo todos los archivos. Análisis de archivos de una institución, pero no me da respuesta porque se empezaba a dar un montón de cosas. Bien, ya tengo la información, la análisis social, me hace un resumen, me da... Y en un momento le le digo, bueno, revisar bueno, esas son consultas generadas por otra email, donde o sea, le doy más información cuando hubo la visita de terreno, todo eso tiene la competencia, bueno, eh, le doy como todos los datos y el momento le digo bueno, sigue eh, sigue interactuando, momento le digo, genera un archivo de consulta que sea el definitivo. Digo, eh, génerame todas las dudas o la incongruencia o lo que ve que no es lógico. Génerame un archivo para que yo se lo mando al cliente.
+
+16:19 - Orador no identificado
+¿Se entiende? Hola.
+
+16:20 - Sebastien Martinet
+Sí, sí, sí. Bien. Entonces me genero eso. Me renego para MecanEnergy, alcance la modalidad, consulta, tengo esa duda, entonces renego todo eso y le mando al cliente. Entonces, la primera actividad de la inteligencia artificial es tomar todos los antecedentes de la especificación técnica, A veces lo, lo, cómo decirte, no es un flujo, depende del cliente, te manda el cliente, después te dice tienes a tal fecha para mandarme las consultas y la visita del terreno son después de la consulta y después de la visita al terreno te quedan consultas todavía. Entonces no es lineal, pero vamos a decirle dentro de algo le tengo que pasar la información a medida que se me viene generando, no sé si él puede ir directamente a revisar los mails, porque todo eso se manda por mail, se recibe por mail, la gran mayoría, a veces se recibe dentro de la, dentro de Zapariva, entonces hay, tiene que haber un humano que lo, que lo barre, pero no te va a poder conectar vos con Zapariva. Seguramente con una API te puede conectar y puede ser que la ingeniería artificial actualice el estado de la licitación, Eso sí lo va a poder hacer, porque yo desde Power Automate lo hago, ¿eh?
+
+18:00 - Orador no identificado
+Bien.
+
+18:00 - Orador no identificado
+Bien.
+
+18:01 - Sebastien Martinet
+Pero no me importa tanto esa parte, me importa más la parte donde yo hoy lo estoy haciendo de manera manual, de un chat. O sea, tener un canal, subo toda la información de PYC, análizame eso, prepárame la consulta, después de sube la visita de terronche, eso es la visita terreno, eso son las respuestas de la consulta. Al momento le di toda la información y le digo toma toma esa oferta técnica como base y génerame una nueva oferta técnica. ¿Se entiende? Sí. Entonces en ese caso le digo esos son los logos, el formato tipo, también se lo paso, Ahí podemos tener como un diccionario de modelo de oferta técnica. Ok, para que lo use. Bueno, acá me hizo. Le mandé la circular que me llegó. Lo analizo. Y ahí me preparo la oferta técnica. Esa es la oferta técnica que me mandó. Yo la voy controlando. Algo que no es lógico pero bueno ahí ve que eso me lo hacen un minuto lo que yo antes copia pegada hay una chica de una chica de esa licitación me dijo es la primera vez que una empresa entendió tan bien lo que Porque queríamos yo normalmente la no IA le hacía referencia a punto de su de su oferta, de su especialización técnica. Le ponía IMA va a cumplir todas las leyes, IMA va a cumplir todos los procedimientos, IMA va a cumplir. Acá diciendo IMA. Porque era mucho ir a buscar. Y sí, porque cambias todo cada vez que lo hacía entonces. Pero ahí la IA dice IMA va a cumplir la el procedimiento de tal, tal, tal de Panamericana de Energía. Entonces, como que lo dejaba claro, ¿entendés? Sí, sí. Entonces, eso es hacer la oferta técnica.
+
+20:20 - Orador no identificado
+Hasta ahí va bastante bien.
+
+20:22 - Sebastien Martinet
+Bien. Después, también hay otro proceso más. A veces los clientes te piden oferta técnica primero, te validan que la oferta técnica está bien. Si está mal, te descalificar y si está bien, te dicen, pásame la oferta económica o comercial, económica o comercial o te dicen, mándame todo y si no pasas la técnica, te descalifico, o sea, tampoco es lineal, depende del cliente, cómo trabajan ellos, ¿OK? Bien. Entonces, después le digo a la el el sistema, el acá el el cloud, todos los sistemas, todo lo que tengo comprado, cantidad de computadoras, cantidad, lo que pide expresamente el pliego. Este, un recolector, acá lo dice, sobre los vehículos para este servicio, lo mínimo requerido sería, ta, ta, ta. ¿Eh? ¿Entendés? Entonces, me hace eso, después le digo, pásamelo en un Excel y a la gente de cotización y cotizan si el costo está más o menos bien, suelen estar mal, se puede estar muy barato porque toma promedios o toma valores internacionales y no toma valores argentinos que tiene con el tema impuestos, todo eso tiene costo un poquito más alto, ¿ok? Y no me hace el coste OEL, fíjate que ahí yo tengo un Excel SC, un Excel tipo, si le digo, es el Excel común y malutra, bueno, es un Excel viejo que así lo hacía Fernando con con Polimo hace veinte años, le digo, yo lo voy actualizando en función de lo que él me está diciendo, si son dos camionetas, tres manualmente y se lo mando a él y le digo, revísalo si ves alguna incongruencia, alguna alguna celda que está mal vinculada, si hay un error frente a la cantidad que yo puse en mi Excel versus lo que viste en la especificación técnica o la OT que generamos y por ahí me genera alguna incongruencia o me avisa de algún error, ¿me entendés? Solo, sino que yo lo hago en un Excel y le paso cuando yo termino, le paso la intervención oficial para decirle che, fíjate si está bien o está mal. Si hay algún error, algo que no te sirva. Por ahí no tanto a los números, sino a los vínculos. O por ejemplo, puse tres camionetas y en realidad eran dos para ese contrato y él detecta eso. Entendé?
+
+23:25 - Orador no identificado
+Sí.
+
+23:27 - Sebastien Martinet
+Y después, ¿yo paso eso en el formato del cliente? Porque los clientes tienen varios tipos de formatos. ¿Y subo yo eso en el sistema de cliente o lo mando por mail al cliente? ¿Qué es lo que puede optimizar vos de todo lo que acabamos de ver?
+
+23:50 - Agustina Martinet
+Y una banda. O sea, primero, si es tipo una gente, ya puedo tener precariado, como dijiste, todos los formatos, todos los documentos que tengo que generar, ponerle la oferta técnica, la oferta económica y ponerle un Excel con los costos, digamos. Y también puedo tener, tipo, al inicio, mientras vos vas cargando, ponerle, a medida que vas cargando o poniendo más información o dentro de lo que sería una posible licitación o cotización o lo que sea, Puedo ir generando consultas o preguntas a medida que se va añadiendo información. Tipo de información con consultas con tanta cantidad de información. A medida que se añade esto, se añade esto. ¿Querés que se vuelva a generar una consulta? Sí, bueno. Y ahí puedo ir generando consultas y ya con todo el formato que vos buscas.
+
+24:43 - Sebastien Martinet
+Y ese agente, por ejemplo, ese agente lo puede conectar a mi casilla de email y que me avise o detecte cuando llegué en un e-mail de un cotización nueva o de una cotización que ya tenemos cotizada o en curso de cotización que me llegan unas aclaraciones y que automáticamente lo tome y me avisa que llega un consultor de tal licitación, ya lo estoy tratando.
+
+25:08 - Agustina Martinet
+Sí, sí, eso se puede hacer. Lo que me da más duda es cómo hacer, o sea, para poder automatizar la carga de los documentos desde que vos tomas. Porque como dijiste, no, no vamos a poder conectar a lo que sería este S1 arriba, pero si a vos te llega por mail, no sé si hay una forma, porque si el mail que te llega es un mail diciéndote solamente de que hay una nueva propuesta en el sistema este de S1 arriba, entonces no me sirve a mí, porque yo necesito los documentos.
+
+25:46 - Sebastien Martinet
+te llega con un link pero el link tiene que apretarlo y entrar mira claro tiene que entrar acá para conectarte no es que te llegan los dos archivos juntos o sea lo único que tendrías que hacer vos si es cargarle a esta agente liga es cargarle vos manualmente los archivos.
+
+26:15 - Agustina Martinet
+Lo que yo sí puedo hacer es ponerle, conectarme a tu mail y cada vez que llegue alguna nueva propuesta nueva, de alguna nueva licitación o algo, desde este software, mandarte que te llegue un mail con tal que eres que abramos esta nueva propuesta y algo así, digamos.
+
+26:32 - Sebastien Martinet
+Y que vos tengas que cargar. Si llega un mail con un cambio de horario o llega un mail con una aclaraciones por mail con un archivo adjunto, esa intenerancia puede Si puedo tomar del mail, pero no puedo entrar a un link y ir a otra página y explicar cosas. Está bien, pero leer el mail y entenderlo y sacar, eso sí. Sí, eso sí.
+
+26:55 - Orador no identificado
+Bueno.
+
+26:56 - Sebastien Martinet
+Después trabajar, o sea, el agente no tiene que ser algo lineal, que yo le paso todo y al final me saqué dos archivos con el corteo, porque va a depender del cliente, la visita de terreno va a depender de las respuestas, me entendí que es una ida y vuelta, no es que yo entre dos tomates y me saliera salsa al final.
+
+27:20 - Agustina Martinet
+Sí, sí, sí. Entendí, entendí.
+
+27:23 - Agustina Martinet
+¿Te quedó claro?
+
+27:24 - Agustina Martinet
+Sí, sí, sí, muy claro, papi, gracias.
+
+27:27 - Sebastien Martinet
+¿Qué más necesitas?
+
+27:28 - Agustina Martinet
+O sea, estaría bueno tener datos históricos, porque si yo quiero entrenar un modelo para que me lo haga lo más parecido como lo estás haciendo, vos, necesito muchos datos. Datos necesito. Como ponerle archivos de lo que sería una oferta técnica, una económica, cómo armas el Excel. Después, muchos pliegos. Entonces, así yo le voy enseñando más o menos cómo quieres que quede armado, digamos.
+
+28:01 - Sebastien Martinet
+JUAN MANUEL LUCERO. Bien. Bueno, pero te quedó claro el pofundo después. Sí, puede actualizar el CRM, no pasar al FOMS, o sea, evitar el FOMS, ¿entendés? Que directamente será una ingente, no generó el FOMS, sino que la gente me dice, che, te llego un mail, generamos esa nueva oferta. Digo, sí, que entré el CRM, que se fijé si el CRM es el cliente creado o no. O sea, después, sí, juntarse con el CRM, o por ahí decir directamente, no, el CRM no tiene más sentido, lo gestiona toda la inteligencia artificial, y todos los indicadores están por la integrante artificial y eliminamos el CRM nuestro, también es una opción, no lo sé.
+
+28:48 - Sebastien Martinet
+Bueno, anotó para averiguar.
+
+28:50 - Sebastien Martinet
+Bien, ¿qué más?
+
+28:52 - Agustina Martinet
+No, creo que está bastante claro. No sé. O sea, desde la información que te llegamos sobre una posible licitación, te generé primero con consultas graduales, es decir, a medida que vos tengas más información, te va a ir generando nuevos tipos de consultas. Y después, una vez que tengas cerrado ese proceso, vos puedas pedirle que te genere una oferta técnica y de ahí pedirle revisiones, digamos, a esa oferta técnica. Y que te la vayas generando a medida que vos vayas aprobando esas revisiones. Y después, si esa está aprobada, que te genere también una oferta comercial o financiera o lo que sea, y que también puedas ir haciéndole revisiones, que te genere esos documentos y que también te genere un Excel o que vos puedas cargarle Excel para que te los controle o verifique, digamos. Exactamente. Exactamente. Y todo esto conectarlo con tu Power BI para que vaya manteniendo lo que serían las estadísticas, los KPIs, los indicadores de todos los de todos los proyectos y procesos.
+
+30:09 - Sebastien Martinet
+Correcto. Entendiste. Genial.
+
+30:10 - Agustina Martinet
+¿Está bien?
+
+30:11 - Sebastien Martinet
+Sí, sí, sí.
+
+30:13 - Orador no identificado
+Perfecto.
+
+30:14 - Sebastien Martinet
+Acordate que yo, lo mío, que sería el sistema de correo, es por Teams, Microsoft 365, por Microsoft. Entonces, tu agente tiene que tener la habilitación Microsoft, no sé cómo es, para entrar y controlar mi correo. Sí, sí. Después el API es con una clave API, una clave grande. Yo después te paso la usuario, la cuenta, contraseña de PadDrive para que lo tengas, pero en realidad tendría que contarse, a mí me gustaría mantener al SharePoint más o menos armado con las propuestas, con eso, para que lo vaya siguiendo, cargando la información. O sea, yo lo pongo todo la inteligencia artificial, pero que todo lo que vaya trabajando, los archivos base o los archivos de trabajo interno, o todo termina estando en esa carpeta, manteniendo esa carpeta, ¿sabés?
+
+31:16 - Orador no identificado
+Bien.
+
+31:16 - Orador no identificado
+Perfecto.
+
+31:17 - Orador no identificado
+¿Algo más?
+
+31:18 - Agustina Martinet
+No, no.
+
+31:19 - Sebastien Martinet
+Está bien. Bueno. Ahí Alina está viendo para darte de alta, porque no me pediste, pero tenés de alta con la, con la IRT?
+
+31:30 - Agustina Martinet
+Sí, eso, porque me lo van a pedir seguro ahora.
+
+31:36 - Orador no identificado
+Bueno, listo. Besito.
+
+31:37 - Agustina Martinet
+Chau. Chau papito. Chau. Te muestro avances después. Subtítulos realizados por la comunidad de Amara.org

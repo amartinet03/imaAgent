@@ -2,89 +2,109 @@ import os
 import time
 import re
 from dotenv import load_dotenv
-from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_anthropic import ChatAnthropic
+from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_core.prompts import PromptTemplate
+from langchain_community.vectorstores import Chroma
 from tenacity import retry, wait_exponential, stop_after_attempt
-import re
 
 # Cargar variables de entorno desde el archivo .env
-# Forzamos override=True para que siempre lea la última versión del archivo, incluso si se modificó con la app corriendo.
 load_dotenv(override=True)
 
-def get_llm():
-    # Volvemos a Google Gemini porque el nivel gratuito de Groq solo permite 12,000 tokens por minuto
-    # y el pliego filtrado tiene 50,962 tokens. Gemini nos da 250,000 tokens por minuto.
-    # Usaremos gemini-2.5-flash que comprobé que funciona y tiene alta cuota.
-    api_key = os.getenv("GOOGLE_API_KEY", "")
+def get_anthropic_api_key():
+    api_key = os.getenv("ANTHROPIC_API_KEY", "")
     if not api_key:
-        raise ValueError("Falta configurar GOOGLE_API_KEY. Configúrala en tu entorno o en un archivo .env")
-    
-    return ChatGoogleGenerativeAI(model="gemini-2.5-flash", temperature=0)
+        raise ValueError("Falta configurar ANTHROPIC_API_KEY en tu archivo .env")
+    return api_key
 
-def invoke_with_retry(llm, prompt_value):
-    # Bucle de reintento manual que detecta el error 429 (Resource Exhausted)
+def invoke_with_retry(prompt_value):
     import time
-    import re
+    api_key = get_anthropic_api_key()
     max_intentos = 5
+    
     for intento in range(max_intentos):
         try:
-            print(f"  -> Intento {intento+1} enviando a la IA...")
+            print(f"  -> Intento {intento+1} enviando a Claude...")
+            # Recomendamos claude-sonnet-5
+            modelo = "claude-sonnet-5" 
+            print(f"  -> Utilizando modelo: {modelo}")
+            llm = ChatAnthropic(model_name=modelo, anthropic_api_key=api_key)
             return llm.invoke(prompt_value)
         except Exception as e:
             error_msg = str(e)
             print(f"  [!] Falló el intento {intento+1}: {error_msg}")
             
             if intento < max_intentos - 1:
-                wait_time = 15 # Espera por defecto para otros errores
+                wait_time = 15 # Espera por defecto para errores de red o rate limits
+                if 'rate_limit' in error_msg.lower() or '429' in error_msg:
+                    wait_time = 20.0
                 
-                if '429' in error_msg or 'RESOURCE_EXHAUSTED' in error_msg:
-                    # Intentar extraer el tiempo que sugiere Google (ej: "retry in 37.04s")
-                    match = re.search(r'retry in ([\d\.]+)s', error_msg)
-                    if match:
-                        wait_time = float(match.group(1)) + 2.0 # Margen de seguridad
-                    else:
-                        wait_time = 45 # Si no encontramos los segundos, esperamos 45s por seguridad
-                
-                print(f"  -> Cuota excedida o error. Esperando {wait_time:.1f} segundos antes de reintentar...")
+                print(f"  -> Esperando {wait_time:.1f} segundos antes de reintentar...")
                 time.sleep(wait_time)
             else:
                 raise e
 
 def extract_relevant_paragraphs(chunks):
     """
-    Filtra usando los 'chunks' completos generados por LangChain.
-    Como los chunks tienen un overlap (superposición), nunca se corta una frase a la mitad,
-    incluso si el PDF tenía saltos de línea extraños.
+    Filtro Inteligente V3: Comprime espacios y reduce a 150k caracteres 
+    para garantizar absolutamente no tocar el techo de 250k tokens.
     """
+    import re
     keywords = [
-        "plazo", "día", "dias", "meses", "fecha", "penalidad", "multa", 
-        "monto", "presupuesto", "requisito", "obligatorio", "garantía", "garantia",
-        "pago", "entrega", "entregar", "contrato", "vencimiento", "prórroga", 
-        "prorroga", "cláusula", "sanción", "sancion", "incumplimiento", 
-        "exigencia", "técnico", "tecnico", "especificación", "especificacion", 
-        "validez", "condición", "condicion", "oferta", "incongruencia", "contradicción",
-        "$", "usd", "pesos",
-        # Nuevas palabras operativas, gremiales y de riesgo administrativo
-        "agua", "luz", "energía", "energia", "residuo", "obrador", "logística", "logistica",
-        "proveer", "proveerá", "proveera", "cargo del", "sindicato", "gremio", "uocra",
-        "convenio", "personal", "seguro", "póliza", "poliza", "notificación"
+        "plazo", "día", "dias", "meses", "fecha", "penalidad", "multa", "monto", 
+        "presupuesto", "requisito", "obligatorio", "garantía", "garantia", "pago", 
+        "entrega", "contrato", "vencimiento", "prórroga", "cláusula", "sanción", 
+        "incumplimiento", "exigencia", "técnico", "especificación", "validez", 
+        "condición", "oferta", "incongruencia", "contradicción", "$", "usd", "pesos",
+        "agua", "luz", "energía", "residuo", "obrador", "logística", "proveer", 
+        "cargo del", "sindicato", "gremio", "uocra", "convenio", "personal", "seguro", 
+        "póliza", "notificación", "licitación", "licitacion", "concurso", "expediente",
+        "alcance", "objeto", "lugar", "ubicación", "visita", "riesgo", "penalización"
     ]
     
-    relevant_chunks = []
+    first_chunks = []
+    keyword_chunks = []
+    seen_sources = set()
+    
+    # 1. Separar portadas y párrafos clave
     for chunk in chunks:
-        chunk_lower = chunk.lower()
-        if any(kw in chunk_lower for kw in keywords):
-            relevant_chunks.append(chunk.strip())
+        texto = chunk.page_content if hasattr(chunk, 'page_content') else str(chunk)
+        # Comprimir todos los múltiples espacios/saltos de línea a uno solo (ahorra miles de tokens inútiles de Excel)
+        texto = re.sub(r'\s+', ' ', texto).strip()
+        
+        source = chunk.metadata.get("source", "Desconocido") if hasattr(chunk, 'metadata') else "Desconocido"
+        
+        if source not in seen_sources:
+            seen_sources.add(source)
+            first_chunks.append(texto)
+        else:
+            chunk_lower = texto.lower()
+            if any(kw in chunk_lower for kw in keywords):
+                keyword_chunks.append(texto)
             
-    # Unir los bloques relevantes
-    return "\n\n[...] ".join(relevant_chunks)
+    # 2. Ensamblar garantizando primero las portadas (metadata)
+    combined = ""
+    max_chars = 150000
+    
+    for text in first_chunks:
+        if len(combined) + len(text) > max_chars:
+            break
+        combined += text + "\n[PORTADA] "
+        
+    # 3. Rellenar con contexto clave hasta el límite
+    for text in keyword_chunks:
+        if len(combined) + len(text) > max_chars:
+            break
+        combined += text + "\n[...] "
+        
+    return combined
 
-def analyze_cross_document_conflicts(docs):
+def analyze_full_tender(docs):
     """
-    Ejecuta un análisis instantáneo con Pre-Filtrado Heurístico.
+    Ejecuta un análisis instantáneo con Pre-Filtrado Heurístico (Mega-Prompt Unificado).
     """
     try:
-        llm = get_llm()
+        get_anthropic_api_key() # Verificar configuración
     except Exception as e:
         return f"**Error de configuración:** {e}"
 
@@ -112,46 +132,89 @@ def analyze_cross_document_conflicts(docs):
 
     combined_text = "\n".join(filtered_docs)
     
-    # Límite máximo de seguridad para la cuota gratuita (aprox 800,000 caracteres = ~200k tokens)
-    if len(combined_text) > 800000:
-        combined_text = combined_text[:800000] + "\n[...Texto truncado para cumplir cuota gratuita de 250k tokens...]"
-
     if not combined_text.strip():
-        return "No se encontró información relevante sobre plazos, montos o penalidades en los documentos, o los archivos estaban vacíos."
+        return "No se encontró información relevante o los archivos estaban vacíos."
 
-    print("Texto pre-filtrado completado. Enviando todo el pliego a la IA en 1 sola petición...")
+    print("Enviando todo el pliego a la IA en 1 sola petición...")
 
-    # --- ÚNICA FASE DE ANÁLISIS ---
+    # --- ÚNICA FASE DE ANÁLISIS EXHAUSTIVO (MEGA-PROMPT) ---
     analysis_template = """
-    Rol y Objetivo:
-    Eres un Consultor Senior en Administración de Contratos, Legales y Gestión de Obra con 20 años de experiencia en el sector industrial. Tu capacidad crítica es infalible. Tu objetivo es auditar el paquete documental adjunto para detectar riesgos comerciales, sobrecostos, paralizaciones de obra, incongruencias contractuales graves y vacíos legales reales.
+    Eres un equipo multidisciplinario experto compuesto por:
+    1. Un Abogado Senior (Legales y Riesgos): Analiza minuciosamente cláusulas, penalidades, multas abusivas, contradicciones, SLA y vacíos contractuales.
+    2. Un Estimador Líder (Cotizador): Extrae variables duras de costo: cantidad y tipos de mano de obra (turnos, convenios), vehículos exigidos, herramientas, EPP especiales, seguros específicos.
+    3. Un Gerente Técnico (Operaciones): Define el alcance general, horarios, ubicación, normas SSMA/HSE.
+    4. Un Ingeniero Experto en Auditoría de Pliegos: Genera consultas técnicas y comerciales formales (RFI) sobre vacíos en provisiones o procedimientos.
 
-    Metodología de Razonamiento y Filtros (¡IMPORTANTE!):
-    Antes de redactar el reporte, realiza un análisis interno siguiendo este orden riguroso en la sección <razonamiento>:
+    REGLAS ESTRICTAS DE EXTRACCIÓN:
+    - TIENES EL PLIEGO COMPLETO. Tu objetivo es encontrar todas las anomalías y detalles posibles.
+    - NO alucines. Si un dato no está en el texto, coloca `null` o una lista vacía `[]`.
+    - Sé extremadamente detallista. NO RESUMAS los hallazgos críticos.
+    - Debes generar AL MENOS 10 consultas (RFIs) y 5 inconsistencias, revisando cada anexo, norma y cláusula que parezca abusiva o incompleta.
+    - El campo "categoria" en "consultas_generales" SOLO puede contener: "Operativa", "Técnica", o "Económica".
+    - Agrupa todos los documentos faltantes en una sola consulta.
 
-    1. Filtro de Jerarquía (Lex specialis): Los documentos particulares (Carta Oferta, Legajo Técnico) prevalecen sobre los genéricos (Condiciones Generales). Si un documento particular contradice al general, NO es una contradicción, sino que prevalece el particular (pero debes señalarlo como prevalencia).
-    2. Regla de la Excepción: Si una cláusula da una regla general ("pagos a 30 días") y otra da una regla específica ("pagos en moneda extranjera a 15 días"), ESTO NO ES UNA CONTRADICCIÓN. Es una excepción válida.
-    3. Filtro Operativo y Logístico: Analiza si el pliego impone cargas logísticas no remuneradas (ej. provisión de agua/luz, gestión de residuos, obradores). ¿Es claro quién paga por esto? No ignores la parte operativa.
-    4. Filtro Laboral/Sindical: Identifica menciones a convenios colectivos (ej. UOCRA regional, sindicatos específicos). ¿Qué riesgo de paralización implica esto si no estamos alineados?
-    5. Filtro de Riesgo Administrativo: Busca plazos de notificación, multas y trámites de seguros. ¿Los plazos son realistas para la operación diaria de una obra?
-    6. Conocimiento Operativo Industrial: No mezcles conceptos. Un "Permiso de Trabajo" (PT) autoriza una tarea en el tiempo; un "Certificado" (ej. espacio confinado, anulación de alarmas) es un anexo de corta duración. La habilitación de una persona (carnet) tiene plazos distintos a la inspección de un equipo (oblea/código de colores). Analiza cada uno por separado.
-    7. Sentido Común Contractual: Ignora variables como "0", "NaN" o campos vacíos en plantillas de Excel. Es evidente que son formularios a completar por el oferente.
-    8. Prohibido alucinar: Si un dato (ej. fecha de póliza, monto de multa) no está explícitamente en el texto, escribe "Información no disponible". No inventes fechas ni documentos.
-
-    Instrucción de Ejecución:
-    Abre un bloque <razonamiento> para analizar todo usando los filtros anteriores. Si una supuesta "contradicción" es en realidad una excepción o una plantilla en blanco, descártala. Luego de razonar, redacta el siguiente formato:
-
-    Formato de Salida Requerido:
-
-    ⚠️ Incongruencias Críticas: Contradicciones reales directas entre documentos. Cita textualmente el Documento y la Cláusula de donde lo sacas.
-
-    ⚙️ Riesgos Operativos y Logísticos: Falta de claridad en quién provee qué, cargas de gestión imprevistas, hitos técnicos mal definidos.
-
-    📢 Alerta Gremial/Laboral y Administrativa: Riesgo de bloqueo sindical por convenios, o plazos de notificación de multas irreales.
-
-    ❓ Ambigüedades Legales: Errores de redacción del cliente que ponen en riesgo la cotización (ej. porcentajes erróneos o topes incongruentes).
-
-    📝 Consultas Sugeridas (RFI): Redacta 3 o 4 preguntas formales, directas y profesionales listas para enviar a Compras para aclarar estos problemas antes de cotizar.
+    FORMATO DE SALIDA OBLIGATORIO (JSON Estricto):
+    Debes devolver ÚNICAMENTE un objeto JSON válido, sin texto adicional antes o después. 
+    Estructura esperada:
+    {{
+        "metadata": {{
+            "nombre_pliego": "[Nombre oficial o título principal del pliego/licitación]",
+            "cliente": "[Nombre real de la empresa contratante]",
+            "proceso": "[Nombre o número real de la licitación/proceso]",
+            "moneda": "[Moneda solicitada para cotizar, ej: Pesos argentinos o USD]",
+            "planta": "[Lugar físico o planta real de la obra]",
+            "requirente": "[Nombre de la persona o sector que solicita, si figura]",
+            "comprador": "[Nombre del comprador de compras, si figura]",
+            "lista_documentos": "[Lista de todos los documentos y anexos provistos y analizados, separados por comas]"
+        }},
+        "legales": {{
+            "contradicciones": ["contradicción 1", "contradicción 2"],
+            "penalidades_multas": ["detalle de multa 1"],
+            "vicios_o_vacios": ["vacío 1"],
+            "consultas_rfi": ["pregunta formal a enviar a Compras 1", "pregunta 2"],
+            "condiciones_comerciales": ["plazo de pago a 60 días", "certificación mensual", "ajuste de tarifas"]
+        }},
+        "costos": {{
+            "encuadre_gremial": "UOCRA, UOM, Petroleros u otro mencionado en el pliego",
+            "mano_de_obra": [
+                {{"rol": "oficial especializado", "cantidad": "2", "turno": "diurno", "observaciones": "comentarios"}}
+            ],
+            "insumos_y_epp": [
+                {{"insumo": "EPP ignífugo", "unidad": "global", "cantidad": "1", "costo_ref": ""}}
+            ],
+            "vehiculos_y_equipos": [
+                {{"vehiculo": "camioneta", "cantidad": "1", "dedicacion": "mensual", "observaciones": ""}}
+            ],
+            "seguros_y_garantias": [
+                {{"tipo": "seguro responsabilidad civil 1M", "cobertura": "1M", "observaciones": ""}}
+            ],
+            "instrucciones_especiales_cotizacion": ["nota: tener en cuenta costo financiero a 60 días"]
+        }},
+        "tecnicos": {{
+            "alcance_general": "Resumen del objetivo del servicio",
+            "ubicacion_obra": "Planta X",
+            "horarios_exigidos": "L a V de 7 a 16hs",
+            "normas_ssma": ["Cumplimiento reglas de oro", "Proceso Greenbanding"]
+        }},
+        "consultas_generales": [
+            {{
+                "categoria": "Operativa",
+                "archivo_origen": "Pliego_Condiciones.pdf",
+                "pagina_origen": "15",
+                "cita_textual": "texto extraido...",
+                "consulta": "Pregunta detallada sobre vacío detectado"
+            }}
+        ],
+        "inconsistencias": [
+            {{
+                "tipo": "Contradicción",
+                "documentos_conflicto": ["Anexo 1", "Pliego General"],
+                "pagina_origen": "5 y 12",
+                "cita_textual": "texto en conflicto...",
+                "descripcion_pregunta": "Explicación del problema"
+            }}
+        ]
+    }}
 
     Textos Extraídos:
     {text}
@@ -161,8 +224,33 @@ def analyze_cross_document_conflicts(docs):
     
     try:
         prompt_value = analysis_prompt.invoke({"text": combined_text})
-        response = invoke_with_retry(llm, prompt_value)
-        return response.content
+        response = invoke_with_retry(prompt_value)
+        
+        # Intentar extraer el JSON de la respuesta
+        content = response.content
+        import json
+        import re
+        
+        if isinstance(content, list):
+            content = "".join([c.get("text", "") if isinstance(c, dict) else str(c) for c in content])
+        elif not isinstance(content, str):
+            content = str(content)
+            
+        # Limpiar markdown de json si existe
+        match = re.search(r'```(?:json)?\s*(\{.*\})\s*```', content, re.DOTALL)
+        if match:
+            json_str = match.group(1)
+        else:
+            json_str = content
+            
+        try:
+            parsed_data = json.loads(json_str)
+            return parsed_data
+        except json.JSONDecodeError:
+            # Fallback en caso de que el modelo haya devuelto texto
+            print("No se pudo parsear como JSON, devolviendo crudo.")
+            return {"error": "Formato inválido", "raw": content}
+            
     except Exception as e:
         error_msg = str(e)
         if hasattr(e, 'last_attempt') and e.last_attempt is not None:
@@ -170,3 +258,53 @@ def analyze_cross_document_conflicts(docs):
             if real_e:
                 error_msg = str(real_e)
         return f"Ocurrió un error en el análisis instantáneo de Google: {error_msg}\n\nAsegúrate de no exceder los límites de tu plan."
+
+def create_vector_store(docs, persist_directory=None):
+    import time
+    print("Inicializando modelo local de Embeddings (HuggingFace)... Esto puede tardar unos segundos la primera vez.")
+    # Aumentamos el batch_size de HuggingFace para usar mejor la CPU
+    embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2", encode_kwargs={'batch_size': 128})
+    
+    print(f"Generando vectores localmente para {len(docs)} fragmentos...")
+    start_time = time.time()
+    
+    # Inicializar Chroma vacío con soporte de persistencia si se provee directorio
+    if persist_directory:
+        vectorstore = Chroma(embedding_function=embeddings, persist_directory=persist_directory)
+    else:
+        vectorstore = Chroma(embedding_function=embeddings)
+    
+    # Procesar e insertar en lotes para mostrar una barra de progreso en consola
+    batch_size = 500
+    for i in range(0, len(docs), batch_size):
+        batch = docs[i:i+batch_size]
+        vectorstore.add_documents(documents=batch)
+        print(f"  -> Procesados {min(i+batch_size, len(docs))} de {len(docs)} fragmentos...")
+        
+    elapsed_time = time.time() - start_time
+    print(f"Vectores generados exitosamente en {elapsed_time:.1f} segundos.")
+        
+    return vectorstore
+
+def query_qa_bot(vectorstore, question):
+    docs = vectorstore.similarity_search(question, k=5)
+    context = "\n\n".join([doc.page_content for doc in docs])
+    
+    prompt_template = """
+    Eres un asistente experto en auditoría de licitaciones. Responde la siguiente pregunta de forma precisa y técnica usando EXCLUSIVAMENTE el contexto proporcionado.
+    Al final de tu respuesta, menciona brevemente en qué páginas o documentos encontraste la información basándote en los marcadores [Página X] del contexto.
+    Si la respuesta no está en el contexto, di "No encontré esta información en el pliego".
+    
+    Contexto recuperado:
+    {context}
+    
+    Pregunta: {question}
+    """
+    
+    prompt = PromptTemplate.from_template(prompt_template)
+    prompt_value = prompt.invoke({"context": context, "question": question})
+    
+    response = invoke_with_retry(prompt_value)
+    if isinstance(response.content, list):
+        return "".join([c.get("text", "") if isinstance(c, dict) else str(c) for c in response.content])
+    return str(response.content)
