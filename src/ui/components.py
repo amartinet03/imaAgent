@@ -45,9 +45,15 @@ def render_versions_list(files, prefix):
         st.markdown("<hr style='margin: 8px 0; border-color: #F1F5F9;'/>", unsafe_allow_html=True)
 
 def save_uploaded_files(uploaded_files, tender_id):
+    import re
     docs_dir = os.path.join("data", "tenders", str(tender_id), "docs")
     os.makedirs(docs_dir, exist_ok=True)
     for file in uploaded_files:
-        file_path = os.path.join(docs_dir, file.name)
+        # Sanitizar nombre de archivo para evitar path traversal
+        raw_name = os.path.basename(file.name)
+        safe_name = re.sub(r'[^a-zA-Z0-9_.\-\sáéíóúÁÉÍÓÚñÑ()]', '_', raw_name).strip()
+        if not safe_name:
+            safe_name = f"doc_{int(time.time())}.bin"
+        file_path = os.path.join(docs_dir, safe_name)
         with open(file_path, "wb") as f:
             f.write(file.getbuffer())

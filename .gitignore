@@ -3,3 +3,15 @@ venv/
 __pycache__/
 *.pyc
 .env
+.pytest_cache/
+*.log
+*.tmp
+test_outputs_verification/
+
+# Base de datos y Chroma local (datos confidenciales)
+*.sqlite
+*.sqlite3
+*.bin
+data/tenders/
+data/raw/
+data/processed/

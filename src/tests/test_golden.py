@@ -1,14 +1,15 @@
 import os
 import sys
 import pytest
+from unittest.mock import patch, MagicMock
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
-from src.outputs.query_generator import QueryGenerator
+from src.core.analyzer import analyze_full_tender
 from langchain_core.documents import Document
 
 def test_extract_json_golden_dataset():
-    # Simulamos un Pliego Dorado (Golden Dataset) con ambigüedades insertadas a propósito
+    # Simulamos un Pliego Dorado (Golden Dataset)
     golden_text = """
     --- [Página 1] ---
     PLIEGO DE BASES Y CONDICIONES
@@ -23,29 +24,63 @@ def test_extract_json_golden_dataset():
     
     docs = [Document(page_content=golden_text, metadata={"source": "Pliego_Golden.pdf"})]
     
-    gen = QueryGenerator()
-    parsed_data = gen.extract_json_with_llm(docs)
+    mock_response = MagicMock()
+    mock_response.content = '''```json
+    {
+        "metadata": {
+            "cliente": "Empresa X S.A.",
+            "moneda": "USD",
+            "proceso": "Licitación 2026-001",
+            "nombre_pliego": "Servicios de Mantenimiento"
+        },
+        "consultas_generales": [
+            {
+                "categoria": "Operativa",
+                "archivo_origen": "Pliego_Golden.pdf",
+                "pagina_origen": "1",
+                "cita_textual": "proveer andamios",
+                "consulta": "Se consulta tipo de andamio"
+            }
+        ],
+        "inconsistencias": [
+            {
+                "tipo": "Contradicción",
+                "documentos_conflicto": ["Pliego_Golden.pdf"],
+                "pagina_origen": "1",
+                "cita_textual": "proveer andamios",
+                "descripcion_pregunta": "Aclarar alcance"
+            }
+        ],
+        "tecnicos": {
+            "alcance_general": "Provisión de andamios y servicios"
+        },
+        "costos": {
+            "plazo_contrato_meses": 12
+        }
+    }
+    ```'''
     
-    assert "error" not in parsed_data
-    assert "metadata" in parsed_data
-    
-    meta = parsed_data["metadata"]
-    assert "Empresa X S.A." in meta.get("cliente", "")
-    assert "USD" in meta.get("moneda", "")
-    
-    # Validamos que se detecten consultas/inconsistencias
-    assert "consultas_generales" in parsed_data
-    assert "inconsistencias" in parsed_data
-    
-    # Verificamos estructura y trazabilidad (Citation Tracking)
-    if parsed_data["consultas_generales"]:
+    with patch("src.core.analyzer.invoke_with_retry", return_value=mock_response):
+        parsed_data = analyze_full_tender(docs)
+        
+        assert isinstance(parsed_data, dict)
+        assert "error" not in parsed_data
+        assert "metadata" in parsed_data
+        
+        meta = parsed_data["metadata"]
+        assert "Empresa X S.A." in meta.get("cliente", "")
+        assert "USD" in meta.get("moneda", "")
+        
+        # Validamos consultas e inconsistencias
+        assert "consultas_generales" in parsed_data
+        assert "inconsistencias" in parsed_data
+        
         c = parsed_data["consultas_generales"][0]
         assert "categoria" in c
         assert "archivo_origen" in c
         assert "pagina_origen" in c
         assert "cita_textual" in c
         
-    if parsed_data["inconsistencias"]:
         i = parsed_data["inconsistencias"][0]
         assert "tipo" in i
         assert "documentos_conflicto" in i

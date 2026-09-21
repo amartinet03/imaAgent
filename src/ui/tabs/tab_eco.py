@@ -2,6 +2,7 @@ import streamlit as st
 import os
 import glob
 import time
+import re
 import streamlit_antd_components as sac
 from src.ui.components import render_versions_list
 from src.ui.theme import render_info_list_item
@@ -25,8 +26,10 @@ def render_tab_eco(tender_id, parsed_data, outputs_dir, safe_cliente, cols_confi
             if uploaded_cost_file:
                 if st.button("Analizar 🤖", type="secondary", use_container_width=True):
                     with st.spinner("Comparando Excel..."):
-                        # Guardar temporalmente
-                        temp_path = os.path.join(outputs_dir, f"TEMP_{uploaded_cost_file.name}")
+                        # Guardar temporalmente sanitizando el nombre
+                        safe_base = os.path.basename(uploaded_cost_file.name)
+                        safe_base = re.sub(r'[^a-zA-Z0-9_.\-]', '_', safe_base)
+                        temp_path = os.path.join(outputs_dir, f"TEMP_{safe_base}")
                         with open(temp_path, "wb") as f:
                             f.write(uploaded_cost_file.getbuffer())
                             
@@ -62,6 +65,36 @@ def render_tab_eco(tender_id, parsed_data, outputs_dir, safe_cliente, cols_confi
                 st.info("Resultado de la Validación:")
                 st.markdown(st.session_state[f'cost_report_{tender_id}'])
 
+            st.markdown("<hr style='margin-top: 1rem; margin-bottom: 1rem;'/>", unsafe_allow_html=True)
+            st.markdown("#### 💬 Consultas sobre Costos y Pliego")
+            
+            # Interfaz de chat simple
+            if f"chat_eco_{tender_id}" not in st.session_state:
+                st.session_state[f"chat_eco_{tender_id}"] = []
+                
+            for msg in st.session_state[f"chat_eco_{tender_id}"]:
+                with st.chat_message(msg["role"]):
+                    st.markdown(msg["content"])
+                    
+            if prompt := st.chat_input("Pregunta sobre tu cotización o el pliego..."):
+                st.session_state[f"chat_eco_{tender_id}"].append({"role": "user", "content": prompt})
+                with st.chat_message("user"):
+                    st.markdown(prompt)
+                    
+                with st.chat_message("assistant"):
+                    with st.spinner("Analizando..."):
+                        try:
+                            from src.core.analyzer import get_anthropic_api_key
+                            from langchain_anthropic import ChatAnthropic
+                            llm_chat = ChatAnthropic(model_name="claude-3-5-sonnet-20240620", anthropic_api_key=get_anthropic_api_key())
+                            
+                            context = f"Eres un asistente experto validando costos de licitaciones.\nDatos extraídos del pliego: {parsed_data}\n\nPregunta del usuario: {prompt}"
+                            response = llm_chat.invoke(context).content
+                            st.markdown(response)
+                            st.session_state[f"chat_eco_{tender_id}"].append({"role": "assistant", "content": response})
+                        except Exception as e:
+                            st.error(f"Error: {e}")
+
     with cols_eco[1]:
         with st.container():
             st.markdown("### Progreso del Documento Actual")
@@ -87,8 +120,17 @@ def render_tab_eco(tender_id, parsed_data, outputs_dir, safe_cliente, cols_confi
                         out_name = f"Costos_{tender_id}_{safe_cliente}_REV{rev_num:02d}.xlsx"
                         output_path = os.path.join(outputs_dir, out_name)
                         
-                        generator = ExcelGenerator()
-                        generator.generate_cost_excel({"parsed_data": parsed_data}, "", output_path)
+                        try:
+                            from src.core.analyzer import get_anthropic_api_key
+                            from langchain_anthropic import ChatAnthropic
+                            llm = ChatAnthropic(model_name="claude-3-5-sonnet-20240620", anthropic_api_key=get_anthropic_api_key())
+                            generator = ExcelGenerator(llm_client=llm)
+                        except Exception as e:
+                            st.warning("No se pudo iniciar LLM para búsqueda de precios. Fallback a generador simple.")
+                            generator = ExcelGenerator()
+                            
+                        template_path = os.path.join(os.getcwd(), "templates", "plantilla_costeo.xlsx")
+                        generator.generate_cost_excel({"parsed_data": parsed_data, "tender_id": tender_id}, template_path, output_path)
                         
                         # Subir a SharePoint
                         sp_folder_id = parsed_data.get("sp_folder_id")

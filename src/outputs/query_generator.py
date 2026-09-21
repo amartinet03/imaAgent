@@ -38,10 +38,18 @@ class QueryGenerator:
         
         for p in doc.paragraphs:
             full_text = p.text
-            if any(key in full_text for key in variables_reemplazo.keys()):
+            has_var = any(key in full_text for key in variables_reemplazo.keys())
+            has_pampa = "PAMPA" in full_text.upper() and "pampa" not in str(metadata.get("cliente", "")).lower()
+            if has_var or has_pampa:
                 # Realizar reemplazos en el texto completo
                 for key, val in variables_reemplazo.items():
                     full_text = full_text.replace(key, val)
+                
+                # Resguardo de seguridad: si existe texto remanente de PAMPA, reemplazarlo por el cliente actual
+                cliente_val = str(metadata.get("cliente", "el Cliente"))
+                for pampa_target in ["PAMPA ENERGÍA S.A.", "PAMPA ENERGIA S.A.", "Pampa Energía S.A."]:
+                    if pampa_target in full_text:
+                        full_text = full_text.replace(pampa_target, cliente_val)
                 
                 # Solución a Run Splitting (Opción B):
                 # Asignamos el texto reconstruido al primer run para mantener su estilo base,
@@ -73,6 +81,26 @@ class QueryGenerator:
                 tr = row._tr
                 tbl.remove(tr)
 
+        from docx.shared import Pt
+        from docx.enum.text import WD_ALIGN_PARAGRAPH
+
+        def set_cell_content(cell, text: str, is_bold: bool = False, align=None):
+            p = cell.paragraphs[0]
+            for r in list(p.runs):
+                p._p.remove(r._r)
+            if align is not None:
+                p.alignment = align
+            lines = text.split("\n")
+            for idx, line in enumerate(lines):
+                run = p.add_run(line)
+                run.font.name = "Arial"
+                run.font.size = Pt(9)
+                run.bold = is_bold
+                if idx < len(lines) - 1:
+                    run_br = p.add_run("\n")
+                    run_br.font.name = "Arial"
+                    run_br.font.size = Pt(9)
+
         # Contador global para numeración continua de filas en ambas tablas
         contador_global = 1
 
@@ -84,10 +112,11 @@ class QueryGenerator:
             for c in consultas:
                 row_cells = tabla_consultas.add_row().cells
                 if len(row_cells) >= 4:
-                    row_cells[0].text = str(contador_global)
-                    row_cells[1].text = str(c.get("categoria", ""))
-                    row_cells[2].text = f"{c.get('archivo_origen', '')}\nPág: {c.get('pagina_origen', 'N/A')}\n\"{c.get('cita_textual', 'N/A')}\""
-                    row_cells[3].text = str(c.get("consulta", ""))
+                    set_cell_content(row_cells[0], str(contador_global), is_bold=True, align=WD_ALIGN_PARAGRAPH.CENTER)
+                    set_cell_content(row_cells[1], str(c.get("categoria", "")), is_bold=False, align=WD_ALIGN_PARAGRAPH.CENTER)
+                    archivo_info = f"{c.get('archivo_origen', '')}\nPág: {c.get('pagina_origen', 'N/A')}\n\"{c.get('cita_textual', 'N/A')}\""
+                    set_cell_content(row_cells[2], archivo_info, is_bold=False)
+                    set_cell_content(row_cells[3], str(c.get("consulta", "")), is_bold=False)
                     contador_global += 1
 
         # Llenar Tabla de Inconsistencias
@@ -98,16 +127,16 @@ class QueryGenerator:
             for i in incons:
                 row_cells = tabla_inconsistencias.add_row().cells
                 if len(row_cells) >= 4:
-                    row_cells[0].text = str(contador_global)
-                    row_cells[1].text = str(i.get("tipo", "Inconsistencia"))
+                    set_cell_content(row_cells[0], str(contador_global), is_bold=True, align=WD_ALIGN_PARAGRAPH.CENTER)
+                    set_cell_content(row_cells[1], str(i.get("tipo", "Inconsistencia")), is_bold=False, align=WD_ALIGN_PARAGRAPH.CENTER)
                     
                     # Formateo correcto: si es lista, unir con comas
                     docs_conflicto = i.get("documentos_conflicto", "")
                     if isinstance(docs_conflicto, list):
                         docs_conflicto = ", ".join(docs_conflicto)
-                    row_cells[2].text = f"{docs_conflicto}\nPág: {i.get('pagina_origen', 'N/A')}\n\"{i.get('cita_textual', 'N/A')}\""
-                    
-                    row_cells[3].text = str(i.get("descripcion_pregunta", ""))
+                    archivo_info = f"{docs_conflicto}\nPág: {i.get('pagina_origen', 'N/A')}\n\"{i.get('cita_textual', 'N/A')}\""
+                    set_cell_content(row_cells[2], archivo_info, is_bold=False)
+                    set_cell_content(row_cells[3], str(i.get("descripcion_pregunta", "")), is_bold=False)
                     contador_global += 1
                     
         # Al hacer save a 'output_path', mantenemos intacta la plantilla original.

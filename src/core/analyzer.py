@@ -176,17 +176,26 @@ def analyze_full_tender(docs):
         }},
         "costos": {{
             "encuadre_gremial": "UOCRA, UOM, Petroleros u otro mencionado en el pliego",
+            "plazo_contrato_meses": 12,
             "mano_de_obra": [
-                {{"rol": "oficial especializado", "cantidad": "2", "turno": "diurno", "observaciones": "comentarios"}}
+                {{"rol": "Oficial Especializado", "cantidad": "2", "horas_mensuales": "187", "observaciones": "soldador calificado"}},
+                {{"rol": "Supervisor de Obra", "cantidad": "1", "horas_mensuales": "187", "observaciones": "dedicación completa"}},
+                {{"rol": "Técnico de Seguridad y Medio Ambiente (HSE)", "cantidad": "1", "horas_mensuales": "80", "observaciones": "part-time"}}
             ],
-            "insumos_y_epp": [
-                {{"insumo": "EPP ignífugo", "unidad": "global", "cantidad": "1", "costo_ref": ""}}
+            "suministro_materiales": [
+                {{"item": "Cañerías de acero al carbono", "cantidad": "100", "unidad": "m", "observaciones": ""}}
             ],
-            "vehiculos_y_equipos": [
-                {{"vehiculo": "camioneta", "cantidad": "1", "dedicacion": "mensual", "observaciones": ""}}
+            "suministro_insumos": [
+                {{"item": "EPP ignífugo", "cantidad": "5", "unidad": "kit", "observaciones": ""}}
             ],
-            "seguros_y_garantias": [
-                {{"tipo": "seguro responsabilidad civil 1M", "cobertura": "1M", "observaciones": ""}}
+            "subcontrataciones": [
+                {{"item": "Seguro de caución", "cantidad": "1", "unidad": "global", "observaciones": "fianza fiel cumplimiento"}}
+            ],
+            "amortizacion_vehiculos": [
+                {{"item": "Camioneta 4x4", "cantidad": "1", "plazo_amortizacion": "5", "observaciones": ""}}
+            ],
+            "equipos_menores": [
+                {{"item": "Amoladora angular", "cantidad": "2", "observaciones": ""}}
             ],
             "instrucciones_especiales_cotizacion": ["nota: tener en cuenta costo financiero a 60 días"]
         }},

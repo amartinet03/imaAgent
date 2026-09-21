@@ -124,17 +124,40 @@ class WordGenerator:
         cliente_nombre = metadata.get("cliente", "CLIENTE NO ESPECIFICADO")
         planta = metadata.get("planta", "PLANTA NO ESPECIFICADA")
         
+        # Obtener revisión (metadata o extraída del nombre de archivo)
+        rev_str = metadata.get("revision")
+        if not rev_str:
+            import re
+            rev_match = re.search(r'REV(\d+)', output_path, re.IGNORECASE)
+            if rev_match:
+                rev_str = f"Rev {rev_match.group(1)}"
+            else:
+                rev_str = "Rev 00"
+
+        # Formato de fecha en español
+        meses_es = {
+            1: "Enero", 2: "Febrero", 3: "Marzo", 4: "Abril",
+            5: "Mayo", 6: "Junio", 7: "Julio", 8: "Agosto",
+            9: "Septiembre", 10: "Octubre", 11: "Noviembre", 12: "Diciembre"
+        }
+        now = datetime.datetime.now()
+        fecha_emision = f"{meses_es.get(now.month, now.strftime('%B'))} {now.year}"
+        
+        titulo_fallback = metadata.get("nombre_pliego") or metadata.get("titulo_obra") or "Obras y Servicios"
+
         variables_reemplazo = {
             "{{CLIENTE}}": cliente_nombre,
             "{{PLANTA}}": planta,
             "{{PROCESO}}": metadata.get("proceso", "PROCESO NO ESPECIFICADO"),
             "{{NUMERO_LICITACION}}": metadata.get("proceso", "LIC-PENDIENTE"),
-            "{{FECHA_EMISION}}": datetime.datetime.now().strftime("%B %Y").capitalize(),
+            "{{FECHA_EMISION}}": fecha_emision,
+            "{{REVISION}}": rev_str,
             "{{CLIENTE_CORTO}}": cliente_nombre.split(" ")[0] if cliente_nombre else "CLIENTE",
+            "{{TITULO_OBRA}}": dynamic_content.get("TITULO_OBRA") or titulo_fallback,
         }
         
         # Agregar el contenido dinámico del LLM a las variables de reemplazo
-        for key in ["TITULO_OBRA", "TEXTO_LUGAR_PRESTACION", "TEXTO_HORARIOS", "TEXTO_ALCANCE_GENERAL", 
+        for key in ["TEXTO_LUGAR_PRESTACION", "TEXTO_HORARIOS", "TEXTO_ALCANCE_GENERAL", 
                     "TEXTO_TAREAS_DEFINIDAS", "TEXTO_MATERIALES_CLIENTE", "TEXTO_MATERIALES_IMA", 
                     "TEXTO_PERFILES_PERSONAL", "TEXTO_REQUISITOS_ADICIONALES",
                     "TEXTO_ENCUADRE_GREMIAL", "TEXTO_HERRAMIENTAS_Y_EPP", 
@@ -177,6 +200,11 @@ class WordGenerator:
                     for key, val in variables_reemplazo.items():
                         if key in t.text:
                             t.text = t.text.replace(key, str(val))
+                    # Resguardo de seguridad: limpiar cualquier mención residual de PAMPA
+                    if "pampa" not in cliente_nombre.lower():
+                        for pampa_target in ["PAMPA ENERGÍA S.A.", "PAMPA ENERGIA S.A.", "Pampa Energía S.A.", "Pampa Energía", "PAMPA ENERGIA", "PAMPA ENERGÍA"]:
+                            if pampa_target in t.text:
+                                t.text = t.text.replace(pampa_target, cliente_nombre)
                             
         replace_in_element(doc.element)
         

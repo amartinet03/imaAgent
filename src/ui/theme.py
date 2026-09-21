@@ -1,23 +1,46 @@
 import streamlit as st
 
+
 def apply_theme():
-    st.markdown("""
+    """
+    Aplica el tema visual corporativo de IMA.
+    Distingue entre la vista de Login (pantalla completa sin márgenes)
+    y el Dashboard autenticado.
+    """
+    is_auth = st.session_state.get('authenticated', False)
+
+    container_rules = """
+        .stApp .block-container {
+            padding-top: 2rem !important;
+            padding-bottom: 2rem !important;
+            max-width: 95% !important;
+        }
+    """ if is_auth else """
+        .stApp .block-container {
+            padding: 0 !important;
+            margin: 0 !important;
+            max-width: 100% !important;
+            width: 100% !important;
+        }
+    """
+
+    base_css = """
         <style>
         /* Importar fuente Inter */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
         
-        html, body, [class*="css"]  {
+        html, body, [class*="css"] {
             font-family: 'Inter', sans-serif;
         }
 
         /* Ocultar elementos de Streamlit */
-        #MainMenu {visibility: hidden;}
-        footer {visibility: hidden;}
-        header {visibility: hidden;} /* Oculta la barra superior default */
+        #MainMenu { visibility: hidden; }
+        footer { visibility: hidden; }
+        header { visibility: hidden; } /* Oculta la barra superior default */
         
         /* Paleta y Fondos */
         :root {
-            --sidebar-bg: #1C2E4A; /* Azul corporativo un poco más claro */
+            --sidebar-bg: #1C2E4A; /* Azul corporativo */
             --main-bg: #F8FAFC;    /* Gris muy claro */
             --primary-blue: #2563EB;
             --success-green: #10B981;
@@ -30,13 +53,9 @@ def apply_theme():
         .stApp {
             background-color: var(--main-bg);
         }
+    """
 
-        .stApp .block-container {
-            padding-top: 2rem !important;
-            padding-bottom: 2rem !important;
-            max-width: 95% !important;
-        }
-
+    after_css = """
         /* Sidebar Styling */
         [data-testid="stSidebar"] {
             background-color: var(--sidebar-bg);
@@ -149,8 +168,17 @@ def apply_theme():
             border-radius: 12px !important;
             border: 1px solid var(--card-border) !important;
         }
+
+        /* Ocultar instrucciones flotantes en inputs como 'Press Enter to submit form' */
+        div[data-testid="InputInstructions"],
+        div[data-testid="stFormSubmitInstructions"] {
+            display: none !important;
+        }
         </style>
-    """, unsafe_allow_html=True)
+    """
+
+    st.markdown(base_css + container_rules + after_css, unsafe_allow_html=True)
+
 
 def render_metric_card(title, value, subtitle, icon_html, is_online=False):
     """
@@ -182,6 +210,7 @@ def get_progress_bar_html(percentage, status):
         </div>
     """
 
+
 def get_status_badge(status):
     if status == 'COMPLETADO':
         return '<div style="color: #10B981; font-weight: 600; font-size: 13px; margin-bottom: -4px;">● COMPLETADO</div><div style="font-size:11px;color:#94A3B8;">Proceso finalizado</div>'
@@ -189,7 +218,6 @@ def get_status_badge(status):
         return '<div style="color: #F59E0B; font-weight: 600; font-size: 13px; margin-bottom: -4px;">● EN PROCESO</div><div style="font-size:11px;color:#94A3B8;">Extrayendo datos</div>'
     else:
         return f'<div style="color: #EF4444; font-weight: 600; font-size: 13px;">● {status}</div>'
-
 
 
 def render_version_table_header():
@@ -201,6 +229,7 @@ def render_version_table_header():
             <div style="text-align: right;">Acciones</div>
         </div>
     """, unsafe_allow_html=True)
+
 
 def render_info_list_item(icon, title, content):
     st.markdown(f"""

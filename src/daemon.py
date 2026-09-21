@@ -1,6 +1,7 @@
 import os
 import sys
 import time
+import re
 import base64
 import threading
 
@@ -16,40 +17,72 @@ from src.background_worker import process_tender
 # Cargar variables de entorno
 load_dotenv()
 
+def run_periodic_web_scanner():
+    """
+    Rastreador periódico de portales públicos oficiales en segundo plano.
+    Escanea NA-SA, ARSAT y demás portales configurados buscando coincidencias con las palabras clave.
+    """
+    from src.core.web_scanner import WebTenderScanner
+    time.sleep(5)
+    while True:
+        try:
+            print("[Radar Web] Ejecutando escaneo de portales oficiales...")
+            scanner = WebTenderScanner()
+            res = scanner.scan_all_portals()
+            print(f"[Radar Web] Escaneo completado: {res['total_found']} oportunidades ({res['new_detected_count']} nuevas).")
+        except Exception as e:
+            print(f"[Radar Web] Error en escaneo de portales: {e}")
+        # Intervalo de chequeo periódico: cada 4 horas
+        time.sleep(4 * 3600)
+
 def run_daemon():
     print("=== Iniciando servicio en segundo plano (Daemon) ===")
     
-    # --- DESACTIVADO TEMPORALMENTE PARA PRUEBAS ---
-    print("⚠️ EL DAEMON ESTÁ DESACTIVADO TEMPORALMENTE PARA PRUEBAS ⚠️")
-    print("No se revisarán correos ni se crearán licitaciones nuevas en SharePoint/Pipedrive.")
-    while True:
-        time.sleep(60)
-    # -----------------------------------------------
+    # Iniciar hilo en segundo plano para rastreo de páginas web
+    web_thread = threading.Thread(target=run_periodic_web_scanner, daemon=True)
+    web_thread.start()
     
-    ms_client = MS365Client()
-    crm_client = CRMClient()
+    ms_client = None
+    crm_client = None
     user_email = os.getenv("MS365_MONITOR_EMAIL")
-    
-    if not user_email:
-        print("❌ Error: Falta definir MS365_MONITOR_EMAIL en tu archivo .env")
-        return
-    
-    # Asegurar conexión a MS365
-    try:
-        ms_client._get_access_token()
-        print("✅ Conectado a Microsoft 365 exitosamente.")
-    except Exception as e:
-        print(f"❌ Error conectando a MS365: {e}")
-        return
-
-    print(f"📡 Daemon corriendo en segundo plano y monitoreando: {user_email}")
-    print("Presiona Ctrl+C en la terminal para detener el proceso.\n")
-    
-    # Memoria para no spamear la consola con correos que ya vimos y descartamos
     ignored_messages = set()
+    last_active_state = None
+
+    print("📡 Daemon iniciado. Esperando señal de activación desde el panel de control...")
     
     while True:
         try:
+            from src.db.models import is_daemon_active
+            active = is_daemon_active()
+
+            if active != last_active_state:
+                last_active_state = active
+                if active:
+                    print(f"\n🟢 [DAEMON ACTIVADO] Monitoreando correos ({user_email}) y sincronizando con SharePoint y Pipedrive...")
+                else:
+                    print(f"\n⚪ [DAEMON EN PAUSA] Automatización detenida. No se leerán correos ni se crearán carpetas/deals.")
+
+            if not active:
+                time.sleep(5)
+                continue
+
+            if not user_email:
+                print("❌ [Daemon] Falta definir MS365_MONITOR_EMAIL en tu archivo .env")
+                time.sleep(15)
+                continue
+
+            # Conexión perezosa a MS365 y CRM al activarse
+            if ms_client is None:
+                try:
+                    ms_client = MS365Client()
+                    ms_client._get_access_token()
+                    crm_client = CRMClient()
+                    print(f"✅ Conectado a Microsoft 365 exitosamente para: {user_email}")
+                except Exception as e:
+                    print(f"❌ Error conectando a MS365/CRM: {e}")
+                    time.sleep(20)
+                    continue
+
             emails = ms_client.fetch_unread_tender_emails(user_email)
             
             # Filtramos los correos para mostrar solo los nuevos
@@ -172,12 +205,17 @@ def run_daemon():
                         contenido_b64 = adjunto.get("contentBytes")
                         
                         if nombre_archivo and contenido_b64:
+                            # Sanitizar nombre de archivo adjunto
+                            safe_adjunto_name = os.path.basename(nombre_archivo)
+                            safe_adjunto_name = re.sub(r'[^a-zA-Z0-9_.\-\sáéíóúÁÉÍÓÚñÑ()]', '_', safe_adjunto_name).strip()
+                            if not safe_adjunto_name:
+                                safe_adjunto_name = f"adjunto_{int(time.time())}.bin"
                             # Guardar Local
-                            ruta_archivo = os.path.join(docs_dir, nombre_archivo)
+                            ruta_archivo = os.path.join(docs_dir, safe_adjunto_name)
                             file_bytes = base64.b64decode(contenido_b64)
                             with open(ruta_archivo, "wb") as f:
                                 f.write(file_bytes)
-                            print(f"  -> Archivo descargado localmente: {nombre_archivo}")
+                            print(f"  -> Archivo descargado localmente: {safe_adjunto_name}")
                             
                             # Subir a SharePoint a la carpeta "ET" (Especificación Técnica)
                             if sp_folder_id:
@@ -198,8 +236,13 @@ def run_daemon():
         except Exception as e:
             print(f"Error en el ciclo del daemon: {e}")
             
-        # Esperar 60 segundos antes de volver a revisar la bandeja de entrada
-        time.sleep(60)
+        # Esperar 20 segundos antes de volver a revisar la bandeja de entrada,
+        # consultando cada 3 segundos si el daemon fue pausado desde el panel
+        for _ in range(7):
+            from src.db.models import is_daemon_active
+            if not is_daemon_active():
+                break
+            time.sleep(3)
 
 if __name__ == "__main__":
     run_daemon()

@@ -6,9 +6,11 @@ import streamlit_antd_components as sac
 from src.ui.chat import render_chat_interface
 from src.ui.components import render_versions_list
 from src.outputs.word_generator import WordGenerator
+from src.core.chat_worker import is_chat_job_running
 
 def render_tab_ot(tender_id, parsed_data, outputs_dir, safe_cliente, cols_config):
     cols = st.columns(cols_config, gap="large")
+    ot_running = is_chat_job_running(tender_id, "OT")
     
     with cols[0]:
         with st.container():
@@ -37,12 +39,20 @@ def render_tab_ot(tender_id, parsed_data, outputs_dir, safe_cliente, cols_config
             st.markdown(info_html, unsafe_allow_html=True)
             
             st.markdown("<br>", unsafe_allow_html=True)
-            if st.button("✨ Asistente IA", use_container_width=True, key="ai_ot"):
+            btn_label = "✨ Asistente IA ⏳ (Generando versión...)" if ot_running else "✨ Asistente IA"
+            if st.button(btn_label, use_container_width=True, key="ai_ot"):
                 render_chat_interface(tender_id, parsed_data, "OT")
             
     with cols[1]:
         with st.container():
             st.markdown("### Progreso del Documento Actual")
+            if ot_running:
+                st.markdown(
+                    "<div style='background-color: #EFF6FF; border: 1px solid #BFDBFE; border-radius: 6px; padding: 6px 12px; font-size: 12px; color: #1D4ED8; margin-bottom: 10px;'>"
+                    "⏳ <strong>Generando nueva versión (REV) con IA en segundo plano...</strong>"
+                    "</div>",
+                    unsafe_allow_html=True
+                )
             ot_files = glob.glob(os.path.join(outputs_dir, "OT_*.docx"))
             
             total_versions = len(ot_files) if len(ot_files) > 0 else 1

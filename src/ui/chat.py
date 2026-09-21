@@ -3,61 +3,86 @@ import os
 import glob
 import re
 import time
+from streamlit_autorefresh import st_autorefresh
 
-from src.db.models import get_messages, add_message, update_tender_parsed_data
-from src.core.chat_modifier import modify_json_with_chat
-from src.outputs.word_generator import WordGenerator
-from src.outputs.query_generator import QueryGenerator
+from src.db.models import get_messages, add_message
+from src.core.chat_worker import is_chat_job_running, start_chat_background_job, get_chat_job_info
+
 
 @st.dialog("✨ Asistente IA", width="large")
 def render_chat_interface(tender_id, parsed_data, chat_type):
-    st.markdown("<p style='font-size: 14px; margin-top:-10px;'>Sugiere cambios al documento (ej: 'Agrega un supervisor').</p>", unsafe_allow_html=True)
-    
+    """
+    Pop-up interactivo del Asistente IA.
+    Ejecuta las modificaciones y la generación de documentos Word en segundo plano,
+    permitiendo al usuario cerrar la ventana o navegar libremente mientras el documento
+    se ensambla automáticamente.
+    """
+    job_running = is_chat_job_running(tender_id, chat_type)
+
+    header_title = "Oferta Técnica (OT)" if chat_type == "OT" else "Consultas al Pliego (RFI)"
+    st.markdown(
+        f"<p style='font-size: 13.5px; color: #64748B; margin-top:-10px; margin-bottom: 12px;'>"
+        f"Sección activa: <strong>{header_title}</strong>. Sugiere cambios al documento (ej: 'Agrega un supervisor electromecánico' o 'Ajusta el plazo a 30 días')."
+        f"</p>",
+        unsafe_allow_html=True
+    )
+
+    # Si hay una tarea ejecutándose en segundo plano, refrescar cada 2.5s para mostrar la respuesta
+    if job_running:
+        st_autorefresh(interval=2500, key=f"dialog_refresh_{tender_id}_{chat_type}")
+        job_info = get_chat_job_info(tender_id, chat_type) or {}
+        last_prompt = job_info.get("prompt", "")
+        prompt_snippet = f": *\"{last_prompt[:60]}...\"*" if last_prompt else ""
+
+        st.markdown(
+            f"""
+            <div style="background-color: #EFF6FF; border: 1.5px solid #93C5FD; border-left: 4px solid #2563EB; border-radius: 8px; padding: 10px 14px; margin-bottom: 14px;">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <div style="font-size: 0.88rem; color: #1E40AF; font-weight: 700;">
+                        🤖 Generando nueva versión en segundo plano{prompt_snippet}
+                    </div>
+                    <span style="background-color: #DBEAFE; color: #1D4ED8; font-size: 0.72rem; font-weight: 800; padding: 2px 8px; border-radius: 12px;">
+                        EN PROCESO
+                    </span>
+                </div>
+                <div style="font-size: 0.8rem; color: #3B82F6; margin-top: 4px;">
+                    Podés cerrar este pop-up tranquilamente; el documento continuará ensamblándose en segundo plano y se creará la nueva versión automáticamente.
+                </div>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+    # Historial de mensajes
     messages = get_messages(tender_id, chat_type=chat_type)
     if not messages:
-        msg = f"¡Hola! Soy tu asistente de IA. He extraído la información para la sección {chat_type}. ¿Hay algo que desees ajustar antes de generar una nueva versión?"
+        msg = f"¡Hola! Soy tu asistente de IA. He extraído la información para la sección de {header_title}. ¿Hay algo que desees ajustar antes de generar una nueva versión?"
         add_message(tender_id, "assistant", msg, chat_type=chat_type)
         messages = get_messages(tender_id, chat_type=chat_type)
-        
-    for msg in messages:
-        with st.chat_message(msg["role"], avatar="🤖" if msg["role"]=="assistant" else "👤"):
-            st.write(msg["content"])
-            
-    if prompt := st.chat_input("Escribe tu instrucción aquí...", key=f"chat_{chat_type}"):
-        with st.chat_message("user", avatar="👤"):
-            st.write(prompt)
-        add_message(tender_id, "user", prompt, chat_type=chat_type)
-        
-        with st.spinner("Aplicando cambios y generando nueva versión..."):
-            history = get_messages(tender_id, chat_type=chat_type)
-            updated_data = modify_json_with_chat(parsed_data, history, prompt, chat_type=chat_type)
-            update_tender_parsed_data(tender_id, updated_data)
-            
-            try:
-                # El directorio base es asumiendo que estamos en src/ui/chat.py
-                tender_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), 'data', 'tenders', str(tender_id))
-                outputs_dir = os.path.join(tender_dir, 'outputs')
-                cliente = updated_data.get("metadata", {}).get("cliente", f"Licitacion_{tender_id}")
-                safe_cliente = re.sub(r'[^A-Za-z0-9]+', '_', str(cliente))
-                
-                rev_num = 0
-                if chat_type == "OT":
-                    ot_files = glob.glob(os.path.join(outputs_dir, "OT_*.docx"))
-                    rev_num = len(ot_files)
-                    out_name = f"OT_{tender_id}_{safe_cliente}_REV{rev_num:02d}.docx"
-                    WordGenerator().draft_technical_offer({"parsed_data": updated_data}, "templates/OT_template.docx", os.path.join(outputs_dir, out_name), metadata=updated_data.get("metadata", {}))
-                elif chat_type == "CONSULTAS":
-                    rfi_files = glob.glob(os.path.join(outputs_dir, "Consultas_*.docx"))
-                    rev_num = len(rfi_files)
-                    out_name = f"Consultas_Pliego_{safe_cliente}_REV{rev_num:02d}.docx"
-                    QueryGenerator().generate_docx_from_json(updated_data, "templates/Consultas_Pliego_PAMPA_Obras_Civiles_Menores_PGSM.docx", os.path.join(outputs_dir, out_name))
-                
-                resp = f"¡Hecho! He aplicado tus instrucciones y he generado automáticamente la nueva versión (REV{rev_num:02d}) del documento."
-            except Exception as e:
-                resp = f"He aplicado los cambios en los datos, pero ocurrió un error al generar el documento: {e}"
-        
-        with st.chat_message("assistant", avatar="🤖"):
-            st.write(resp)
-        add_message(tender_id, "assistant", resp, chat_type=chat_type)
-        time.sleep(1)
-        st.rerun()
+
+    # Mostrar mensajes en contenedor con scroll
+    with st.container():
+        for msg in messages:
+            with st.chat_message(msg["role"], avatar="🤖" if msg["role"] == "assistant" else "👤"):
+                st.markdown(msg["content"])
+
+    # Entrada de chat
+    if job_running:
+        st.markdown(
+            "<div style='text-align: center; color: #94A3B8; font-size: 0.82rem; padding: 10px 0;'>"
+            "⏳ Hay una generación de versión en curso. Esperá a que finalice para enviar otra instrucción."
+            "</div>",
+            unsafe_allow_html=True
+        )
+    else:
+        if prompt := st.chat_input("Escribe tu instrucción aquí...", key=f"chat_{chat_type}"):
+            if prompt.strip():
+                clean_prompt = prompt.strip()
+                # Registrar mensaje del usuario en la base de datos
+                add_message(tender_id, "user", clean_prompt, chat_type=chat_type)
+
+                # Lanzar el proceso en segundo plano (hilo independiente)
+                started = start_chat_background_job(tender_id, chat_type, clean_prompt)
+                if started:
+                    st.toast("🚀 Instrucción enviada. El documento se está generando en segundo plano.", icon="🤖")
+                st.rerun()

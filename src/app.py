@@ -10,7 +10,14 @@ import re
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from src.db.models import init_db, create_tender, get_all_tenders, get_tender, update_tender_parsed_data, add_message, get_messages, delete_tender
+from src.db.models import (
+    init_db, create_tender, get_all_tenders, get_tender, update_tender_parsed_data, 
+    add_message, get_messages, delete_tender,
+    get_monitored_portals, get_monitored_keywords, get_pending_opportunities, 
+    get_all_opportunities, update_opportunity_status,
+    is_daemon_active, set_daemon_active
+)
+from src.ui.view_configuracion import render_view_configuracion
 from src.outputs.excel_generator import ExcelGenerator
 from src.outputs.word_generator import WordGenerator
 from src.outputs.query_generator import QueryGenerator
@@ -23,28 +30,166 @@ from src.ui.tabs.tab_documentos import render_tab_documentos
 from src.ui.tabs.tab_ot import render_tab_ot
 from src.ui.tabs.tab_rfi import render_tab_rfi
 from src.ui.tabs.tab_eco import render_tab_eco
+from src.core.chat_worker import is_chat_job_running
 
 # Inicializar Base de Datos
 init_db()
 
+from src.ui.login import render_login_page
+
 # --- Autenticación ---
 def view_login():
-    st.title("🔒 Acceso Restringido")
-    st.markdown("Plataforma de IA para Gestión de Licitaciones - IMA Servicios Industriales")
-    with st.form("login_form"):
-        user = st.text_input("Usuario")
-        password = st.text_input("Contraseña", type="password")
-        submit = st.form_submit_button("Ingresar", type="primary")
-        if submit:
-            if user == "admin" and password == "Ima2026!":
-                st.session_state['authenticated'] = True
-                st.rerun()
-            else:
-                st.error("Credenciales incorrectas.")
+    render_login_page()
 
 def launch_background_worker(tender_id):
     worker_script = os.path.join(os.path.dirname(os.path.abspath(__file__)), "background_worker.py")
     subprocess.Popen([sys.executable, worker_script, str(tender_id)])
+
+@st.dialog("🚨 Oportunidad Detectada por el Radar Web", width="large")
+def opportunity_confirmation_modal(opp):
+    st.markdown(f"<div style='font-size: 0.9rem; color: #2563EB; font-weight: 700; text-transform: uppercase;'>🏢 {opp.get('portal_name', 'Portal Oficial')}</div>", unsafe_allow_html=True)
+    st.markdown(f"<h3 style='margin-top: 4px; color: #0F172A;'>{opp.get('title')}</h3>", unsafe_allow_html=True)
+    
+    if opp.get('snippet'):
+        st.markdown(f"<p style='color: #475569; font-size: 0.95rem; background: #F8FAFC; padding: 12px; border-radius: 8px; border: 1px solid #E2E8F0;'>{opp.get('snippet')}</p>", unsafe_allow_html=True)
+        
+    c1, c2 = st.columns(2)
+    with c1:
+        st.markdown(f"**🎯 Palabras Clave Coincidentes:** `{opp.get('matched_keywords', 'N/A')}`")
+    with c2:
+        if opp.get('url'):
+            st.markdown(f"**🌐 Enlace Oficial:** [{opp.get('portal_name')}]({opp.get('url')})")
+            
+    st.markdown("<hr style='margin: 15px 0; border: none; border-top: 1px solid #E2E8F0;'/>", unsafe_allow_html=True)
+    st.markdown(
+        "<p style='font-weight: 600; color: #1E293B;'>¿Deseas confirmar esta licitación y comenzar el análisis integral inteligente (<strong>'El Show'</strong>)?</p>",
+        unsafe_allow_html=True
+    )
+    
+    col_yes, col_no, col_cfg = st.columns([2.2, 1.2, 1.4])
+    with col_yes:
+        if st.button("🚀 ¡Sí, Iniciar Show! (Analizar)", type="primary", use_container_width=True, key=f"modal_accept_{opp['id']}"):
+            tender_name = f"{opp.get('portal_name', 'Web')}: {opp.get('title', 'Licitación Web')[:80]}"
+            tender_id = create_tender(tender_name)
+            
+            tender_dir = os.path.join("data", "tenders", str(tender_id), "docs")
+            os.makedirs(tender_dir, exist_ok=True)
+            brief_path = os.path.join(tender_dir, "Aviso_Licitacion_Web.txt")
+            with open(brief_path, "w", encoding="utf-8") as f:
+                f.write(f"PUBLICACIÓN OFICIAL DE LICITACIÓN\n")
+                f.write(f"Entidad: {opp.get('portal_name')}\n")
+                f.write(f"Título: {opp.get('title')}\n")
+                f.write(f"URL Oficial: {opp.get('url')}\n")
+                f.write(f"Detalle / Snippet: {opp.get('snippet')}\n")
+                f.write(f"Palabras clave coincidentes: {opp.get('matched_keywords')}\n")
+
+            update_opportunity_status(opp['id'], "APROBADA", tender_id=tender_id)
+            launch_background_worker(tender_id)
+            
+            st.session_state['current_tender_id'] = tender_id
+            st.session_state['current_view'] = 'detalle'
+            st.session_state['show_radar_modal'] = False
+            st.rerun()
+            
+    with col_no:
+        if st.button("❌ Descartar", use_container_width=True, key=f"modal_reject_{opp['id']}"):
+            update_opportunity_status(opp['id'], "DESCARTADA")
+            st.session_state['show_radar_modal'] = False
+            st.rerun()
+            
+    with col_cfg:
+        if st.button("⚙️ Ver Todas", use_container_width=True, key=f"modal_goto_cfg_{opp['id']}"):
+            st.session_state['current_view'] = 'configuracion'
+            st.session_state['show_radar_modal'] = False
+            st.rerun()
+
+
+def render_daemon_control():
+    """
+    Componente interactivo para activar o desactivar el Daemon de Automatización.
+    Por defecto está apagado. Cuando se activa, el servicio en segundo plano:
+    1. Busca licitaciones en la bandeja de entrada del correo (Microsoft 365).
+    2. Crea la estructura completa de carpetas en SharePoint.
+    3. Registra el negocio en Pipedrive CRM.
+    4. Descarga pliegos y lanza el análisis técnico con Inteligencia Artificial.
+    """
+    daemon_active = is_daemon_active()
+
+    if daemon_active:
+        card_bg = "#F0FDF4"
+        card_border = "#86EFAC"
+        badge_bg = "#DCFCE7"
+        badge_color = "#15803D"
+        icon_status = "🟢"
+        badge_label = "AUTOMATIZACIÓN ACTIVA (ON)"
+        status_description = (
+            "<strong>⚡ El Daemon de Automatización está corriendo en segundo plano:</strong> "
+            "Revisa continuamente el correo electrónico (Microsoft 365) para detectar pliegos y llamados a licitación. "
+            "Al encontrar una oportunidad, crea de inmediato la estructura en <strong>SharePoint</strong>, "
+            "genera el negocio en <strong>Pipedrive CRM</strong> y dispara el análisis de requerimientos con <strong>Inteligencia Artificial</strong>."
+        )
+    else:
+        card_bg = "#F8FAFC"
+        card_border = "#CBD5E1"
+        badge_bg = "#F1F5F9"
+        badge_color = "#64748B"
+        icon_status = "⚪"
+        badge_label = "AUTOMATIZACIÓN EN PAUSA (OFF)"
+        status_description = (
+            "<strong>⏸️ Daemon en modo seguro (Apagado por defecto):</strong> "
+            "No se revisarán correos entrantes ni se crearán carpetas en <strong>SharePoint</strong> ni negocios en <strong>Pipedrive</strong> "
+            "automáticamente. Activá el interruptor para iniciar el monitoreo y sincronización automática."
+        )
+
+    st.markdown(
+        f"""
+        <div style="background-color: {card_bg}; border: 1.5px solid {card_border}; border-radius: 12px; padding: 16px 20px; margin: 15px 0 10px 0; box-shadow: 0 1px 3px rgba(0,0,0,0.02);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span style="font-size: 1.2rem;">{icon_status}</span>
+                    <span style="font-weight: 700; color: #0F172A; font-size: 1rem;">Daemon de Automatización de Licitaciones</span>
+                </div>
+                <span style="background-color: {badge_bg}; color: {badge_color}; font-size: 0.72rem; font-weight: 800; padding: 4px 12px; border-radius: 20px; letter-spacing: 0.5px; border: 1px solid {card_border};">
+                    {badge_label}
+                </span>
+            </div>
+            <div style="color: #475569; font-size: 0.86rem; line-height: 1.55; margin-bottom: 12px;">
+                {status_description}
+            </div>
+            <div style="display: flex; gap: 16px; align-items: center; font-size: 0.8rem; color: #64748B; padding-top: 8px; border-top: 1px dashed {card_border};">
+                <span>📩 Búsqueda en Mail: <strong style="color: {'#16A34A' if daemon_active else '#64748B'};">{'Activa' if daemon_active else 'En pausa'}</strong></span>
+                <span>📁 Creación SharePoint: <strong style="color: {'#16A34A' if daemon_active else '#64748B'};">{'Activa' if daemon_active else 'En espera'}</strong></span>
+                <span>🤝 Oportunidades Pipedrive: <strong style="color: {'#16A34A' if daemon_active else '#64748B'};">{'Automático' if daemon_active else 'Manual'}</strong></span>
+                <span>🤖 Análisis Técnico IA: <strong style="color: {'#16A34A' if daemon_active else '#64748B'};">{'En cola' if daemon_active else 'Standby'}</strong></span>
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+    c_note, c_switch = st.columns([3.2, 1.8])
+    with c_note:
+        st.markdown(
+            "<p style='color: #64748B; font-size: 0.8rem; margin: 4px 0 0 0;'>"
+            "ℹ️ Podés encenderlo o pausarlo en cualquier momento sin afectar las licitaciones existentes."
+            "</p>",
+            unsafe_allow_html=True
+        )
+    with c_switch:
+        toggle_state = st.toggle(
+            "⚡ Activar Daemon de Automatización",
+            value=daemon_active,
+            key="dash_toggle_daemon_active",
+            help="Habilitar para buscar licitaciones en el correo y sincronizar con SharePoint y Pipedrive."
+        )
+        if toggle_state != daemon_active:
+            set_daemon_active(toggle_state)
+            if toggle_state:
+                st.toast("🟢 Daemon activado: monitoreando correos y sincronizando SharePoint y Pipedrive.", icon="🚀")
+            else:
+                st.toast("⚪ Daemon pausado: automatización en modo seguro.", icon="⏸️")
+            st.rerun()
+
 
 def view_dashboard():
     # Refrescar automáticamente la pantalla cada 15 segundos para ver nuevas licitaciones en tiempo real
@@ -71,9 +216,41 @@ def view_dashboard():
     with c4:
         render_metric_card("IA del Sistema", "Online", "Monitoreo activo", "🤖", is_online=True)
     
-    st.write("")
-    st.info("🔔 **Notificación:** El sistema está monitoreando en segundo plano los ingresos de nuevas licitaciones.")
-    st.write("")
+    # --- RADAR DE LICITACIONES PENDIENTES ---
+    pending_opps = get_pending_opportunities()
+    if pending_opps:
+        first_opp = pending_opps[0]
+        st.markdown(f"""
+        <div style="background: linear-gradient(90deg, #1E293B, #0F172A); border-left: 5px solid #2563EB; border-radius: 8px; padding: 14px 18px; margin-top: 15px; margin-bottom: 15px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <div style="color: #60A5FA; font-weight: 700; font-size: 0.95rem; display: flex; align-items: center; gap: 8px;">
+                        📡 RADAR DE LICITACIONES: {len(pending_opps)} OPORTUNIDAD(ES) DETECTADA(S) EN LA WEB
+                    </div>
+                    <div style="color: #E2E8F0; font-size: 0.9rem; margin-top: 4px;">
+                        Nueva licitación encontrada en <strong>{first_opp.get('portal_name')}</strong>: <em>"{first_opp.get('title')[:80]}..."</em>
+                    </div>
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        c_rad_info, c_rad_btn1, c_rad_btn2 = st.columns([3, 1.5, 1.2])
+        with c_rad_info:
+            st.caption(f"Coincidencia con: '{first_opp.get('matched_keywords')}'. Puedes aprobarla para empezar el análisis o revisarla.")
+        with c_rad_btn1:
+            if st.button("🚨 Revisar Oportunidad (Pop-up)", type="primary", use_container_width=True, key="btn_trigger_radar_modal"):
+                st.session_state['show_radar_modal'] = True
+        with c_rad_btn2:
+            if st.button("⚙️ Configuración", use_container_width=True, key="btn_dash_cfg_radar"):
+                st.session_state['current_view'] = 'configuracion'
+                st.rerun()
+
+        if st.session_state.get('show_radar_modal', False):
+            opportunity_confirmation_modal(first_opp)
+
+    # Control Interactivo del Daemon de Automatización (Toggle ON/OFF)
+    render_daemon_control()
     
     col_t, col_b = st.columns([7, 2])
     with col_t:
@@ -245,6 +422,25 @@ def view_tender_detail():
     cliente = parsed_data.get("metadata", {}).get("cliente", "Cliente")
     safe_cliente = re.sub(r'[^\w\s-]', '', cliente).strip().replace(' ', '_')[:20]
     
+    # Detección de tareas de IA en segundo plano para esta licitación
+    if is_chat_job_running(tender_id):
+        st_autorefresh(interval=3000, key=f"tender_detail_bg_refresh_{tender_id}")
+        st.markdown(
+            """
+            <div style="background-color: #EFF6FF; border: 1.5px solid #93C5FD; border-left: 5px solid #2563EB; border-radius: 10px; padding: 12px 18px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 4px rgba(37,99,235,0.06);">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <span style="font-size: 1.4rem;">🤖</span>
+                    <div>
+                        <div style="font-weight: 700; color: #1E40AF; font-size: 0.95rem;">Asistente IA generando nueva versión en segundo plano...</div>
+                        <div style="color: #2563EB; font-size: 0.82rem; margin-top: 2px;">El documento se está ensamblando con las instrucciones del pop-up. Esta vista se actualizará automáticamente apenas esté listo.</div>
+                    </div>
+                </div>
+                <span style="background-color: #DBEAFE; color: #1D4ED8; font-size: 0.72rem; font-weight: 800; padding: 4px 12px; border-radius: 20px; letter-spacing: 0.5px;">EN PROCESO</span>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
     # Column configuration
     cols_config = [1.2, 2.4]
         
@@ -287,14 +483,29 @@ def main():
         
         st.markdown("<div style='color: #F8FAFC; font-size: 13px; font-weight: 700; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;'>🤖 IMA Agent</div>", unsafe_allow_html=True)
         
-        if st.button("🏠 Dashboard", use_container_width=True): st.session_state['current_view'] = 'dashboard'
-        if st.button("➕ Nueva Licitación", use_container_width=True): st.session_state['current_view'] = 'nueva_licitacion'
+        if st.button("🏠 Dashboard", use_container_width=True): 
+            st.session_state['current_view'] = 'dashboard'
+            st.rerun()
+        if st.button("➕ Nueva Licitación", use_container_width=True): 
+            st.session_state['current_view'] = 'nueva_licitacion'
+            st.rerun()
+            
+        if st.button("⚙️ Configuración", use_container_width=True):
+            st.session_state['current_view'] = 'configuracion'
+            st.rerun()
+            
+        if st.button("🚪 Cerrar Sesión", use_container_width=True):
+            st.session_state['authenticated'] = False
+            st.session_state.pop('current_user', None)
+            st.session_state['current_view'] = 'dashboard'
+            st.rerun()
         
         st.markdown("<br><br><br><div style='font-size: 11px; color: #94A3B8;'>IMA Servicios Industriales<br>Plataforma Automática V3.0</div>", unsafe_allow_html=True)
 
     if st.session_state['current_view'] == 'dashboard': view_dashboard()
     elif st.session_state['current_view'] == 'nueva_licitacion': view_new_tender()
     elif st.session_state['current_view'] == 'detalle': view_tender_detail()
+    elif st.session_state['current_view'] == 'configuracion': render_view_configuracion(launch_background_worker)
 
 if __name__ == "__main__":
     main()
