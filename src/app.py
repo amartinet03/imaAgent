@@ -10,6 +10,13 @@ import re
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+st.set_page_config(
+    page_title="IMA Agent",
+    page_icon="🤖",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
+
 from src.db.models import (
     init_db, create_tender, get_all_tenders, get_tender, update_tender_parsed_data, 
     add_message, get_messages, delete_tender,
@@ -468,7 +475,6 @@ def main():
     # Iniciar el agente automático en segundo plano
     start_daemon()
     
-    st.set_page_config(page_title="IMA Agent", layout="wide", initial_sidebar_state="expanded")
     apply_theme()
     
     if not st.session_state.get('authenticated', False):
