@@ -96,18 +96,16 @@ def init_db():
     admin_default_hash = hash_password("Ima2026!")
     c.execute("INSERT OR IGNORE INTO users (username, password_hash) VALUES ('admin', ?)", (admin_default_hash,))
 
-    # Poblar portales por defecto si no existen
-    c.execute("SELECT COUNT(*) FROM monitored_portals")
-    if c.fetchone()[0] == 0:
+    # Poblar portales y palabras clave por defecto solo en la primera inicialización
+    c.execute("SELECT value FROM app_settings WHERE key = 'initial_setup_done'")
+    row = c.fetchone()
+    if not row:
         default_portals = [
             ("NA-SA (Nucleoeléctrica Argentina)", "https://www.na-sa.com.ar/proveedores/home/licitaciones/vigentes", "Diaria"),
             ("ARSAT", "https://www.arsat.com.ar/acerca-de-arsat/transparencia-activa/compras-y-contrataciones/", "Diaria")
         ]
         c.executemany("INSERT OR IGNORE INTO monitored_portals (name, url, frequency) VALUES (?, ?, ?)", default_portals)
 
-    # Poblar palabras clave base solicitadas por el usuario
-    c.execute("SELECT COUNT(*) FROM monitored_keywords")
-    if c.fetchone()[0] == 0:
         default_keywords = [
             ("servicio",),
             ("mantenimiento",),
@@ -121,6 +119,8 @@ def init_db():
             ("obra",)
         ]
         c.executemany("INSERT OR IGNORE INTO monitored_keywords (keyword) VALUES (?)", default_keywords)
+
+        c.execute("INSERT INTO app_settings (key, value) VALUES ('initial_setup_done', '1')")
 
     conn.commit()
     conn.close()

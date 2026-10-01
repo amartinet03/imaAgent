@@ -36,7 +36,6 @@ def apply_theme():
         /* Ocultar elementos de Streamlit */
         #MainMenu { visibility: hidden; }
         footer { visibility: hidden; }
-        header { visibility: hidden; } /* Oculta la barra superior default */
         
         /* Paleta y Fondos */
         :root {
@@ -63,6 +62,11 @@ def apply_theme():
             border-right: none;
             min-width: 250px !important;
             max-width: 250px !important;
+        }
+        /* Ocultar botón de expandir y colapsar (Hacer la barra lateral fija) */
+        [data-testid="collapsedControl"],
+        [data-testid="stSidebarCollapseButton"] {
+            display: none !important;
         }
         [data-testid="stSidebar"] * {
             color: #E2E8F0 !important;

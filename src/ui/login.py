@@ -300,6 +300,7 @@ def render_login_page():
                     if verify_user_credentials(user.strip(), password):
                         st.session_state['authenticated'] = True
                         st.session_state['current_user'] = user.strip()
+                        st.query_params["token"] = base64.b64encode(user.strip().encode("utf-8")).decode("utf-8")
                         st.rerun()
                     else:
                         st.error("Credenciales incorrectas.")

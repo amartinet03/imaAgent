@@ -299,12 +299,22 @@ def view_dashboard():
             btn_col1, btn_col2 = st.columns(2, gap="small")
             with btn_col1:
                 is_error = tender['status'] == 'ERROR'
-                if st.button("Abrir 📂", key=f"op_{tender['id']}", use_container_width=True, help="Abrir detalle" if not is_error else "Procesamiento fallido", disabled=is_error):
+                is_processing = tender['status'] == 'PROCESANDO'
+                btn_disabled = is_error or is_processing
+                
+                help_text_abrir = "Abrir detalle"
+                if is_error: help_text_abrir = "Procesamiento fallido"
+                elif is_processing: help_text_abrir = "Análisis en progreso"
+                
+                if st.button("Abrir 📂", key=f"op_{tender['id']}", use_container_width=True, help=help_text_abrir, disabled=btn_disabled):
                     st.session_state['current_tender_id'] = tender['id']
                     st.session_state['current_view'] = 'detalle'
                     st.rerun()
             with btn_col2:
-                if st.button("Borrar 🗑️", key=f"del_{tender['id']}", use_container_width=True, help="Eliminar licitación"):
+                help_text_borrar = "Eliminar licitación"
+                if is_processing: help_text_borrar = "No se puede borrar mientras procesa"
+                
+                if st.button("Borrar 🗑️", key=f"del_{tender['id']}", use_container_width=True, help=help_text_borrar, disabled=is_processing):
                     delete_tender(tender['id'])
                     shutil.rmtree(os.path.join("data", "tenders", str(tender['id'])), ignore_errors=True)
                     st.rerun()
@@ -396,10 +406,6 @@ def view_tender_detail():
     tender = get_tender(tender_id)
     if not tender: return st.error("No existe.")
     
-    # Chat uses dialog now
-    
-    st.markdown(f"<div style='font-size: 13px; color: #2563EB; font-weight: 500;'>Dashboard > Licitaciones > {tender['name']}</div>", unsafe_allow_html=True)
-    
     # Header with toggle button
     h_col1, h_col2 = st.columns([6, 1])
     with h_col1:
@@ -417,9 +423,8 @@ def view_tender_detail():
         st.write("")
                 
     if tender['status'] == 'PROCESANDO':
-        st.info("Procesando en segundo plano...")
-        time.sleep(3)
-        st.rerun()
+        st.info("Procesando en segundo plano... (La pantalla se actualizará automáticamente)")
+        st_autorefresh(interval=3000, key=f"tender_processing_refresh_{tender_id}")
         return
         
     parsed_data = tender.get('parsed_data', {})
@@ -475,8 +480,17 @@ def main():
     # Iniciar el agente automático en segundo plano
     start_daemon()
     
+    if "token" in st.query_params and not st.session_state.get('authenticated', False):
+        try:
+            import base64
+            user = base64.b64decode(st.query_params["token"]).decode("utf-8")
+            st.session_state['authenticated'] = True
+            st.session_state['current_user'] = user
+        except:
+            pass
+
     apply_theme()
-    
+
     if not st.session_state.get('authenticated', False):
         return view_login()
 
@@ -503,6 +517,7 @@ def main():
         if st.button("🚪 Cerrar Sesión", use_container_width=True):
             st.session_state['authenticated'] = False
             st.session_state.pop('current_user', None)
+            st.query_params.clear()
             st.session_state['current_view'] = 'dashboard'
             st.rerun()
         
