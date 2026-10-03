@@ -49,7 +49,19 @@ def view_login():
 
 def launch_background_worker(tender_id):
     worker_script = os.path.join(os.path.dirname(os.path.abspath(__file__)), "background_worker.py")
-    subprocess.Popen([sys.executable, worker_script, str(tender_id)])
+    kwargs = {}
+    if os.name == 'nt':
+        kwargs['creationflags'] = subprocess.CREATE_NEW_PROCESS_GROUP | 0x00000008 # DETACHED_PROCESS
+    else:
+        kwargs['start_new_session'] = True
+        
+    subprocess.Popen(
+        [sys.executable, worker_script, str(tender_id)],
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+        close_fds=True,
+        **kwargs
+    )
 
 @st.dialog("🚨 Oportunidad Detectada por el Radar Web", width="large")
 def opportunity_confirmation_modal(opp):
