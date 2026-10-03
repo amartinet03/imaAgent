@@ -31,7 +31,6 @@ from src.outputs.query_generator import QueryGenerator
 from src.core.chat_modifier import modify_json_with_chat
 from src.ui.theme import apply_theme, render_metric_card, get_progress_bar_html, get_status_badge, render_version_table_header, render_info_list_item
 import streamlit_antd_components as sac
-from streamlit_autorefresh import st_autorefresh
 from src.ui.components import save_uploaded_files
 from src.ui.tabs.tab_documentos import render_tab_documentos
 from src.ui.tabs.tab_ot import render_tab_ot
@@ -198,9 +197,8 @@ def render_daemon_control():
             st.rerun()
 
 
+@st.fragment(run_every="15s")
 def view_dashboard():
-    # Refrescar automáticamente la pantalla cada 15 segundos para ver nuevas licitaciones en tiempo real
-    st_autorefresh(interval=15000, key="dashboard_autorefresh")
     
     st.markdown("<h1>Dashboard de Licitaciones</h1>", unsafe_allow_html=True)
     st.markdown("<p>Monitoreo automático de nuevas oportunidades y estado de tus licitaciones.</p>", unsafe_allow_html=True)
@@ -423,21 +421,29 @@ def view_tender_detail():
         st.write("")
                 
     if tender['status'] == 'PROCESANDO':
-        st.info("Procesando en segundo plano... (La pantalla se actualizará automáticamente)")
-        st_autorefresh(interval=3000, key=f"tender_processing_refresh_{tender_id}")
+        @st.fragment(run_every="3s")
+        def render_processing_view():
+            current_tender = get_tender(tender_id)
+            if current_tender['status'] != 'PROCESANDO':
+                st.rerun()
+            st.info("Procesando en segundo plano... (La pantalla se actualizará automáticamente)")
+        render_processing_view()
         return
-        
-    parsed_data = tender.get('parsed_data', {})
     outputs_dir = os.path.join("data", "tenders", str(tender_id), "outputs")
     os.makedirs(outputs_dir, exist_ok=True)
+    
+    parsed_data = tender.get('parsed_data') or {}
     
     cliente = parsed_data.get("metadata", {}).get("cliente", "Cliente")
     safe_cliente = re.sub(r'[^\w\s-]', '', cliente).strip().replace(' ', '_')[:20]
     
     # Detección de tareas de IA en segundo plano para esta licitación
     if is_chat_job_running(tender_id):
-        st_autorefresh(interval=3000, key=f"tender_detail_bg_refresh_{tender_id}")
-        st.markdown(
+        @st.fragment(run_every="3s")
+        def render_bg_job_alert():
+            if not is_chat_job_running(tender_id):
+                st.rerun()
+            st.markdown(
             """
             <div style="background-color: #EFF6FF; border: 1.5px solid #93C5FD; border-left: 5px solid #2563EB; border-radius: 10px; padding: 12px 18px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 4px rgba(37,99,235,0.06);">
                 <div style="display: flex; align-items: center; gap: 12px;">
@@ -452,6 +458,7 @@ def view_tender_detail():
             """,
             unsafe_allow_html=True
         )
+        render_bg_job_alert()
 
     # Column configuration
     cols_config = [1.2, 2.4]

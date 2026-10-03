@@ -3,8 +3,6 @@ import os
 import glob
 import re
 import time
-from streamlit_autorefresh import st_autorefresh
-
 from src.db.models import get_messages, add_message
 from src.core.chat_worker import is_chat_job_running, start_chat_background_job, get_chat_job_info
 
@@ -29,29 +27,33 @@ def render_chat_interface(tender_id, parsed_data, chat_type):
 
     # Si hay una tarea ejecutándose en segundo plano, refrescar cada 2.5s para mostrar la respuesta
     if job_running:
-        st_autorefresh(interval=2500, key=f"dialog_refresh_{tender_id}_{chat_type}")
-        job_info = get_chat_job_info(tender_id, chat_type) or {}
-        last_prompt = job_info.get("prompt", "")
-        prompt_snippet = f": *\"{last_prompt[:60]}...\"*" if last_prompt else ""
-
-        st.markdown(
-            f"""
-            <div style="background-color: #EFF6FF; border: 1.5px solid #93C5FD; border-left: 4px solid #2563EB; border-radius: 8px; padding: 10px 14px; margin-bottom: 14px;">
-                <div style="display: flex; align-items: center; justify-content: space-between;">
-                    <div style="font-size: 0.88rem; color: #1E40AF; font-weight: 700;">
-                        🤖 Generando nueva versión en segundo plano{prompt_snippet}
+        @st.fragment(run_every="3s")
+        def render_chat_bg_job():
+            if not is_chat_job_running(tender_id, chat_type):
+                st.rerun()
+            job_info = get_chat_job_info(tender_id, chat_type) or {}
+            last_prompt = job_info.get("prompt", "")
+            prompt_snippet = f": *\"{last_prompt[:60]}...\"*" if last_prompt else ""
+    
+            st.markdown(
+                f"""
+                <div style="background-color: #EFF6FF; border: 1.5px solid #93C5FD; border-left: 4px solid #2563EB; border-radius: 8px; padding: 10px 14px; margin-bottom: 14px;">
+                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                        <div style="font-size: 0.88rem; color: #1E40AF; font-weight: 700;">
+                            🤖 Generando nueva versión en segundo plano{prompt_snippet}
+                        </div>
+                        <span style="background-color: #DBEAFE; color: #1D4ED8; font-size: 0.72rem; font-weight: 800; padding: 2px 8px; border-radius: 12px;">
+                            EN PROCESO
+                        </span>
                     </div>
-                    <span style="background-color: #DBEAFE; color: #1D4ED8; font-size: 0.72rem; font-weight: 800; padding: 2px 8px; border-radius: 12px;">
-                        EN PROCESO
-                    </span>
+                    <div style="font-size: 0.8rem; color: #3B82F6; margin-top: 4px;">
+                        Podés cerrar este pop-up tranquilamente; el documento continuará ensamblándose en segundo plano y se creará la nueva versión automáticamente.
+                    </div>
                 </div>
-                <div style="font-size: 0.8rem; color: #3B82F6; margin-top: 4px;">
-                    Podés cerrar este pop-up tranquilamente; el documento continuará ensamblándose en segundo plano y se creará la nueva versión automáticamente.
-                </div>
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
+                """,
+                unsafe_allow_html=True
+            )
+        render_chat_bg_job()
 
     # Historial de mensajes
     messages = get_messages(tender_id, chat_type=chat_type)

@@ -44,12 +44,23 @@ def invoke_with_retry(prompt_value):
             else:
                 raise e
 
-def extract_relevant_paragraphs(chunks):
+def analyze_full_tender(docs):
     """
-    Filtro Inteligente V3: Comprime espacios y reduce a 150k caracteres 
-    para garantizar absolutamente no tocar el techo de 250k tokens.
+    Ejecuta un análisis instantáneo con Pre-Filtrado Heurístico (Mega-Prompt Unificado).
+    Esta versión está altamente optimizada para RAM: procesa on-the-fly sin guardar
+    listas gigantes en memoria, manteniendo la misma lógica original.
     """
+    try:
+        get_anthropic_api_key() # Verificar configuración
+    except Exception as e:
+        return f"**Error de configuración:** {e}"
+
+    if not docs:
+        return "No hay documentos para analizar."
+
+    print("Iniciando Pre-Filtrado Inteligente de texto para velocidad extrema y bajo uso de RAM...")
     import re
+    
     keywords = [
         "plazo", "día", "dias", "meses", "fecha", "penalidad", "multa", "monto", 
         "presupuesto", "requisito", "obligatorio", "garantía", "garantia", "pago", 
@@ -61,74 +72,48 @@ def extract_relevant_paragraphs(chunks):
         "póliza", "notificación", "licitación", "licitacion", "concurso", "expediente",
         "alcance", "objeto", "lugar", "ubicación", "visita", "riesgo", "penalización"
     ]
-    
-    first_chunks = []
-    keyword_chunks = []
-    seen_sources = set()
-    
-    # 1. Separar portadas y párrafos clave
-    for chunk in chunks:
-        texto = chunk.page_content if hasattr(chunk, 'page_content') else str(chunk)
-        # Comprimir todos los múltiples espacios/saltos de línea a uno solo (ahorra miles de tokens inútiles de Excel)
+
+    docs_by_source = {}
+    max_chars = 150000
+
+    # Iteramos on the fly sobre los docs para no cargar todos los chunks en memoria
+    for doc in docs:
+        source = doc.metadata.get("source", "Desconocido") if hasattr(doc, 'metadata') else "Desconocido"
+        if source not in docs_by_source:
+            docs_by_source[source] = {
+                'combined': "",
+                'first_done': False,
+                'done': False
+            }
+            
+        state = docs_by_source[source]
+        if state['done']:
+            continue
+            
+        texto = doc.page_content if hasattr(doc, 'page_content') else str(doc)
         texto = re.sub(r'\s+', ' ', texto).strip()
         
-        source = chunk.metadata.get("source", "Desconocido") if hasattr(chunk, 'metadata') else "Desconocido"
-        
-        if source not in seen_sources:
-            seen_sources.add(source)
-            first_chunks.append(texto)
-        else:
-            chunk_lower = texto.lower()
-            if any(kw in chunk_lower for kw in keywords):
-                keyword_chunks.append(texto)
+        if not texto:
+            continue
             
-    # 2. Ensamblar garantizando primero las portadas (metadata)
-    combined = ""
-    max_chars = 150000
-    
-    for text in first_chunks:
-        if len(combined) + len(text) > max_chars:
-            break
-        combined += text + "\n[PORTADA] "
-        
-    # 3. Rellenar con contexto clave hasta el límite
-    for text in keyword_chunks:
-        if len(combined) + len(text) > max_chars:
-            break
-        combined += text + "\n[...] "
-        
-    return combined
+        if not state['first_done']:
+            if len(state['combined']) + len(texto) > max_chars:
+                state['done'] = True
+            else:
+                state['combined'] += texto + "\n[PORTADA] "
+            state['first_done'] = True
+        else:
+            texto_lower = texto.lower()
+            if any(kw in texto_lower for kw in keywords):
+                if len(state['combined']) + len(texto) > max_chars:
+                    state['done'] = True
+                else:
+                    state['combined'] += texto + "\n[...] "
 
-def analyze_full_tender(docs):
-    """
-    Ejecuta un análisis instantáneo con Pre-Filtrado Heurístico (Mega-Prompt Unificado).
-    """
-    try:
-        get_anthropic_api_key() # Verificar configuración
-    except Exception as e:
-        return f"**Error de configuración:** {e}"
-
-    if not docs:
-        return "No hay documentos para analizar."
-
-    # --- AGRUPAR CHUNKS POR DOCUMENTO ---
-    docs_by_source = {}
-    for doc in docs:
-        source = doc.metadata.get("source", "Desconocido")
-        if source not in docs_by_source:
-            docs_by_source[source] = []
-        docs_by_source[source].append(doc.page_content)
-
-    print("Iniciando Pre-Filtrado Inteligente de texto para velocidad extrema...")
     filtered_docs = []
-    
-    for source, chunks in docs_by_source.items():
-        # Pasar directamente la lista de chunks para mantener el contexto
-        filtered_text = extract_relevant_paragraphs(chunks)
-        
-        # Solo incluir si quedó algo después del filtrado
-        if filtered_text.strip():
-            filtered_docs.append(f"--- DOCUMENTO: {source} ---\n{filtered_text}\n")
+    for source, state in docs_by_source.items():
+        if state['combined'].strip():
+            filtered_docs.append(f"--- DOCUMENTO: {source} ---\n{state['combined']}\n")
 
     combined_text = "\n".join(filtered_docs)
     

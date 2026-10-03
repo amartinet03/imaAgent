@@ -1,6 +1,5 @@
 streamlit
 streamlit-antd-components
-streamlit-autorefresh
 langchain
 langchain-community
 langchain-core
