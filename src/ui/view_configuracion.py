@@ -146,13 +146,17 @@ def render_view_configuracion(launch_worker_callback=None):
                     st.rerun()
 
         opportunities = get_all_opportunities()
-        if not opportunities:
-            st.info("No hay oportunidades detectadas aún. Haz clic en 'Escanear Portales Ahora' para iniciar el rastreo.")
+        # Filtrar las DESCARTADAS de la vista para que el usuario no las vea repetidas,
+        # pero siguen en BD para que el scraper no las vuelva a agregar.
+        visible_opportunities = [opp for opp in opportunities if opp.get("status") != "DESCARTADA"]
+        
+        if not visible_opportunities:
+            st.info("No hay oportunidades pendientes o aprobadas. Haz clic en 'Escanear Portales Ahora' para iniciar el rastreo.")
         else:
-            for opp in opportunities:
+            for opp in visible_opportunities:
                 status = opp.get("status", "PENDIENTE")
-                status_color = "#F59E0B" if status == "PENDIENTE" else ("#10B981" if status == "APROBADA" else "#94A3B8")
-                status_text = "⏳ PENDIENTE DE REVISIÓN" if status == "PENDIENTE" else ("✅ APROBADA (EN PROCESO)" if status == "APROBADA" else "❌ DESCARTADA")
+                status_color = "#F59E0B" if status == "PENDIENTE" else "#10B981"
+                status_text = "⏳ PENDIENTE DE REVISIÓN" if status == "PENDIENTE" else "✅ APROBADA (EN PROCESO)"
 
                 with st.container():
                     st.markdown(

@@ -10,6 +10,21 @@ import re
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+def format_datetime_arg(dt_str):
+    if not dt_str: return ""
+    try:
+        from zoneinfo import ZoneInfo
+        from datetime import datetime, timezone
+        if len(dt_str) > 19:
+            dt_str = dt_str[:19] # Truncate microseconds if any
+        utc_dt = datetime.strptime(dt_str, "%Y-%m-%d %H:%M:%S")
+        utc_dt = utc_dt.replace(tzinfo=timezone.utc)
+        arg_tz = ZoneInfo('America/Argentina/Buenos_Aires')
+        arg_dt = utc_dt.astimezone(arg_tz)
+        return arg_dt.strftime("%d/%m/%Y %H:%M")
+    except Exception:
+        return dt_str
+
 st.set_page_config(
     page_title="IMA Agent",
     page_icon="🤖",
@@ -49,9 +64,11 @@ def view_login():
 
 def launch_background_worker(tender_id):
     worker_script = os.path.join(os.path.dirname(os.path.abspath(__file__)), "background_worker.py")
+    log_file_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data", f"worker_{tender_id}.log")
+    
     kwargs = {}
     if os.name == 'nt':
-        kwargs['creationflags'] = subprocess.CREATE_NEW_PROCESS_GROUP | 0x00000008 # DETACHED_PROCESS
+        kwargs['creationflags'] = subprocess.CREATE_NO_WINDOW
     else:
         kwargs['start_new_session'] = True
         
@@ -296,13 +313,13 @@ def view_dashboard():
         col1, col2, col3, col4, col5 = st.columns([1.8, 1.2, 1.2, 2.0, 1.8], gap="small")
         with col1:
             st.markdown(f"<div style='font-weight: 600; color: #0F172A; display: flex; align-items: center; gap: 10px;'><div style='width: 32px; height: 32px; border-radius: 50%; border: 1px solid #E2E8F0; display:flex; align-items:center; justify-content:center;'>🏢</div> {tender['name']}</div>", unsafe_allow_html=True)
-            st.caption(f"Creada: {tender['created_at']}")
+            st.caption(f"Creada: {format_datetime_arg(tender['created_at'])}")
         with col2:
             st.markdown(f"<div style='text-align: center;'>{get_status_badge(tender['status'])}</div>", unsafe_allow_html=True)
         with col3:
-            st.markdown(f"<div style='text-align: center; font-size: 13px; font-weight: 600; color: #0F172A;'>{tender['created_at'][:10]}<br><span style='font-size: 11px; color: #64748B; font-weight: 400;'>Hace 1 hora</span></div>", unsafe_allow_html=True)
+            st.markdown(f"<div style='text-align: center; font-size: 13px; font-weight: 600; color: #0F172A;'>{format_datetime_arg(tender['created_at'])}</div>", unsafe_allow_html=True)
         with col4:
-            pct = 100 if tender['status'] == 'COMPLETADO' else 45 if tender['status'] == 'PROCESANDO' else 0
+            pct = tender.get('progress') if tender.get('progress') is not None else (100 if tender['status'] == 'COMPLETADO' else 45 if tender['status'] == 'PROCESANDO' else 0)
             st.markdown(f"<div style='display: flex; justify-content: center; margin-top: 8px;'>{get_progress_bar_html(pct, tender['status'])}</div>", unsafe_allow_html=True)
         with col5:
             # Sub-columnas para que los botones queden lado a lado sin CSS pesado
@@ -424,7 +441,7 @@ def view_tender_detail():
                 <div style="background: #2563EB; width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; color: white;">📁</div>
                 <div>
                     <h1 style="margin: 0; font-size: 28px; line-height: 1;">{tender['name']}</h1>
-                    <div style="font-size: 12px; color: #64748B; margin-top: 4px;">Creada: {tender['created_at']} | Última actualización: Reciente</div>
+                    <div style="font-size: 12px; color: #64748B; margin-top: 4px;">Creada: {format_datetime_arg(tender['created_at'])} | Última actualización: Reciente</div>
                 </div>
             </div>
             <br/>
@@ -438,7 +455,10 @@ def view_tender_detail():
             current_tender = get_tender(tender_id)
             if current_tender['status'] != 'PROCESANDO':
                 st.rerun()
-            st.info("Procesando en segundo plano... (La pantalla se actualizará automáticamente)")
+            progress_val = current_tender.get('progress', 0)
+            progress_msg = current_tender.get('progress_msg', 'Procesando en segundo plano...')
+            st.info(f"⏳ **{progress_msg}** (La pantalla se actualizará automáticamente)")
+            st.progress(progress_val)
         render_processing_view()
         return
     outputs_dir = os.path.join("data", "tenders", str(tender_id), "outputs")

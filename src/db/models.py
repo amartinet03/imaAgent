@@ -19,6 +19,8 @@ def init_db():
             status TEXT DEFAULT 'PENDIENTE',
             parsed_data TEXT,
             error_message TEXT,
+            progress INTEGER DEFAULT 0,
+            progress_msg TEXT DEFAULT 'Iniciando...',
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
     ''')
@@ -121,6 +123,15 @@ def init_db():
         c.executemany("INSERT OR IGNORE INTO monitored_keywords (keyword) VALUES (?)", default_keywords)
 
         c.execute("INSERT INTO app_settings (key, value) VALUES ('initial_setup_done', '1')")
+
+    try:
+        c.execute("ALTER TABLE tenders ADD COLUMN progress INTEGER DEFAULT 0")
+    except sqlite3.OperationalError:
+        pass
+    try:
+        c.execute("ALTER TABLE tenders ADD COLUMN progress_msg TEXT DEFAULT 'Iniciando...'")
+    except sqlite3.OperationalError:
+        pass
 
     conn.commit()
     conn.close()
@@ -247,6 +258,13 @@ def update_tender_status(tender_id: int, status: str, parsed_data: dict = None, 
     else:
         c.execute("UPDATE tenders SET status = ? WHERE id = ?", (status, tender_id))
         
+    conn.commit()
+    conn.close()
+
+def update_tender_progress(tender_id: int, progress: int, msg: str):
+    conn = get_connection()
+    c = conn.cursor()
+    c.execute("UPDATE tenders SET progress = ?, progress_msg = ? WHERE id = ?", (progress, msg, tender_id))
     conn.commit()
     conn.close()
 

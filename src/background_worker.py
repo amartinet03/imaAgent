@@ -5,7 +5,7 @@ import traceback
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from src.db.models import update_tender_status
+from src.db.models import update_tender_status, update_tender_progress
 from src.ingestion.local_parser import process_file_to_langchain_docs
 from src.core.analyzer import create_vector_store, analyze_full_tender
 from src.outputs.word_generator import WordGenerator
@@ -31,6 +31,7 @@ def process_tender(tender_id: int):
             return
 
         print(f"Iniciando procesamiento de Licitacion {tender_id}...")
+        update_tender_progress(tender_id, 10, "Leyendo y extrayendo texto de documentos...")
         
         # 1. Leer y extraer texto de todos los documentos
         all_docs = []
@@ -47,6 +48,7 @@ def process_tender(tender_id: int):
 
         # 2. Ejecutar procesamiento en paralelo
         print("Ejecutando procesamiento IA (Nube) y Vectorial (Local) en paralelo...")
+        update_tender_progress(tender_id, 40, "Analizando con IA y creando vectores (Esto puede tardar unos minutos)...")
         with concurrent.futures.ThreadPoolExecutor() as executor:
             future_vector = executor.submit(create_vector_store, all_docs, persist_directory=chroma_dir)
             future_analysis = executor.submit(analyze_full_tender, all_docs)
@@ -132,7 +134,7 @@ def process_tender(tender_id: int):
                 print(f"Error generando documentos: {e}")
                 # Continuamos de todos modos para que el estado sea COMPLETADO
             # -------------------------------------------
-            
+            update_tender_progress(tender_id, 100, "¡Análisis completado!")
             update_tender_status(tender_id, "COMPLETADO", parsed_data=resultado)
             
             # Enviar notificación por correo

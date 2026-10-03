@@ -34,7 +34,26 @@ class WebTenderScanner:
             print(f"Error fetching {url}: {e}")
             return ""
 
+    def _is_valid_tender(self, text: str) -> bool:
+        import datetime
+        current_year = str(datetime.datetime.now().year)
+        text_lower = text.lower()
+        
+        # 1. Excluir licitaciones que ya cerraron o terminaron
+        closed_words = ["cerrada", "adjudicada", "desierta", "cancelada", "finalizada", "preadjudicada", "pre-adjudicada", "suspendida"]
+        if any(word in text_lower for word in closed_words):
+            return False
+            
+        # 2. Requerir que mencione el año actual (ej. en el número de expediente, fecha de apertura, etc.)
+        if current_year not in text:
+            return False
+            
+        return True
+
     def _check_keywords(self, text: str, keywords: list) -> list:
+        if not self._is_valid_tender(text):
+            return []
+            
         text_lower = text.lower()
         matched = []
         for kw in keywords:
@@ -60,7 +79,7 @@ class WebTenderScanner:
                 tipo = cells[2]
                 apertura = cells[3]
 
-                full_text = f"{descripcion} {tipo}"
+                full_text = f"{descripcion} {tipo} {expediente} {apertura}"
                 matched = self._check_keywords(full_text, keywords)
                 if matched:
                     title = f"{tipo}: {descripcion} (Exp. {expediente})"
