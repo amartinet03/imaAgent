@@ -78,6 +78,8 @@ def launch_background_worker(tender_id):
     try:
         subprocess.Popen(
             [sys.executable, worker_script, str(tender_id)],
+            stdout=sys.stdout,
+            stderr=sys.stderr,
             close_fds=True,
             **kwargs
         )
