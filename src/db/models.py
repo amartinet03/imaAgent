@@ -241,7 +241,32 @@ def get_tender(tender_id: int):
     if row:
         tender = dict(row)
         if tender['parsed_data']:
-            tender['parsed_data'] = json.loads(tender['parsed_data'])
+            pd_obj = json.loads(tender['parsed_data'])
+            
+            # Normalizar inconsistencias y consultas
+            if "inconsistencias" not in pd_obj and "legales" in pd_obj and "contradicciones" in pd_obj["legales"]:
+                pd_obj["inconsistencias"] = [
+                    {
+                        "tipo": "Contradicción",
+                        "documentos_conflicto": [],
+                        "descripcion_pregunta": c,
+                        "descripcion": c,
+                        "cita_textual": "N/A",
+                        "pagina_origen": "N/A"
+                    } for c in pd_obj["legales"]["contradicciones"]
+                ]
+            if "consultas_generales" not in pd_obj and "legales" in pd_obj and "consultas_rfi" in pd_obj["legales"]:
+                pd_obj["consultas_generales"] = [
+                    {
+                        "categoria": "General",
+                        "archivo_origen": "N/A",
+                        "consulta": c,
+                        "cita_textual": "N/A",
+                        "pagina_origen": "N/A"
+                    } for c in pd_obj["legales"]["consultas_rfi"]
+                ]
+                
+            tender['parsed_data'] = pd_obj
         return tender
     return None
 

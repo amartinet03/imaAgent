@@ -25,10 +25,10 @@ def invoke_with_retry(prompt_value):
     for intento in range(max_intentos):
         try:
             print(f"  -> Intento {intento+1} enviando a Claude...")
-            # Recomendamos claude-sonnet-5
+            # Usar claude-sonnet-5 que es el válido en este entorno
             modelo = "claude-sonnet-5" 
             print(f"  -> Utilizando modelo: {modelo}")
-            llm = ChatAnthropic(model_name=modelo, anthropic_api_key=api_key)
+            llm = ChatAnthropic(model_name=modelo, anthropic_api_key=api_key, max_tokens=8192)
             return llm.invoke(prompt_value)
         except Exception as e:
             error_msg = str(e)
@@ -235,14 +235,21 @@ def analyze_full_tender(docs):
         if match:
             json_str = match.group(1)
         else:
-            json_str = content
+            # Fallback: buscar el primer '{' y el último '}'
+            start_idx = content.find('{')
+            end_idx = content.rfind('}')
+            if start_idx != -1 and end_idx != -1 and end_idx > start_idx:
+                json_str = content[start_idx:end_idx+1]
+            else:
+                json_str = content
             
         try:
-            parsed_data = json.loads(json_str)
+            import json_repair
+            parsed_data = json_repair.loads(json_str)
             return parsed_data
-        except json.JSONDecodeError:
+        except Exception as e:
             # Fallback en caso de que el modelo haya devuelto texto
-            print("No se pudo parsear como JSON, devolviendo crudo.")
+            print(f"No se pudo parsear como JSON, devolviendo crudo. Error: {e}")
             return {"error": "Formato inválido", "raw": content}
             
     except Exception as e:

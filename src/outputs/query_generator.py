@@ -105,39 +105,41 @@ class QueryGenerator:
         contador_global = 1
 
         # Llenar Tabla de Consultas Generales
-        if tabla_consultas and "consultas_generales" in parsed_data:
+        if tabla_consultas:
             clear_table(tabla_consultas)
-            consultas = parsed_data["consultas_generales"]
-            
-            for c in consultas:
-                row_cells = tabla_consultas.add_row().cells
-                if len(row_cells) >= 4:
-                    set_cell_content(row_cells[0], str(contador_global), is_bold=True, align=WD_ALIGN_PARAGRAPH.CENTER)
-                    set_cell_content(row_cells[1], str(c.get("categoria", "")), is_bold=False, align=WD_ALIGN_PARAGRAPH.CENTER)
-                    archivo_info = f"{c.get('archivo_origen', '')}\nPág: {c.get('pagina_origen', 'N/A')}\n\"{c.get('cita_textual', 'N/A')}\""
-                    set_cell_content(row_cells[2], archivo_info, is_bold=False)
-                    set_cell_content(row_cells[3], str(c.get("consulta", "")), is_bold=False)
-                    contador_global += 1
+            if "consultas_generales" in parsed_data:
+                consultas = parsed_data["consultas_generales"]
+                
+                for c in consultas:
+                    row_cells = tabla_consultas.add_row().cells
+                    if len(row_cells) >= 4:
+                        set_cell_content(row_cells[0], str(contador_global), is_bold=True, align=WD_ALIGN_PARAGRAPH.CENTER)
+                        set_cell_content(row_cells[1], str(c.get("categoria", "")), is_bold=False, align=WD_ALIGN_PARAGRAPH.CENTER)
+                        archivo_info = f"{c.get('archivo_origen', '')}\nPág: {c.get('pagina_origen', 'N/A')}\n\"{c.get('cita_textual', 'N/A')}\""
+                        set_cell_content(row_cells[2], archivo_info, is_bold=False)
+                        set_cell_content(row_cells[3], str(c.get("consulta", "")), is_bold=False)
+                        contador_global += 1
 
         # Llenar Tabla de Inconsistencias
-        if tabla_inconsistencias and "inconsistencias" in parsed_data:
+        if tabla_inconsistencias:
             clear_table(tabla_inconsistencias)
-            incons = parsed_data["inconsistencias"]
-            
-            for i in incons:
-                row_cells = tabla_inconsistencias.add_row().cells
-                if len(row_cells) >= 4:
-                    set_cell_content(row_cells[0], str(contador_global), is_bold=True, align=WD_ALIGN_PARAGRAPH.CENTER)
-                    set_cell_content(row_cells[1], str(i.get("tipo", "Inconsistencia")), is_bold=False, align=WD_ALIGN_PARAGRAPH.CENTER)
-                    
-                    # Formateo correcto: si es lista, unir con comas
-                    docs_conflicto = i.get("documentos_conflicto", "")
-                    if isinstance(docs_conflicto, list):
-                        docs_conflicto = ", ".join(docs_conflicto)
-                    archivo_info = f"{docs_conflicto}\nPág: {i.get('pagina_origen', 'N/A')}\n\"{i.get('cita_textual', 'N/A')}\""
-                    set_cell_content(row_cells[2], archivo_info, is_bold=False)
-                    set_cell_content(row_cells[3], str(i.get("descripcion_pregunta", "")), is_bold=False)
-                    contador_global += 1
+            if "inconsistencias" in parsed_data:
+                incons = parsed_data["inconsistencias"]
+                
+                for i in incons:
+                    row_cells = tabla_inconsistencias.add_row().cells
+                    if len(row_cells) >= 4:
+                        set_cell_content(row_cells[0], str(contador_global), is_bold=True, align=WD_ALIGN_PARAGRAPH.CENTER)
+                        set_cell_content(row_cells[1], str(i.get("tipo", "Inconsistencia")), is_bold=False, align=WD_ALIGN_PARAGRAPH.CENTER)
+                        
+                        # Formateo correcto: si es lista, unir con comas
+                        docs_conflicto = i.get("documentos_conflicto", "")
+                        if isinstance(docs_conflicto, list):
+                            docs_conflicto = ", ".join(docs_conflicto)
+                        archivo_info = f"{docs_conflicto}\nPág: {i.get('pagina_origen', 'N/A')}\n\"{i.get('cita_textual', 'N/A')}\""
+                        set_cell_content(row_cells[2], archivo_info, is_bold=False)
+                        set_cell_content(row_cells[3], str(i.get("descripcion_pregunta", "")), is_bold=False)
+                        contador_global += 1
                     
         # Al hacer save a 'output_path', mantenemos intacta la plantilla original.
         doc.save(output_path)
