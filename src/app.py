@@ -54,7 +54,9 @@ from src.ui.tabs.tab_eco import render_tab_eco
 from src.core.chat_worker import is_chat_job_running
 
 # Inicializar Base de Datos
+print("=== [IMA-AGENT DEBUG] Inicializando Base de Datos ===", flush=True)
 init_db()
+print("=== [IMA-AGENT DEBUG] Base de Datos Inicializada ===", flush=True)
 
 from src.ui.login import render_login_page
 
@@ -72,11 +74,16 @@ def launch_background_worker(tender_id):
     else:
         kwargs['start_new_session'] = True
         
-    subprocess.Popen(
-        [sys.executable, worker_script, str(tender_id)],
-        close_fds=True,
-        **kwargs
-    )
+    print(f"=== [IMA-AGENT DEBUG] Ejecutando Popen para worker con tender_id {tender_id} ===", flush=True)
+    try:
+        subprocess.Popen(
+            [sys.executable, worker_script, str(tender_id)],
+            close_fds=True,
+            **kwargs
+        )
+        print("=== [IMA-AGENT DEBUG] Popen ejecutado con éxito ===", flush=True)
+    except Exception as e:
+        print(f"=== [IMA-AGENT DEBUG] Popen falló: {e} ===", flush=True)
 
 @st.dialog("🚨 Oportunidad Detectada por el Radar Web", width="large")
 def opportunity_confirmation_modal(opp):
@@ -351,12 +358,21 @@ def view_new_tender():
     tender_name = st.text_input("Nombre de la Licitación / Proyecto", placeholder="Ej: Licitación YPF Mantenimiento")
     uploaded_files = st.file_uploader("Arrastra los pliegos aquí", type=["pdf", "docx", "xlsx", "xls"], accept_multiple_files=True)
     if st.button("Procesar Archivos en Segundo Plano", type="primary", use_container_width=True):
+        print(f"=== [IMA-AGENT DEBUG] Botón presionado para crear licitación: {tender_name} ===", flush=True)
         if not tender_name or not uploaded_files:
             st.warning("Faltan datos.")
             return
         with st.spinner("Creando entorno seguro..."):
+            print(f"=== [IMA-AGENT DEBUG] Creando tender en DB ===", flush=True)
             tender_id = create_tender(tender_name)
-            save_uploaded_files(uploaded_files, tender_id)
+            print(f"=== [IMA-AGENT DEBUG] Guardando archivos subidos para tender {tender_id} ===", flush=True)
+            try:
+                save_uploaded_files(uploaded_files, tender_id)
+                print(f"=== [IMA-AGENT DEBUG] Archivos guardados correctamente ===", flush=True)
+            except Exception as e:
+                print(f"=== [IMA-AGENT DEBUG] Error al guardar archivos: {e} ===", flush=True)
+                
+            print(f"=== [IMA-AGENT DEBUG] Lanzando worker ===", flush=True)
             launch_background_worker(tender_id)
         st.success("¡Archivos enviados a procesamiento!")
         time.sleep(1)
@@ -508,15 +524,21 @@ def view_tender_detail():
         render_tab_eco(tender_id, parsed_data, outputs_dir, safe_cliente, cols_config)
 @st.cache_resource
 def start_daemon():
+    print("=== [IMA-AGENT DEBUG] Iniciando Daemon (start_daemon) ===", flush=True)
     daemon_script = os.path.join(os.path.dirname(os.path.abspath(__file__)), "daemon.py")
-    # Lanzar el daemon compartiendo la salida con la terminal de Streamlit
-    subprocess.Popen([sys.executable, daemon_script])
+    try:
+        subprocess.Popen([sys.executable, daemon_script])
+        print("=== [IMA-AGENT DEBUG] Daemon lanzado correctamente ===", flush=True)
+    except Exception as e:
+        print(f"=== [IMA-AGENT DEBUG] Error al lanzar daemon: {e} ===", flush=True)
     return True
 
 def main():
+    print("=== [IMA-AGENT DEBUG] Iniciando aplicación (main) ===", flush=True)
     # Iniciar el agente automático en segundo plano
     start_daemon()
     
+    print(f"=== [IMA-AGENT DEBUG] st.session_state actual: {st.session_state} ===", flush=True)
     if "token" in st.query_params and not st.session_state.get('authenticated', False):
         try:
             import base64
@@ -560,10 +582,12 @@ def main():
         
         st.markdown("<br><br><br><div style='font-size: 11px; color: #94A3B8;'>IMA Servicios Industriales<br>Plataforma Automática V3.0</div>", unsafe_allow_html=True)
 
+    print(f"=== [IMA-AGENT DEBUG] Renderizando vista: {st.session_state.get('current_view')} ===", flush=True)
     if st.session_state['current_view'] == 'dashboard': view_dashboard()
     elif st.session_state['current_view'] == 'nueva_licitacion': view_new_tender()
     elif st.session_state['current_view'] == 'detalle': view_tender_detail()
     elif st.session_state['current_view'] == 'configuracion': render_view_configuracion(launch_background_worker)
+    print("=== [IMA-AGENT DEBUG] Fin de renderizado de la vista ===", flush=True)
 
 if __name__ == "__main__":
     main()

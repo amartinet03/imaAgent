@@ -6,12 +6,15 @@ import datetime
 DB_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'data', 'tender_db.sqlite')
 
 def get_connection():
+    print(f"=== [IMA-AGENT DEBUG] Obteniendo conexión DB en: {DB_PATH} ===", flush=True)
     os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
     return sqlite3.connect(DB_PATH, check_same_thread=False)
 
 def init_db():
+    print("=== [IMA-AGENT DEBUG] Entrando a init_db() ===", flush=True)
     conn = get_connection()
     c = conn.cursor()
+    print("=== [IMA-AGENT DEBUG] Ejecutando creación de tablas... ===", flush=True)
     c.execute('''
         CREATE TABLE IF NOT EXISTS tenders (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -135,6 +138,7 @@ def init_db():
 
     conn.commit()
     conn.close()
+    print("=== [IMA-AGENT DEBUG] Fin de init_db() exitoso ===", flush=True)
 
 def hash_password(password: str) -> str:
     try:

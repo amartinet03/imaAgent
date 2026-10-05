@@ -13,6 +13,7 @@ from src.outputs.query_generator import QueryGenerator
 import re
 
 def process_tender(tender_id: int):
+    print(f"=== [IMA-AGENT DEBUG] Background worker ejecutándose para tender_id: {tender_id} ===", flush=True)
     try:
         from src.db.models import get_tender
         existing_tender = get_tender(tender_id)
