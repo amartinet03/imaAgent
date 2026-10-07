@@ -26,6 +26,7 @@ class WordGenerator:
         2. LISTAS Y VIÑETAS: Cada vez que enumeres algo (tareas, perfiles, herramientas), usa viñetas (guiones -). Asegúrate de que quede un salto de línea (\n) entre los ítems para que no quede un muro de texto.
         3. NO USES MARKDOWN: Como este texto se inyectará en texto plano en Word, NO uses tablas Markdown (|---|) ni negritas (**). Para las tablas, simplemente descríbelas como listas.
         4. DATOS DUROS: Extrae exactamente el alcance, horarios y requerimientos. Si no pide algo explícitamente, responde "Conforme a estándares y requerimientos del cliente".
+        5. SÉ CONCISO Y BREVE: Resumen directo al punto. Evita descripciones largas que superen el límite de tokens, ya que romperá el formato JSON. Párrafos cortos.
         
         A partir de los siguientes datos extraídos del pliego, debes generar un ÚNICO objeto JSON estricto con los siguientes campos listos para inyectar en Word:
         - "TITULO_OBRA": Extrae o deduce el nombre oficial corto del servicio a cotizar (Ej: "Obras Civiles Menores", "Mantenimiento Mecánico").

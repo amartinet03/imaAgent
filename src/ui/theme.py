@@ -11,8 +11,8 @@ def apply_theme():
 
     container_rules = """
         .stApp .block-container {
-            padding-top: 2rem !important;
-            padding-bottom: 2rem !important;
+            padding-top: 0.5rem !important;
+            padding-bottom: 1rem !important;
             max-width: 95% !important;
         }
     """ if is_auth else """
@@ -33,9 +33,10 @@ def apply_theme():
             font-family: 'Inter', sans-serif;
         }
 
-        /* Ocultar elementos de Streamlit */
+        /* Ocultar barra superior de Streamlit (Deploy, menú y running man) */
         #MainMenu { visibility: hidden; }
         footer { visibility: hidden; }
+        [data-testid="stHeader"] { display: none !important; }
         
         /* Paleta y Fondos */
         :root {
@@ -155,6 +156,15 @@ def apply_theme():
             font-weight: 700 !important;
             letter-spacing: -0.025em;
         }
+        
+        /* Ocultar el ícono de enlace (anchor) que aparece al lado de los títulos */
+        a.header-anchor {
+            display: none !important;
+        }
+        .stMarkdown h1 a, .stMarkdown h2 a, .stMarkdown h3 a {
+            display: none !important;
+        }
+        
         p {
             color: var(--text-muted);
         }
@@ -178,6 +188,7 @@ def apply_theme():
         div[data-testid="stFormSubmitInstructions"] {
             display: none !important;
         }
+        
         </style>
     """
 

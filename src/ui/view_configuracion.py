@@ -12,7 +12,9 @@ from src.db.models import (
     update_opportunity_status,
     create_tender,
     verify_user_credentials,
-    update_user_password
+    update_user_password,
+    get_daemon_settings,
+    set_daemon_setting
 )
 from src.core.web_scanner import WebTenderScanner
 
@@ -30,10 +32,11 @@ def render_view_configuracion(launch_worker_callback=None):
         unsafe_allow_html=True
     )
 
-    tab_portales, tab_keywords, tab_radar, tab_password = st.tabs([
+    tab_portales, tab_keywords, tab_radar, tab_daemon, tab_password = st.tabs([
         "🌐 Páginas Web Monitoreadas",
         "🏷️ Palabras Clave de Filtrado",
         "📡 Radar y Oportunidades Detectadas",
+        "⚙️ Automatización (Daemon)",
         "🔒 Cambiar Contraseña"
     ])
 
@@ -220,7 +223,47 @@ def render_view_configuracion(launch_worker_callback=None):
                                 st.rerun()
 
     # =========================================================================
-    # TAB 4: SEGURIDAD Y CAMBIO DE CONTRASEÑA
+    # TAB 4: AUTOMATIZACIÓN (DAEMON)
+    # =========================================================================
+    with tab_daemon:
+        st.markdown("### ⚙️ Automatización (Daemon)")
+        st.markdown("Activa o desactiva de forma granular los módulos de automatización del sistema en segundo plano.")
+        
+        settings = get_daemon_settings()
+        
+        with st.container():
+            st.markdown("<div style='border: 1px solid #E2E8F0; padding: 15px; border-radius: 8px; margin-bottom: 20px; background: #F8FAFC;'>", unsafe_allow_html=True)
+            
+            c_mail, c_sp, c_pipe = st.columns(3)
+            
+            with c_mail:
+                st.markdown("**📩 Búsqueda en Mail**")
+                st.caption("Monitorea M365 por pliegos nuevos.")
+                mail_t = st.toggle("Activar Mail", value=settings['mail'], key="t_mail")
+                if mail_t != settings['mail']:
+                    set_daemon_setting("mail", mail_t)
+                    st.rerun()
+            
+            with c_sp:
+                st.markdown("**📁 Creación SharePoint**")
+                st.caption("Crea la estructura de carpetas automáticamente.")
+                sp_t = st.toggle("Activar SharePoint", value=settings['sharepoint'], key="t_sp")
+                if sp_t != settings['sharepoint']:
+                    set_daemon_setting("sharepoint", sp_t)
+                    st.rerun()
+            
+            with c_pipe:
+                st.markdown("**🤝 Oportunidades Pipedrive**")
+                st.caption("Crea el Deal (Negocio) en Pipedrive.")
+                pipe_t = st.toggle("Activar Pipedrive", value=settings['pipedrive'], key="t_pipe")
+                if pipe_t != settings['pipedrive']:
+                    set_daemon_setting("pipedrive", pipe_t)
+                    st.rerun()
+                    
+            st.markdown("</div>", unsafe_allow_html=True)
+
+    # =========================================================================
+    # TAB 5: SEGURIDAD Y CAMBIO DE CONTRASEÑA
     # =========================================================================
     with tab_password:
         st.markdown("### 🔒 Seguridad de la Cuenta y Cambio de Contraseña")

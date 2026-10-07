@@ -37,7 +37,7 @@ def render_tab_eco(tender_id, parsed_data, outputs_dir, safe_cliente, cols_confi
                             from src.core.analyzer import get_anthropic_api_key
                             from langchain_anthropic import ChatAnthropic
                             
-                            llm = ChatAnthropic(model_name="claude-3-5-sonnet-20240620", anthropic_api_key=get_anthropic_api_key())
+                            llm = ChatAnthropic(model_name=os.getenv("ANTHROPIC_MODEL", "claude-sonnet-5-5"), anthropic_api_key=get_anthropic_api_key())
                             generator = ExcelGenerator(llm_client=llm)
                             
                             report = generator.validate_cost_excel({"parsed_data": parsed_data}, temp_path)
@@ -86,7 +86,7 @@ def render_tab_eco(tender_id, parsed_data, outputs_dir, safe_cliente, cols_confi
                         try:
                             from src.core.analyzer import get_anthropic_api_key
                             from langchain_anthropic import ChatAnthropic
-                            llm_chat = ChatAnthropic(model_name="claude-3-5-sonnet-20240620", anthropic_api_key=get_anthropic_api_key())
+                            llm_chat = ChatAnthropic(model_name=os.getenv("ANTHROPIC_MODEL", "claude-sonnet-5-5"), anthropic_api_key=get_anthropic_api_key())
                             
                             context = f"Eres un asistente experto validando costos de licitaciones.\nDatos extraídos del pliego: {parsed_data}\n\nPregunta del usuario: {prompt}"
                             response = llm_chat.invoke(context).content
@@ -123,7 +123,7 @@ def render_tab_eco(tender_id, parsed_data, outputs_dir, safe_cliente, cols_confi
                         try:
                             from src.core.analyzer import get_anthropic_api_key
                             from langchain_anthropic import ChatAnthropic
-                            llm = ChatAnthropic(model_name="claude-3-5-sonnet-20240620", anthropic_api_key=get_anthropic_api_key())
+                            llm = ChatAnthropic(model_name=os.getenv("ANTHROPIC_MODEL", "claude-sonnet-5-5"), anthropic_api_key=get_anthropic_api_key())
                             generator = ExcelGenerator(llm_client=llm)
                         except Exception as e:
                             st.warning("No se pudo iniciar LLM para búsqueda de precios. Fallback a generador simple.")

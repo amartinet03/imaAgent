@@ -61,6 +61,12 @@ print("=== [IMA-AGENT DEBUG] Base de Datos Inicializada ===", flush=True)
 from src.ui.login import render_login_page
 
 # --- Autenticación ---
+
+def navigate_to(view_name):
+    st.session_state['current_view'] = view_name
+    st.session_state['show_radar_modal'] = False
+    st.rerun()
+
 def view_login():
     render_login_page()
 
@@ -78,8 +84,8 @@ def launch_background_worker(tender_id):
     try:
         subprocess.Popen(
             [sys.executable, worker_script, str(tender_id)],
-            stdout=sys.stdout,
-            stderr=sys.stderr,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
             close_fds=True,
             **kwargs
         )
@@ -146,94 +152,9 @@ def opportunity_confirmation_modal(opp):
             st.rerun()
 
 
-def render_daemon_control():
-    """
-    Componente interactivo para activar o desactivar el Daemon de Automatización.
-    Por defecto está apagado. Cuando se activa, el servicio en segundo plano:
-    1. Busca licitaciones en la bandeja de entrada del correo (Microsoft 365).
-    2. Crea la estructura completa de carpetas en SharePoint.
-    3. Registra el negocio en Pipedrive CRM.
-    4. Descarga pliegos y lanza el análisis técnico con Inteligencia Artificial.
-    """
-    daemon_active = is_daemon_active()
-
-    if daemon_active:
-        card_bg = "#F0FDF4"
-        card_border = "#86EFAC"
-        badge_bg = "#DCFCE7"
-        badge_color = "#15803D"
-        icon_status = "🟢"
-        badge_label = "AUTOMATIZACIÓN ACTIVA (ON)"
-        status_description = (
-            "<strong>⚡ El Daemon de Automatización está corriendo en segundo plano:</strong> "
-            "Revisa continuamente el correo electrónico (Microsoft 365) para detectar pliegos y llamados a licitación. "
-            "Al encontrar una oportunidad, crea de inmediato la estructura en <strong>SharePoint</strong>, "
-            "genera el negocio en <strong>Pipedrive CRM</strong> y dispara el análisis de requerimientos con <strong>Inteligencia Artificial</strong>."
-        )
-    else:
-        card_bg = "#F8FAFC"
-        card_border = "#CBD5E1"
-        badge_bg = "#F1F5F9"
-        badge_color = "#64748B"
-        icon_status = "⚪"
-        badge_label = "AUTOMATIZACIÓN EN PAUSA (OFF)"
-        status_description = (
-            "<strong>⏸️ Daemon en modo seguro (Apagado por defecto):</strong> "
-            "No se revisarán correos entrantes ni se crearán carpetas en <strong>SharePoint</strong> ni negocios en <strong>Pipedrive</strong> "
-            "automáticamente. Activá el interruptor para iniciar el monitoreo y sincronización automática."
-        )
-
-    st.markdown(
-        f"""
-        <div style="background-color: {card_bg}; border: 1.5px solid {card_border}; border-radius: 12px; padding: 16px 20px; margin: 15px 0 10px 0; box-shadow: 0 1px 3px rgba(0,0,0,0.02);">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                <div style="display: flex; align-items: center; gap: 8px;">
-                    <span style="font-size: 1.2rem;">{icon_status}</span>
-                    <span style="font-weight: 700; color: #0F172A; font-size: 1rem;">Daemon de Automatización de Licitaciones</span>
-                </div>
-                <span style="background-color: {badge_bg}; color: {badge_color}; font-size: 0.72rem; font-weight: 800; padding: 4px 12px; border-radius: 20px; letter-spacing: 0.5px; border: 1px solid {card_border};">
-                    {badge_label}
-                </span>
-            </div>
-            <div style="color: #475569; font-size: 0.86rem; line-height: 1.55; margin-bottom: 12px;">
-                {status_description}
-            </div>
-            <div style="display: flex; gap: 16px; align-items: center; font-size: 0.8rem; color: #64748B; padding-top: 8px; border-top: 1px dashed {card_border};">
-                <span>📩 Búsqueda en Mail: <strong style="color: {'#16A34A' if daemon_active else '#64748B'};">{'Activa' if daemon_active else 'En pausa'}</strong></span>
-                <span>📁 Creación SharePoint: <strong style="color: {'#16A34A' if daemon_active else '#64748B'};">{'Activa' if daemon_active else 'En espera'}</strong></span>
-                <span>🤝 Oportunidades Pipedrive: <strong style="color: {'#16A34A' if daemon_active else '#64748B'};">{'Automático' if daemon_active else 'Manual'}</strong></span>
-                <span>🤖 Análisis Técnico IA: <strong style="color: {'#16A34A' if daemon_active else '#64748B'};">{'En cola' if daemon_active else 'Standby'}</strong></span>
-            </div>
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
-
-    c_note, c_switch = st.columns([3.2, 1.8])
-    with c_note:
-        st.markdown(
-            "<p style='color: #64748B; font-size: 0.8rem; margin: 4px 0 0 0;'>"
-            "ℹ️ Podés encenderlo o pausarlo en cualquier momento sin afectar las licitaciones existentes."
-            "</p>",
-            unsafe_allow_html=True
-        )
-    with c_switch:
-        toggle_state = st.toggle(
-            "⚡ Activar Daemon de Automatización",
-            value=daemon_active,
-            key="dash_toggle_daemon_active",
-            help="Habilitar para buscar licitaciones en el correo y sincronizar con SharePoint y Pipedrive."
-        )
-        if toggle_state != daemon_active:
-            set_daemon_active(toggle_state)
-            if toggle_state:
-                st.toast("🟢 Daemon activado: monitoreando correos y sincronizando SharePoint y Pipedrive.", icon="🚀")
-            else:
-                st.toast("⚪ Daemon pausado: automatización en modo seguro.", icon="⏸️")
-            st.rerun()
 
 
-@st.fragment(run_every="15s")
+
 def view_dashboard():
     
     st.markdown("<h1>Dashboard de Licitaciones</h1>", unsafe_allow_html=True)
@@ -244,18 +165,23 @@ def view_dashboard():
     procesando = sum(1 for t in tenders if t['status'] == 'PROCESANDO')
     completadas = sum(1 for t in tenders if t['status'] == 'COMPLETADO')
     
-    # 4 Top Cards
-    c1, c2, c3, c4 = st.columns(4)
+    from datetime import datetime, timedelta
+    now = datetime.now()
+    semana_pasada = (now - timedelta(days=7)).strftime("%Y-%m-%d")
+    
+    nuevas_esta_semana = sum(1 for t in tenders if str(t.get('created_at', '')) >= semana_pasada)
+    
+    # 3 Top Cards
+    c1, c2, c3 = st.columns(3)
     with c1:
-        render_metric_card("Licitaciones Totales", str(total), "+2 esta semana", "📋")
+        subtitle_tenders = f"+{nuevas_esta_semana} esta semana" if nuevas_esta_semana > 0 else "Sin nuevas esta semana"
+        render_metric_card("Licitaciones Totales", str(total), subtitle_tenders, "📋")
     with c2:
         pct_proc = int((procesando/total)*100) if total > 0 else 0
         render_metric_card("En Proceso", str(procesando), f"{pct_proc}% del total", "🔄")
     with c3:
         pct_comp = int((completadas/total)*100) if total > 0 else 0
         render_metric_card("Completadas", str(completadas), f"{pct_comp}% del total", "✅")
-    with c4:
-        render_metric_card("IA del Sistema", "Online", "Monitoreo activo", "🤖", is_online=True)
     
     # --- RADAR DE LICITACIONES PENDIENTES ---
     pending_opps = get_pending_opportunities()
@@ -284,14 +210,13 @@ def view_dashboard():
                 st.session_state['show_radar_modal'] = True
         with c_rad_btn2:
             if st.button("⚙️ Configuración", use_container_width=True, key="btn_dash_cfg_radar"):
-                st.session_state['current_view'] = 'configuracion'
-                st.rerun()
+                navigate_to('configuracion')
 
         if st.session_state.get('show_radar_modal', False):
             opportunity_confirmation_modal(first_opp)
 
     # Control Interactivo del Daemon de Automatización (Toggle ON/OFF)
-    render_daemon_control()
+    # El control del daemon fue movido a la sección de Configuración
     
     col_t, col_b = st.columns([7, 2])
     with col_t:
@@ -299,11 +224,10 @@ def view_dashboard():
     with col_b:
         st.write("") # Espaciador
         if st.button("+ Nueva Licitación", type="primary", use_container_width=True):
-            st.session_state['current_view'] = 'nueva_licitacion'
-            st.rerun()
+            navigate_to('nueva_licitacion')
 
     # Data Table Header
-    h1, h2, h3, h4, h5 = st.columns([1.8, 1.2, 1.2, 2.0, 1.8], gap="small")
+    h1, h2, h3, h4, h5 = st.columns([1.3, 1.3, 1.3, 2.1, 2.0], gap="small")
     header_style = "font-size: 11px; font-weight: 700; color: #64748B; text-transform: uppercase; letter-spacing: 0.5px; text-align: center;"
     h1.markdown(f"<div style='{header_style}; text-align: left;'>Cliente</div>", unsafe_allow_html=True)
     h2.markdown(f"<div style='{header_style}'>Estado</div>", unsafe_allow_html=True)
@@ -317,10 +241,9 @@ def view_dashboard():
         return
         
     for tender in tenders:
-        col1, col2, col3, col4, col5 = st.columns([1.8, 1.2, 1.2, 2.0, 1.8], gap="small")
+        col1, col2, col3, col4, col5 = st.columns([1.3, 1.3, 1.3, 2.1, 2.0], gap="small")
         with col1:
             st.markdown(f"<div style='font-weight: 600; color: #0F172A; display: flex; align-items: center; gap: 10px;'><div style='width: 32px; height: 32px; border-radius: 50%; border: 1px solid #E2E8F0; display:flex; align-items:center; justify-content:center;'>🏢</div> {tender['name']}</div>", unsafe_allow_html=True)
-            st.caption(f"Creada: {format_datetime_arg(tender['created_at'])}")
         with col2:
             st.markdown(f"<div style='text-align: center;'>{get_status_badge(tender['status'])}</div>", unsafe_allow_html=True)
         with col3:
@@ -342,8 +265,7 @@ def view_dashboard():
                 
                 if st.button("Abrir 📂", key=f"op_{tender['id']}", use_container_width=True, help=help_text_abrir, disabled=btn_disabled):
                     st.session_state['current_tender_id'] = tender['id']
-                    st.session_state['current_view'] = 'detalle'
-                    st.rerun()
+                    navigate_to('detalle')
             with btn_col2:
                 help_text_borrar = "Eliminar licitación"
                 if is_processing: help_text_borrar = "No se puede borrar mientras procesa"
@@ -378,8 +300,7 @@ def view_new_tender():
             launch_background_worker(tender_id)
         st.success("¡Archivos enviados a procesamiento!")
         time.sleep(1)
-        st.session_state['current_view'] = 'dashboard'
-        st.rerun()
+        navigate_to('dashboard')
 
 @st.dialog("Gestor de Consultas e Incongruencias", width="large")
 def rfi_modal(tender_id, parsed_data):
@@ -466,7 +387,6 @@ def view_tender_detail():
         st.write("")
                 
     if tender['status'] == 'PROCESANDO':
-        @st.fragment(run_every="3s")
         def render_processing_view():
             current_tender = get_tender(tender_id)
             if current_tender['status'] != 'PROCESANDO':
@@ -487,7 +407,6 @@ def view_tender_detail():
     
     # Detección de tareas de IA en segundo plano para esta licitación
     if is_chat_job_running(tender_id):
-        @st.fragment(run_every="3s")
         def render_bg_job_alert():
             if not is_chat_job_running(tender_id):
                 st.rerun()
@@ -529,7 +448,14 @@ def start_daemon():
     print("=== [IMA-AGENT DEBUG] Iniciando Daemon (start_daemon) ===", flush=True)
     daemon_script = os.path.join(os.path.dirname(os.path.abspath(__file__)), "daemon.py")
     try:
-        subprocess.Popen([sys.executable, daemon_script])
+        daemon_log = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data", "daemon.log")
+        f_daemon = open(daemon_log, "w")
+        subprocess.Popen(
+            [sys.executable, daemon_script],
+            stdout=f_daemon,
+            stderr=subprocess.STDOUT,
+            close_fds=True
+        )
         print("=== [IMA-AGENT DEBUG] Daemon lanzado correctamente ===", flush=True)
     except Exception as e:
         print(f"=== [IMA-AGENT DEBUG] Error al lanzar daemon: {e} ===", flush=True)
@@ -565,26 +491,24 @@ def main():
         st.markdown("<div style='color: #F8FAFC; font-size: 13px; font-weight: 700; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;'>🤖 IMA Agent</div>", unsafe_allow_html=True)
         
         if st.button("🏠 Dashboard", use_container_width=True): 
-            st.session_state['current_view'] = 'dashboard'
-            st.rerun()
+            navigate_to('dashboard')
         if st.button("➕ Nueva Licitación", use_container_width=True): 
-            st.session_state['current_view'] = 'nueva_licitacion'
-            st.rerun()
+            navigate_to('nueva_licitacion')
             
         if st.button("⚙️ Configuración", use_container_width=True):
-            st.session_state['current_view'] = 'configuracion'
-            st.rerun()
+            navigate_to('configuracion')
             
         if st.button("🚪 Cerrar Sesión", use_container_width=True):
             st.session_state['authenticated'] = False
             st.session_state.pop('current_user', None)
             st.query_params.clear()
-            st.session_state['current_view'] = 'dashboard'
-            st.rerun()
+            navigate_to('dashboard')
         
         st.markdown("<br><br><br><div style='font-size: 11px; color: #94A3B8;'>IMA Servicios Industriales<br>Plataforma Automática V3.0</div>", unsafe_allow_html=True)
 
+
     print(f"=== [IMA-AGENT DEBUG] Renderizando vista: {st.session_state.get('current_view')} ===", flush=True)
+
     if st.session_state['current_view'] == 'dashboard': view_dashboard()
     elif st.session_state['current_view'] == 'nueva_licitacion': view_new_tender()
     elif st.session_state['current_view'] == 'detalle': view_tender_detail()

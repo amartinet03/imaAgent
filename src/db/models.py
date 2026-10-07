@@ -211,11 +211,26 @@ def set_app_setting(key: str, value: str):
     conn.commit()
     conn.close()
 
+def get_daemon_settings() -> dict:
+    return {
+        'mail': get_app_setting("daemon_mail", "0") == "1",
+        'sharepoint': get_app_setting("daemon_sharepoint", "0") == "1",
+        'pipedrive': get_app_setting("daemon_pipedrive", "0") == "1",
+        'ai': get_app_setting("daemon_ai", "0") == "1"
+    }
+
+def set_daemon_setting(key: str, active: bool):
+    set_app_setting(f"daemon_{key}", "1" if active else "0")
+
 def is_daemon_active() -> bool:
-    return get_app_setting("daemon_active", "0") == "1"
+    # Retorna True si al menos una automatización está activa
+    return any(get_daemon_settings().values())
 
 def set_daemon_active(active: bool):
-    set_app_setting("daemon_active", "1" if active else "0")
+    # Toggle global
+    val = "1" if active else "0"
+    for k in ['mail', 'sharepoint', 'pipedrive', 'ai']:
+        set_app_setting(f"daemon_{k}", val)
 
 def create_tender(name: str) -> int:
     conn = get_connection()

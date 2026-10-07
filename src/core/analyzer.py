@@ -26,7 +26,7 @@ def invoke_with_retry(prompt_value):
         try:
             print(f"  -> Intento {intento+1} enviando a Claude...")
             # Usar claude-sonnet-5 que es el válido en este entorno
-            modelo = "claude-sonnet-5" 
+            modelo = os.getenv("ANTHROPIC_MODEL", "claude-sonnet-5-5")
             print(f"  -> Utilizando modelo: {modelo}")
             llm = ChatAnthropic(model_name=modelo, anthropic_api_key=api_key, max_tokens=8192)
             return llm.invoke(prompt_value)
@@ -44,22 +44,101 @@ def invoke_with_retry(prompt_value):
             else:
                 raise e
 
-def analyze_full_tender(docs):
-    """
-    Ejecuta un análisis instantáneo con Pre-Filtrado Heurístico (Mega-Prompt Unificado).
-    Esta versión está altamente optimizada para RAM: procesa on-the-fly sin guardar
-    listas gigantes en memoria, manteniendo la misma lógica original.
-    """
+
+def _build_llm():
+
+    from langchain_anthropic import ChatAnthropic
+    api_key = get_anthropic_api_key()
+    import os
+    from dotenv import load_dotenv
+    load_dotenv()
+    modelo = os.getenv("ANTHROPIC_MODEL", "claude-sonnet-5-5")
+    return ChatAnthropic(
+        model_name=modelo, 
+        anthropic_api_key=api_key, 
+        max_tokens=8192
+    )
+
+def _invoke_llm(llm, prompt_value):
+    from tenacity import retry, stop_after_attempt, wait_exponential
+    @retry(stop=stop_after_attempt(5), wait=wait_exponential(multiplier=1, min=2, max=10))
+    def _do_invoke():
+        response = llm.invoke(prompt_value)
+        content = response.content
+        if isinstance(content, list):
+            content = "".join([c.get("text", "") if isinstance(c, dict) else str(c) for c in content])
+        elif not isinstance(content, str):
+            content = str(content)
+        
+        json_str = content
+        if "```json" in content:
+            json_str = content.split("```json")[1].split("```")[0]
+        elif "```" in content:
+            json_str = content.split("```")[1].split("```")[0]
+            
+        json_str = json_str.strip()
+        import json_repair
+        return json_repair.loads(json_str)
     try:
-        get_anthropic_api_key() # Verificar configuración
+        return _do_invoke()
+    except Exception as e:
+        print(f"  [!] Falló el intento: {str(e)}")
+        raise e
+
+def _analyze_chunk(task_name, template, combined_text):
+
+    llm = _build_llm()
+    prompt = PromptTemplate.from_template(template)
+    
+    # Dividir combined_text en fragmentos más pequeños para no exceder los tokens de salida
+    chunk_size = 40000
+    chunks = [combined_text[i:i+chunk_size] for i in range(0, len(combined_text), chunk_size)]
+    
+    print(f"  -> Ejecutando análisis: {task_name} (dividido en {len(chunks)} fragmentos)...")
+    
+    merged_json = {}
+    
+    for idx, text_chunk in enumerate(chunks):
+        print(f"     Procesando fragmento {idx+1}/{len(chunks)} para {task_name}...")
+        prompt_value = prompt.invoke({"text": text_chunk})
+        try:
+            res = _invoke_llm(llm, prompt_value)
+            # Mezclar el resultado en merged_json
+            if isinstance(res, dict):
+                for key, value in res.items():
+                    if key not in merged_json:
+                        merged_json[key] = value
+                    else:
+                        if isinstance(merged_json[key], list) and isinstance(value, list):
+                            merged_json[key].extend(value)
+                        elif isinstance(merged_json[key], dict) and isinstance(value, dict):
+                            for sub_key, sub_val in value.items():
+                                if sub_key not in merged_json[key]:
+                                    merged_json[key][sub_key] = sub_val
+                                else:
+                                    if isinstance(merged_json[key][sub_key], list) and isinstance(sub_val, list):
+                                        merged_json[key][sub_key].extend(sub_val)
+                                    # Si es string, mantenemos el primero o concatenamos (mejor mantener el del primer chunk para metadatos)
+        except Exception as e:
+            print(f"  [x] Error en fragmento {idx+1} de {task_name}: {e}")
+            
+    print(f"  -> Completado análisis: {task_name} exitosamente.")
+    return merged_json
+
+def analyze_full_tender(docs):
+
+    import re
+    import concurrent.futures
+    import json
+    try:
+        get_anthropic_api_key() 
     except Exception as e:
         return f"**Error de configuración:** {e}"
 
     if not docs:
         return "No hay documentos para analizar."
 
-    print("Iniciando Pre-Filtrado Inteligente de texto para velocidad extrema y bajo uso de RAM...")
-    import re
+    print("Iniciando Pre-Filtrado Inteligente de texto...")
     
     keywords = [
         "plazo", "día", "dias", "meses", "fecha", "penalidad", "multa", "monto", 
@@ -74,17 +153,12 @@ def analyze_full_tender(docs):
     ]
 
     docs_by_source = {}
-    max_chars = 150000
+    max_chars = 35000
 
-    # Iteramos on the fly sobre los docs para no cargar todos los chunks en memoria
     for doc in docs:
         source = doc.metadata.get("source", "Desconocido") if hasattr(doc, 'metadata') else "Desconocido"
         if source not in docs_by_source:
-            docs_by_source[source] = {
-                'combined': "",
-                'first_done': False,
-                'done': False
-            }
+            docs_by_source[source] = {'combined': "", 'first_done': False, 'done': False}
             
         state = docs_by_source[source]
         if state['done']:
@@ -120,145 +194,65 @@ def analyze_full_tender(docs):
     if not combined_text.strip():
         return "No se encontró información relevante o los archivos estaban vacíos."
 
-    print("Enviando todo el pliego a la IA en 1 sola petición...")
+    print("Enviando el pliego a la IA dividiendo la carga en 3 peticiones paralelas...")
 
-    # --- ÚNICA FASE DE ANÁLISIS EXHAUSTIVO (MEGA-PROMPT) ---
-    analysis_template = """
-    Eres un equipo multidisciplinario experto compuesto por:
-    1. Un Abogado Senior (Legales y Riesgos): Analiza minuciosamente cláusulas, penalidades, multas abusivas, contradicciones, SLA y vacíos contractuales.
-    2. Un Estimador Líder (Cotizador): Extrae variables duras de costo: cantidad y tipos de mano de obra (turnos, convenios), vehículos exigidos, herramientas, EPP especiales, seguros específicos.
-    3. Un Gerente Técnico (Operaciones): Define el alcance general, horarios, ubicación, normas SSMA/HSE.
-    4. Un Ingeniero Experto en Auditoría de Pliegos: Genera consultas técnicas y comerciales formales (RFI) sobre vacíos en provisiones o procedimientos.
-
-    REGLAS ESTRICTAS DE EXTRACCIÓN:
-    - TIENES EL PLIEGO COMPLETO. Tu objetivo es encontrar todas las anomalías y detalles posibles.
-    - NO alucines. Si un dato no está en el texto, coloca `null` o una lista vacía `[]`.
-    - Sé extremadamente detallista. NO RESUMAS los hallazgos críticos.
-    - Debes generar AL MENOS 10 consultas (RFIs) y 5 inconsistencias, revisando cada anexo, norma y cláusula que parezca abusiva o incompleta.
-    - El campo "categoria" en "consultas_generales" SOLO puede contener: "Operativa", "Técnica", o "Económica".
-    - Agrupa todos los documentos faltantes en una sola consulta.
-
+    template_metadata_tecnicos = """
+    Eres un experto Gerente Técnico y Operativo auditando un pliego de licitación.
+    Tu objetivo es ser EXHAUSTIVO. No te limites, extrae toda la información posible.
+    
     FORMATO DE SALIDA OBLIGATORIO (JSON Estricto):
-    Debes devolver ÚNICAMENTE un objeto JSON válido, sin texto adicional antes o después. 
+    Debes devolver ÚNICAMENTE un objeto JSON válido. NO uses bloques de código, devuelve sólo el JSON crudo.
     Estructura esperada:
-    {{
-        "metadata": {{
-            "nombre_pliego": "[Nombre oficial o título principal del pliego/licitación]",
-            "cliente": "[Nombre real de la empresa contratante]",
-            "proceso": "[Nombre o número real de la licitación/proceso]",
-            "moneda": "[Moneda solicitada para cotizar, ej: Pesos argentinos o USD]",
-            "planta": "[Lugar físico o planta real de la obra]",
-            "requirente": "[Nombre de la persona o sector que solicita, si figura]",
-            "comprador": "[Nombre del comprador de compras, si figura]",
-            "lista_documentos": "[Lista de todos los documentos y anexos provistos y analizados, separados por comas]"
-        }},
-        "legales": {{
-            "contradicciones": ["contradicción 1", "contradicción 2"],
-            "penalidades_multas": ["detalle de multa 1"],
-            "vicios_o_vacios": ["vacío 1"],
-            "consultas_rfi": ["pregunta formal a enviar a Compras 1", "pregunta 2"],
-            "condiciones_comerciales": ["plazo de pago a 60 días", "certificación mensual", "ajuste de tarifas"]
-        }},
-        "costos": {{
-            "encuadre_gremial": "UOCRA, UOM, Petroleros u otro mencionado en el pliego",
-            "plazo_contrato_meses": 12,
-            "mano_de_obra": [
-                {{"rol": "Oficial Especializado", "cantidad": "2", "horas_mensuales": "187", "observaciones": "soldador calificado"}},
-                {{"rol": "Supervisor de Obra", "cantidad": "1", "horas_mensuales": "187", "observaciones": "dedicación completa"}},
-                {{"rol": "Técnico de Seguridad y Medio Ambiente (HSE)", "cantidad": "1", "horas_mensuales": "80", "observaciones": "part-time"}}
-            ],
-            "suministro_materiales": [
-                {{"item": "Cañerías de acero al carbono", "cantidad": "100", "unidad": "m", "observaciones": ""}}
-            ],
-            "suministro_insumos": [
-                {{"item": "EPP ignífugo", "cantidad": "5", "unidad": "kit", "observaciones": ""}}
-            ],
-            "subcontrataciones": [
-                {{"item": "Seguro de caución", "cantidad": "1", "unidad": "global", "observaciones": "fianza fiel cumplimiento"}}
-            ],
-            "amortizacion_vehiculos": [
-                {{"item": "Camioneta 4x4", "cantidad": "1", "plazo_amortizacion": "5", "observaciones": ""}}
-            ],
-            "equipos_menores": [
-                {{"item": "Amoladora angular", "cantidad": "2", "observaciones": ""}}
-            ],
-            "instrucciones_especiales_cotizacion": ["nota: tener en cuenta costo financiero a 60 días"]
-        }},
-        "tecnicos": {{
-            "alcance_general": "Resumen del objetivo del servicio",
-            "ubicacion_obra": "Planta X",
-            "horarios_exigidos": "L a V de 7 a 16hs",
-            "normas_ssma": ["Cumplimiento reglas de oro", "Proceso Greenbanding"]
-        }},
-        "consultas_generales": [
-            {{
-                "categoria": "Operativa",
-                "archivo_origen": "Pliego_Condiciones.pdf",
-                "pagina_origen": "15",
-                "cita_textual": "texto extraido...",
-                "consulta": "Pregunta detallada sobre vacío detectado"
-            }}
-        ],
-        "inconsistencias": [
-            {{
-                "tipo": "Contradicción",
-                "documentos_conflicto": ["Anexo 1", "Pliego General"],
-                "pagina_origen": "5 y 12",
-                "cita_textual": "texto en conflicto...",
-                "descripcion_pregunta": "Explicación del problema"
-            }}
-        ]
-    }}
-
+    {{"metadata":{{"nombre_pliego":"Nombre oficial","cliente":"Empresa","proceso":"Nro","moneda":"Moneda","planta":"Ubicación","requirente":"Req","comprador":"Comp","lista_documentos":"docs"}},"tecnicos":{{"alcance_general":"Resumen exhaustivo","ubicacion_obra":"Planta/lugar","horarios_exigidos":"L a V, etc","normas_ssma":["Cumplimiento 1","etc..."]}}}}
     Textos Extraídos:
     {text}
     """
+
+    template_legales_inconsistencias = """
+    Eres un Gerente General y Especialista en Licitaciones analizando un pliego.
+    Tu objetivo es enfocarte en lo CRÍTICO. Extrae las penalidades, vacíos e inconsistencias 
+    que sean REALMENTE IMPORTANTES y SIGNIFICATIVAS (ej. aquellas que impacten los costos, 
+    la viabilidad operativa, o la seguridad). Evita extraer detalles menores o triviales.
     
-    analysis_prompt = PromptTemplate.from_template(analysis_template)
+    FORMATO DE SALIDA OBLIGATORIO (JSON Estricto):
+    Debes devolver ÚNICAMENTE un objeto JSON válido. NO uses bloques de código, devuelve sólo el JSON crudo.
+    Estructura esperada:
+    {{"inconsistencias":[{{"documentos_conflicto":["Anexo 1","Pliego General"],"pagina_origen":"páginas...","cita_textual":"texto extraido completo...","descripcion_pregunta":"Explicación muy detallada","tipo":"Contradicción"}}], "legales":{{"penalidades_multas":["detalle de multa 1","etc..."],"vicios_o_vacios":["vacío contractual 1","etc..."],"condiciones_comerciales":["plazos","etc..."]}}}}
+    Textos Extraídos:
+    {text}
+    """
+
+    template_costos_consultas = """
+    Eres un Gerente General y Experto en Licitaciones analizando un pliego.
+    Extrae las variables de costo y formula consultas generales (técnicas, operativas, económicas) 
+    que sean REALMENTE SIGNIFICATIVAS Y DE ALTO IMPACTO. Filtra y formula solo las consultas 
+    que afecten directamente los costos de la operación, la seguridad o la viabilidad del proyecto. 
+    Evita consultas triviales o menores.
     
-    try:
-        prompt_value = analysis_prompt.invoke({"text": combined_text})
-        response = invoke_with_retry(prompt_value)
+    FORMATO DE SALIDA OBLIGATORIO (JSON Estricto):
+    Debes devolver ÚNICAMENTE un objeto JSON válido. NO uses bloques de código, devuelve sólo el JSON crudo.
+    Estructura esperada:
+    {{"consultas_generales":[{{"categoria":"Operativa","archivo_origen":"doc","pagina_origen":"15","cita_textual":"cita exhaustiva","consulta":"Pregunta técnica exhaustiva"}}], "costos":{{"encuadre_gremial":"gremio aplicable","plazo_contrato_meses":12,"mano_de_obra":[{{"rol":"Rol exhaustivo","cantidad":"X","horas_mensuales":"Y","observaciones":"obs detallada"}}],"suministro_materiales":[{{"item":"item detallado","cantidad":"X","unidad":"U","observaciones":"obs"}}],"suministro_insumos":[],"subcontrataciones":[],"amortizacion_vehiculos":[],"equipos_menores":[],"instrucciones_especiales_cotizacion":["instr 1","instr 2"]}}}}
+    Textos Extraídos:
+    {text}
+    """
+
+    final_json = {}
+    with concurrent.futures.ThreadPoolExecutor(max_workers=3) as executor:
+        future_meta = executor.submit(_analyze_chunk, "Metadata_Tecnicos", template_metadata_tecnicos, combined_text)
+        future_legales = executor.submit(_analyze_chunk, "Legales_Inconsistencias", template_legales_inconsistencias, combined_text)
+        future_costos = executor.submit(_analyze_chunk, "Costos_Consultas", template_costos_consultas, combined_text)
         
-        # Intentar extraer el JSON de la respuesta
-        content = response.content
-        import json
-        import re
-        
-        if isinstance(content, list):
-            content = "".join([c.get("text", "") if isinstance(c, dict) else str(c) for c in content])
-        elif not isinstance(content, str):
-            content = str(content)
-            
-        # Limpiar markdown de json si existe
-        match = re.search(r'```(?:json)?\s*(\{.*\})\s*```', content, re.DOTALL)
-        if match:
-            json_str = match.group(1)
-        else:
-            # Fallback: buscar el primer '{' y el último '}'
-            start_idx = content.find('{')
-            end_idx = content.rfind('}')
-            if start_idx != -1 and end_idx != -1 and end_idx > start_idx:
-                json_str = content[start_idx:end_idx+1]
-            else:
-                json_str = content
-            
-        try:
-            import json_repair
-            parsed_data = json_repair.loads(json_str)
-            return parsed_data
-        except Exception as e:
-            # Fallback en caso de que el modelo haya devuelto texto
-            print(f"No se pudo parsear como JSON, devolviendo crudo. Error: {e}")
-            return {"error": "Formato inválido", "raw": content}
-            
-    except Exception as e:
-        error_msg = str(e)
-        if hasattr(e, 'last_attempt') and e.last_attempt is not None:
-            real_e = e.last_attempt.exception()
-            if real_e:
-                error_msg = str(real_e)
-        return f"Ocurrió un error en el análisis instantáneo de Google: {error_msg}\n\nAsegúrate de no exceder los límites de tu plan."
+        res_meta = future_meta.result()
+        res_legales = future_legales.result()
+        res_costos = future_costos.result()
+
+    if res_meta: final_json.update(res_meta)
+    if res_legales: final_json.update(res_legales)
+    if res_costos: final_json.update(res_costos)
+
+    return final_json
+
 
 def create_vector_store(docs, persist_directory=None):
     import time

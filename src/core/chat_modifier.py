@@ -1,7 +1,6 @@
 import json
 import re
 from langchain_core.prompts import PromptTemplate
-from src.core.analyzer import invoke_with_retry
 
 def modify_json_with_chat(current_json: dict, chat_history: list, user_instruction: str, chat_type: str = 'OT') -> dict:
     """
@@ -58,6 +57,7 @@ REGLAS:
         context_rules=context_rules
     )
     
+    from src.core.analyzer import invoke_with_retry
     response = invoke_with_retry(prompt_value)
     
     content = response.content

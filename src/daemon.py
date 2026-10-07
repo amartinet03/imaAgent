@@ -146,7 +146,7 @@ def run_daemon():
                         from src.core.analyzer import get_anthropic_api_key
                         from langchain_anthropic import ChatAnthropic
                         api_key = get_anthropic_api_key()
-                        llm = ChatAnthropic(model_name="claude-3-5-sonnet-20240620", anthropic_api_key=api_key)
+                        llm = ChatAnthropic(model_name=os.getenv("ANTHROPIC_MODEL", "claude-sonnet-5-5"), anthropic_api_key=api_key)
                         prompt_text = f"Extrae ÚNICAMENTE el nombre de la empresa cliente (quien emite la licitación) a partir de este correo. Si no estás seguro o no figura, responde exactamente 'Desconocido'. No agregues ninguna otra palabra ni explicación. Asunto: {clean_subject} | De: {sender_name} <{sender_email}> | Cuerpo: {body_preview}"
                         res = llm.invoke(prompt_text)
                         
