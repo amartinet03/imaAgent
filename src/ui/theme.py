@@ -15,12 +15,35 @@ def apply_theme():
             padding-bottom: 1rem !important;
             max-width: 95% !important;
         }
+        
+        /* Forzar sidebar SIEMPRE fija en pantallas pequeñas o grandes */
+        [data-testid="stSidebar"] {
+            display: flex !important;
+            visibility: visible !important;
+            transform: none !important;
+            position: fixed !important;
+            left: 0 !important;
+            top: 0 !important;
+            height: 100vh !important;
+            z-index: 999999 !important;
+        }
+        /* Mover el contenedor principal hacia la derecha para que no lo tape la sidebar */
+        section[data-testid="stMain"] {
+            margin-left: 250px !important;
+            width: calc(100% - 250px) !important;
+        }
+        [data-testid="stAppViewBlockContainer"] {
+            padding-left: 2rem !important;
+        }
     """ if is_auth else """
         .stApp .block-container {
             padding: 0 !important;
             margin: 0 !important;
             max-width: 100% !important;
             width: 100% !important;
+        }
+        [data-testid="stSidebar"] {
+            display: none !important;
         }
     """
 
@@ -56,6 +79,15 @@ def apply_theme():
     """
 
     after_css = """
+        /* Evitar que la pantalla parpadee o se ponga gris durante reruns automáticos */
+        .stApp { opacity: 1 !important; transition: none !important; filter: none !important; }
+        [data-testid="stAppViewContainer"] { opacity: 1 !important; transition: none !important; filter: none !important; }
+        [data-testid="stAppViewBlockContainer"] { opacity: 1 !important; transition: none !important; filter: none !important; }
+        
+        /* Ocultar el spinner de estado global ("Running...") */
+        [data-testid="stStatusWidget"] { display: none !important; visibility: hidden !important; }
+        .stStatusWidget { display: none !important; visibility: hidden !important; }
+
         /* Sidebar Styling */
         [data-testid="stSidebar"] {
             background-color: var(--sidebar-bg);

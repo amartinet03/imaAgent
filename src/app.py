@@ -40,10 +40,7 @@ from src.db.models import (
     is_daemon_active, set_daemon_active
 )
 from src.ui.view_configuracion import render_view_configuracion
-from src.outputs.excel_generator import ExcelGenerator
-from src.outputs.word_generator import WordGenerator
-from src.outputs.query_generator import QueryGenerator
-from src.core.chat_modifier import modify_json_with_chat
+
 from src.ui.theme import apply_theme, render_metric_card, get_progress_bar_html, get_status_badge, render_version_table_header, render_info_list_item
 import streamlit_antd_components as sac
 from src.ui.components import save_uploaded_files
@@ -51,7 +48,7 @@ from src.ui.tabs.tab_documentos import render_tab_documentos
 from src.ui.tabs.tab_ot import render_tab_ot
 from src.ui.tabs.tab_rfi import render_tab_rfi
 from src.ui.tabs.tab_eco import render_tab_eco
-from src.core.chat_worker import is_chat_job_running
+
 
 # Inicializar Base de Datos
 print("=== [IMA-AGENT DEBUG] Inicializando Base de Datos ===", flush=True)
@@ -71,27 +68,28 @@ def view_login():
     render_login_page()
 
 def launch_background_worker(tender_id):
-    worker_script = os.path.join(os.path.dirname(os.path.abspath(__file__)), "background_worker.py")
-    log_file_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data", f"worker_{tender_id}.log")
+    import threading
     
-    kwargs = {}
-    if os.name == 'nt':
-        kwargs['creationflags'] = subprocess.CREATE_NO_WINDOW
-    else:
-        kwargs['start_new_session'] = True
-        
-    print(f"=== [IMA-AGENT DEBUG] Ejecutando Popen para worker con tender_id {tender_id} ===", flush=True)
+    def worker_wrapper(t_id):
+        from src.background_worker import process_tender
+        process_tender(t_id)
+    
+    print(f"=== [IMA-AGENT DEBUG] Lanzando thread de background_worker para tender_id {tender_id} ===", flush=True)
     try:
-        subprocess.Popen(
-            [sys.executable, worker_script, str(tender_id)],
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL,
-            close_fds=True,
-            **kwargs
-        )
-        print("=== [IMA-AGENT DEBUG] Popen ejecutado con éxito ===", flush=True)
+        thread = threading.Thread(target=worker_wrapper, args=(tender_id,))
+        thread.daemon = False  # Keep alive until done
+        
+        # Opcional: inyectar el contexto de Streamlit por si el worker usa algo de st.
+        try:
+            from streamlit.runtime.scriptrunner import add_script_run_ctx
+            add_script_run_ctx(thread)
+        except Exception:
+            pass
+            
+        thread.start()
+        print("=== [IMA-AGENT DEBUG] Thread lanzado con éxito ===", flush=True)
     except Exception as e:
-        print(f"=== [IMA-AGENT DEBUG] Popen falló: {e} ===", flush=True)
+        print(f"=== [IMA-AGENT DEBUG] Fallo al lanzar el thread: {e} ===", flush=True)
 
 @st.dialog("🚨 Oportunidad Detectada por el Radar Web", width="large")
 def opportunity_confirmation_modal(opp):
@@ -164,6 +162,7 @@ def view_dashboard():
     total = len(tenders)
     procesando = sum(1 for t in tenders if t['status'] == 'PROCESANDO')
     completadas = sum(1 for t in tenders if t['status'] == 'COMPLETADO')
+    
     
     from datetime import datetime, timedelta
     now = datetime.now()
@@ -275,6 +274,13 @@ def view_dashboard():
                     shutil.rmtree(os.path.join("data", "tenders", str(tender['id'])), ignore_errors=True)
                     st.rerun()
         st.markdown("<hr style='margin: 0; border-color: #F1F5F9;'/>", unsafe_allow_html=True)
+        
+    if procesando > 0:
+        with st.container():
+            st.markdown("<div style='display:none;'>", unsafe_allow_html=True)
+            from streamlit_autorefresh import st_autorefresh
+            st_autorefresh(interval=3000, key="dashboard_autorefresh")
+            st.markdown("</div>", unsafe_allow_html=True)
 
 def view_new_tender():
     st.title("Nueva Licitación 📂")
@@ -299,7 +305,6 @@ def view_new_tender():
             print(f"=== [IMA-AGENT DEBUG] Lanzando worker ===", flush=True)
             launch_background_worker(tender_id)
         st.success("¡Archivos enviados a procesamiento!")
-        time.sleep(1)
         navigate_to('dashboard')
 
 @st.dialog("Gestor de Consultas e Incongruencias", width="large")
@@ -396,6 +401,13 @@ def view_tender_detail():
             st.info(f"⏳ **{progress_msg}** (La pantalla se actualizará automáticamente)")
             st.progress(progress_val)
         render_processing_view()
+        
+        with st.container():
+            st.markdown("<div style='display:none;'>", unsafe_allow_html=True)
+            from streamlit_autorefresh import st_autorefresh
+            st_autorefresh(interval=3000, key=f"tender_refresh_{tender_id}")
+            st.markdown("</div>", unsafe_allow_html=True)
+            
         return
     outputs_dir = os.path.join("data", "tenders", str(tender_id), "outputs")
     os.makedirs(outputs_dir, exist_ok=True)
@@ -406,6 +418,7 @@ def view_tender_detail():
     safe_cliente = re.sub(r'[^\w\s-]', '', cliente).strip().replace(' ', '_')[:20]
     
     # Detección de tareas de IA en segundo plano para esta licitación
+    from src.core.chat_worker import is_chat_job_running
     if is_chat_job_running(tender_id):
         def render_bg_job_alert():
             if not is_chat_job_running(tender_id):
