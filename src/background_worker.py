@@ -7,7 +7,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from src.db.models import update_tender_status, update_tender_progress
 from src.ingestion.local_parser import process_file_to_langchain_docs
-from src.core.analyzer import create_vector_store, analyze_full_tender
+from src.core.analyzer import analyze_full_tender
 from src.outputs.word_generator import WordGenerator
 from src.outputs.query_generator import QueryGenerator
 import re
@@ -48,18 +48,10 @@ def process_tender(tender_id: int):
             return
 
         # 2. Ejecutar procesamiento secuencial (Evita colapso de RAM en la nube - Error 128)
-        print("Ejecutando procesamiento vectorial y de IA secuencialmente para ahorrar memoria...")
+        print("Ejecutando procesamiento IA (Nube)...")
         
-        # Primero la IA (Anthropic) porque no usa memoria local
         update_tender_progress(tender_id, 30, "Analizando con IA (Esto puede tardar unos minutos)...")
         resultado = analyze_full_tender(all_docs)
-        
-        # Luego los vectores (HuggingFace) que consume mucha RAM local
-        update_tender_progress(tender_id, 85, "Creando base de conocimientos local...")
-        try:
-            create_vector_store(all_docs, persist_directory=chroma_dir)
-        except Exception as e:
-            print(f"Advertencia: Error al crear vectores: {e}")
             
         # 3. Guardar estado
         if isinstance(resultado, dict) and "error" not in resultado:

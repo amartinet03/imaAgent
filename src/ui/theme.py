@@ -27,13 +27,9 @@ def apply_theme():
             height: 100vh !important;
             z-index: 999999 !important;
         }
-        /* Mover el contenedor principal hacia la derecha para que no lo tape la sidebar */
-        section[data-testid="stMain"] {
-            margin-left: 250px !important;
-            width: calc(100% - 250px) !important;
-        }
-        [data-testid="stAppViewBlockContainer"] {
-            padding-left: 2rem !important;
+        /* Añadir espacio interno a todo el bloque principal para que la sidebar fija no lo tape */
+        .block-container, [data-testid="stAppViewBlockContainer"], [data-testid="stMainBlockContainer"] {
+            padding-left: 270px !important; 
         }
     """ if is_auth else """
         .stApp .block-container {

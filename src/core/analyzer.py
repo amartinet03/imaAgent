@@ -3,9 +3,7 @@ import time
 import re
 from dotenv import load_dotenv
 from langchain_anthropic import ChatAnthropic
-from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_core.prompts import PromptTemplate
-from langchain_community.vectorstores import Chroma
 from tenacity import retry, wait_exponential, stop_after_attempt
 
 # Cargar variables de entorno desde el archivo .env
@@ -256,6 +254,8 @@ def analyze_full_tender(docs):
 
 def create_vector_store(docs, persist_directory=None):
     import time
+    from langchain_huggingface import HuggingFaceEmbeddings
+    from langchain_community.vectorstores import Chroma
     print("Inicializando modelo local de Embeddings (HuggingFace)... Esto puede tardar unos segundos la primera vez.")
     # Reducimos batch_size drásticamente para evitar OOM (Error 128) en la nube
     embeddings = HuggingFaceEmbeddings(
