@@ -1,6 +1,5 @@
 import sys
 import os
-import concurrent.futures
 import traceback
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -25,7 +24,6 @@ def process_tender(tender_id: int):
         sp_folder_id = old_parsed_data.get("sp_folder_id")
         tender_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'data', 'tenders', str(tender_id))
         docs_dir = os.path.join(tender_dir, 'docs')
-        chroma_dir = os.path.join(tender_dir, 'chroma')
         
         if not os.path.exists(docs_dir):
             update_tender_status(tender_id, "ERROR", error_message="No se encontraron documentos.")
@@ -33,13 +31,15 @@ def process_tender(tender_id: int):
 
         print(f"Iniciando procesamiento de Licitacion {tender_id}...")
         update_tender_progress(tender_id, 10, "Leyendo y extrayendo texto de documentos...")
-        
         # 1. Leer y extraer texto de todos los documentos
         all_docs = []
         for filename in os.listdir(docs_dir):
+            if filename.startswith(("0_DUPLICATED_", "1_DUPLICATED_", "2_DUPLICATED_")):
+                print(f"  Ignorando archivo duplicado: {filename}", flush=True)
+                continue
             file_path = os.path.join(docs_dir, filename)
             if os.path.isfile(file_path):
-                print(f"  Procesando archivo: {filename}")
+                print(f"  Procesando archivo: {filename}", flush=True)
                 docs = process_file_to_langchain_docs(file_path)
                 all_docs.extend(docs)
 
@@ -47,8 +47,8 @@ def process_tender(tender_id: int):
             update_tender_status(tender_id, "ERROR", error_message="Los documentos estaban vacíos o no se pudieron leer.")
             return
 
-        # 2. Ejecutar procesamiento secuencial (Evita colapso de RAM en la nube - Error 128)
-        print("Ejecutando procesamiento IA (Nube)...")
+        # 2. Ejecutar procesamiento secuencial
+        print("Ejecutando procesamiento IA (Nube)...", flush=True)
         
         update_tender_progress(tender_id, 30, "Analizando con IA (Esto puede tardar unos minutos)...")
         resultado = analyze_full_tender(all_docs)

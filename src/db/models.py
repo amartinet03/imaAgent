@@ -8,7 +8,10 @@ DB_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__)
 def get_connection():
     print(f"=== [IMA-AGENT DEBUG] Obteniendo conexión DB en: {DB_PATH} ===", flush=True)
     os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
-    return sqlite3.connect(DB_PATH, check_same_thread=False)
+    conn = sqlite3.connect(DB_PATH, timeout=30, check_same_thread=False)
+    conn.execute("PRAGMA journal_mode=WAL")
+    conn.execute("PRAGMA busy_timeout=30000")
+    return conn
 
 def init_db():
     print("=== [IMA-AGENT DEBUG] Entrando a init_db() ===", flush=True)

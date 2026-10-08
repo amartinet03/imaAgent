@@ -68,28 +68,41 @@ def view_login():
     render_login_page()
 
 def launch_background_worker(tender_id):
-    import threading
-    
-    def worker_wrapper(t_id):
-        from src.background_worker import process_tender
-        process_tender(t_id)
-    
-    print(f"=== [IMA-AGENT DEBUG] Lanzando thread de background_worker para tender_id {tender_id} ===", flush=True)
+    import subprocess
+    import sys
+    import os
+    project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    worker_script = os.path.join(
+        project_root,
+        "src",
+        "background_worker.py"
+    )
+    print(
+        f"=== [IMA-AGENT DEBUG] Lanzando proceso background_worker "
+        f"para tender_id {tender_id} ===",
+        flush=True
+    )
     try:
-        thread = threading.Thread(target=worker_wrapper, args=(tender_id,))
-        thread.daemon = False  # Keep alive until done
-        
-        # Opcional: inyectar el contexto de Streamlit por si el worker usa algo de st.
-        try:
-            from streamlit.runtime.scriptrunner import add_script_run_ctx
-            add_script_run_ctx(thread)
-        except Exception:
-            pass
-            
-        thread.start()
-        print("=== [IMA-AGENT DEBUG] Thread lanzado con éxito ===", flush=True)
+        process = subprocess.Popen(
+            [
+                sys.executable,
+                worker_script,
+                str(tender_id)
+            ],
+            cwd=project_root,
+            stdout=None,
+            stderr=None,
+            close_fds=True
+        )
+        print(
+            f"=== [IMA-AGENT DEBUG] Worker lanzado correctamente "
+            f"| PID={process.pid} | tender_id={tender_id} ===",
+            flush=True
+        )
+        return True
     except Exception as e:
-        print(f"=== [IMA-AGENT DEBUG] Fallo al lanzar el thread: {e} ===", flush=True)
+        print(f"=== [IMA-AGENT DEBUG] Fallo al lanzar el worker: {e} ===", flush=True)
+        return False
 
 @st.dialog("🚨 Oportunidad Detectada por el Radar Web", width="large")
 def opportunity_confirmation_modal(opp):
@@ -302,9 +315,15 @@ def view_new_tender():
             except Exception as e:
                 print(f"=== [IMA-AGENT DEBUG] Error al guardar archivos: {e} ===", flush=True)
                 
-            print(f"=== [IMA-AGENT DEBUG] Lanzando worker ===", flush=True)
-            launch_background_worker(tender_id)
-        st.success("¡Archivos enviados a procesamiento!")
+            print(f"=== [IMA-AGENT DEBUG] Lanzando worker para tender {tender_id} ===", flush=True)
+            worker_started = launch_background_worker(tender_id)
+            
+        if worker_started:
+            st.success("¡Archivos enviados a procesamiento! El análisis continuará en segundo plano.")
+        else:
+            st.error("No se pudo iniciar el procesamiento de la licitación.")
+            return
+            
         navigate_to('dashboard')
 
 @st.dialog("Gestor de Consultas e Incongruencias", width="large")
@@ -477,7 +496,7 @@ def start_daemon():
 def main():
     print("=== [IMA-AGENT DEBUG] Iniciando aplicación (main) ===", flush=True)
     # Iniciar el agente automático en segundo plano
-    start_daemon()
+    # start_daemon()  # Eliminado por nueva arquitectura Popen
     
     print(f"=== [IMA-AGENT DEBUG] st.session_state actual: {st.session_state} ===", flush=True)
     if "token" in st.query_params and not st.session_state.get('authenticated', False):

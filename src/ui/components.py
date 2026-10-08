@@ -46,14 +46,25 @@ def render_versions_list(files, prefix):
 
 def save_uploaded_files(uploaded_files, tender_id):
     import re
+    import time
     docs_dir = os.path.join("data", "tenders", str(tender_id), "docs")
     os.makedirs(docs_dir, exist_ok=True)
+    existing_files = set(os.listdir(docs_dir))
+    
     for file in uploaded_files:
         # Sanitizar nombre de archivo para evitar path traversal
         raw_name = os.path.basename(file.name)
         safe_name = re.sub(r'[^a-zA-Z0-9_.\-\sáéíóúÁÉÍÓÚñÑ()]', '_', raw_name).strip()
         if not safe_name:
             safe_name = f"doc_{int(time.time())}.bin"
+            
+        if safe_name in existing_files:
+            print(f"=== [IMA-AGENT DEBUG] Archivo duplicado ignorado: {safe_name} ===", flush=True)
+            continue
+            
         file_path = os.path.join(docs_dir, safe_name)
         with open(file_path, "wb") as f:
             f.write(file.getbuffer())
+            
+        existing_files.add(safe_name)
+        print(f"=== [IMA-AGENT DEBUG] Archivo guardado: {safe_name} ===", flush=True)
