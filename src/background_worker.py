@@ -47,19 +47,19 @@ def process_tender(tender_id: int):
             update_tender_status(tender_id, "ERROR", error_message="Los documentos estaban vacíos o no se pudieron leer.")
             return
 
-        # 2. Ejecutar procesamiento en paralelo
-        print("Ejecutando procesamiento IA (Nube) y Vectorial (Local) en paralelo...")
-        update_tender_progress(tender_id, 40, "Analizando con IA y creando vectores (Esto puede tardar unos minutos)...")
-        with concurrent.futures.ThreadPoolExecutor() as executor:
-            future_vector = executor.submit(create_vector_store, all_docs, persist_directory=chroma_dir)
-            future_analysis = executor.submit(analyze_full_tender, all_docs)
-            
-            try:
-                future_vector.result()
-            except Exception as e:
-                print(f"Advertencia: Error al crear vectores: {e}")
-                
-            resultado = future_analysis.result()
+        # 2. Ejecutar procesamiento secuencial (Evita colapso de RAM en la nube - Error 128)
+        print("Ejecutando procesamiento vectorial y de IA secuencialmente para ahorrar memoria...")
+        
+        # Primero la IA (Anthropic) porque no usa memoria local
+        update_tender_progress(tender_id, 30, "Analizando con IA (Esto puede tardar unos minutos)...")
+        resultado = analyze_full_tender(all_docs)
+        
+        # Luego los vectores (HuggingFace) que consume mucha RAM local
+        update_tender_progress(tender_id, 85, "Creando base de conocimientos local...")
+        try:
+            create_vector_store(all_docs, persist_directory=chroma_dir)
+        except Exception as e:
+            print(f"Advertencia: Error al crear vectores: {e}")
             
         # 3. Guardar estado
         if isinstance(resultado, dict) and "error" not in resultado:

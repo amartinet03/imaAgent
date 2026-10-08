@@ -257,8 +257,12 @@ def analyze_full_tender(docs):
 def create_vector_store(docs, persist_directory=None):
     import time
     print("Inicializando modelo local de Embeddings (HuggingFace)... Esto puede tardar unos segundos la primera vez.")
-    # Aumentamos el batch_size de HuggingFace para usar mejor la CPU
-    embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2", encode_kwargs={'batch_size': 128})
+    # Reducimos batch_size drásticamente para evitar OOM (Error 128) en la nube
+    embeddings = HuggingFaceEmbeddings(
+        model_name="all-MiniLM-L6-v2", 
+        model_kwargs={'device': 'cpu'},
+        encode_kwargs={'batch_size': 16}
+    )
     
     print(f"Generando vectores localmente para {len(docs)} fragmentos...")
     start_time = time.time()
