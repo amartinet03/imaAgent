@@ -117,8 +117,32 @@ class WordGenerator:
             
         parsed_data = tender_context.get("parsed_data", {})
         
-        # 1. Generar contenido dinámico con LLM
-        dynamic_content = self.generate_ot_content_with_llm(parsed_data)
+        # 1. Obtener o generar contenido dinámico con LLM
+        # Si parsed_data ya cuenta con textos dinámicos generados o modificados por el usuario desde el chat,
+        # los conservamos estrictamente en lugar de regenerarlos de cero.
+        dynamic_content = parsed_data.get("dynamic_content") or {}
+        has_existing_text = any(parsed_data.get(k) for k in [
+            "TEXTO_ALCANCE_GENERAL", "TEXTO_TAREAS_DEFINIDAS", "TEXTO_PERFILES_PERSONAL",
+            "TEXTO_MATERIALES_CLIENTE", "TEXTO_MATERIALES_IMA", "TEXTO_LUGAR_PRESTACION"
+        ])
+        
+        if not has_existing_text and not dynamic_content:
+            dynamic_content = self.generate_ot_content_with_llm(parsed_data)
+            parsed_data["dynamic_content"] = dynamic_content
+            for k, v in dynamic_content.items():
+                if k not in parsed_data:
+                    parsed_data[k] = v
+        else:
+            # Sincronizar cualquier campo modificado en parsed_data hacia dynamic_content
+            for k in [
+                "TITULO_OBRA", "TEXTO_LUGAR_PRESTACION", "TEXTO_HORARIOS", "TEXTO_ALCANCE_GENERAL", 
+                "TEXTO_TAREAS_DEFINIDAS", "TEXTO_MATERIALES_CLIENTE", "TEXTO_MATERIALES_IMA", 
+                "TEXTO_PERFILES_PERSONAL", "TEXTO_REQUISITOS_ADICIONALES",
+                "TEXTO_ENCUADRE_GREMIAL", "TEXTO_HERRAMIENTAS_Y_EPP", 
+                "TEXTO_SSMA", "TEXTO_CONDICIONES_COMERCIALES", "TEXTO_COMUNICACION"
+            ]:
+                if k in parsed_data and parsed_data[k]:
+                    dynamic_content[k] = parsed_data[k]
         
         # 2. Configurar variables de reemplazo (LLM + Metadata base)
         metadata = metadata or {}
@@ -163,7 +187,8 @@ class WordGenerator:
                     "TEXTO_PERFILES_PERSONAL", "TEXTO_REQUISITOS_ADICIONALES",
                     "TEXTO_ENCUADRE_GREMIAL", "TEXTO_HERRAMIENTAS_Y_EPP", 
                     "TEXTO_SSMA", "TEXTO_CONDICIONES_COMERCIALES", "TEXTO_COMUNICACION"]:
-            variables_reemplazo[f"{{{{{key}}}}}"] = dynamic_content.get(key, "A definir según pliego.")
+            val = parsed_data.get(key) or dynamic_content.get(key) or "A definir según pliego."
+            variables_reemplazo[f"{{{{{key}}}}}"] = str(val)
 
         # 3. Inyectar variables en el documento
         doc = docx.Document(template_path)

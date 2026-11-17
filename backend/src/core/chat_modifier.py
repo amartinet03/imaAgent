@@ -77,9 +77,50 @@ REGLAS:
         texto_res = texto_res[:-3]
         
     try:
-        updated_json = json.loads(texto_res.strip())
-        return updated_json
-    except json.JSONDecodeError as e:
+        # Extraer JSON de bloques markdown o texto circundante
+        clean_text = texto_res
+        if "```json" in clean_text:
+            clean_text = clean_text.split("```json")[1].split("```")[0]
+        elif "```" in clean_text:
+            clean_text = clean_text.split("```")[1].split("```")[0]
+        else:
+            start = clean_text.find("{")
+            end = clean_text.rfind("}")
+            if start != -1 and end != -1:
+                clean_text = clean_text[start:end+1]
+
+        clean_text = clean_text.strip()
+        
+        try:
+            import json_repair
+            updated_json = json_repair.loads(clean_text)
+        except Exception:
+            updated_json = json.loads(clean_text)
+
+        if isinstance(updated_json, dict) and updated_json:
+            # Hacer merge con el original para preservar campos no modificados
+            merged = current_json.copy()
+            merged.update(updated_json)
+
+            # Sincronizar campos de texto hacia dynamic_content si existen
+            if "dynamic_content" not in merged or not isinstance(merged["dynamic_content"], dict):
+                merged["dynamic_content"] = {}
+                
+            ot_fields = [
+                "TITULO_OBRA", "TEXTO_LUGAR_PRESTACION", "TEXTO_HORARIOS", "TEXTO_ALCANCE_GENERAL", 
+                "TEXTO_TAREAS_DEFINIDAS", "TEXTO_MATERIALES_CLIENTE", "TEXTO_MATERIALES_IMA", 
+                "TEXTO_PERFILES_PERSONAL", "TEXTO_REQUISITOS_ADICIONALES",
+                "TEXTO_ENCUADRE_GREMIAL", "TEXTO_HERRAMIENTAS_Y_EPP", 
+                "TEXTO_SSMA", "TEXTO_CONDICIONES_COMERCIALES", "TEXTO_COMUNICACION"
+            ]
+            for fld in ot_fields:
+                if fld in updated_json:
+                    merged["dynamic_content"][fld] = updated_json[fld]
+                elif fld in merged:
+                    merged["dynamic_content"][fld] = merged[fld]
+
+            return merged
+        return current_json
+    except Exception as e:
         print(f"Error decodificando el JSON modificado: {e}")
-        # Retornamos el original si falla para no romper nada
         return current_json
