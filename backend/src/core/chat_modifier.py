@@ -1,40 +1,44 @@
 import json
 import re
-from langchain_core.prompts import PromptTemplate
 
 def modify_json_with_chat(current_json: dict, chat_history: list, user_instruction: str, chat_type: str = 'OT') -> dict:
     """
     Modifica el JSON de parsed_data basándose en la instrucción del usuario.
+    Especializado y optimizado por tipo de chat para garantizar respuestas rápidas,
+    precisas y sin truncamiento de tokens.
     """
-    # Excluimos listas muy largas para no confundir al LLM a menos que estemos editándolas
-    working_json = current_json.copy()
-    
-    json_str = json.dumps(working_json, ensure_ascii=False, indent=2)
-    history_str = "\n".join([f"{msg['role'].upper()}: {msg['content']}" for msg in chat_history[-5:]]) # Últimos 5 mensajes para contexto
-    
-    context_rules = ""
-    if chat_type == 'OT':
-        context_rules = """
-Enfócate en modificar los campos relacionados a la Oferta Técnica:
-- metadata (cliente, fecha, etc)
-- TEXTO_MATERIALES_CLIENTE, TEXTO_MATERIALES_IMA
-- TEXTO_PERFILES_PERSONAL, TEXTO_REQUISITOS_ADICIONALES
-- TEXTO_HERRAMIENTAS_Y_EPP, TEXTO_SSMA
-- TEXTO_TAREAS_DEFINIDAS, TEXTO_ENCUADRE_GREMIAL, etc.
-"""
-    elif chat_type == 'CONSULTAS':
-        context_rules = """
-Enfócate en modificar los campos relacionados a Consultas (RFI):
-- consultas_generales (lista de dicts con 'seccion' y 'consulta')
-- inconsistencias (lista de dicts con 'ubicacion' y 'descripcion')
-Añade, modifica o elimina elementos de estas listas según pida el usuario.
-"""
+    history_str = "\n".join([f"{msg['role'].upper()}: {msg['content']}" for msg in chat_history[-5:]])
 
-    prompt = PromptTemplate.from_template(
-        """Eres un experto ingeniero de licitaciones de IMA Servicios Industriales.
-Tu tarea es modificar el siguiente JSON (parsed_data) de la licitación, aplicando estrictamente la petición del usuario.
+    if chat_type == 'CONSULTAS':
+        # 1. Preparar listas numeradas continuas para que el usuario pueda referenciar por N° (ej. "elimina la consulta 14")
+        raw_consultas = current_json.get("consultas_generales") or []
+        raw_inconsistencias = current_json.get("inconsistencias") or []
 
-JSON ACTUAL:
+        idx = 1
+        numbered_consultas = []
+        for c in raw_consultas:
+            item = dict(c)
+            item["numero"] = idx
+            numbered_consultas.append(item)
+            idx += 1
+
+        numbered_inconsistencias = []
+        for inc in raw_inconsistencias:
+            item = dict(inc)
+            item["numero"] = idx
+            numbered_inconsistencias.append(item)
+            idx += 1
+
+        input_payload = {
+            "consultas_generales": numbered_consultas,
+            "inconsistencias": numbered_inconsistencias
+        }
+        json_str = json.dumps(input_payload, ensure_ascii=False, indent=2)
+
+        prompt_text = f"""Eres un ingeniero experto en licitaciones de IMA Servicios Industriales.
+Tu tarea es modificar la lista de Consultas (RFI) e Inconsistencias aplicando ESTRICTAMENTE la instrucción del usuario.
+
+LISTADO ACTUAL DE CONSULTAS E INCONSISTENCIAS:
 {json_str}
 
 HISTORIAL RECIENTE:
@@ -43,84 +47,133 @@ HISTORIAL RECIENTE:
 INSTRUCCIÓN DEL USUARIO:
 {user_instruction}
 
-REGLAS:
-1. Identifica qué campo del JSON necesita cambiar y modifícalo.
-2. {context_rules}
-3. Devuelve ÚNICAMENTE el JSON completo modificado válido. Nada de texto explicativo, nada de markdown ````json```` alrededor. Solo llaves {{}}.
+REGLAS ESPECÍFICAS:
+1. Si el usuario pide AGREGAR una consulta o pregunta:
+   Agrega un nuevo objeto a "consultas_generales" con la siguiente estructura exacta:
+   {{"categoria": "Técnica / Comercial / Equipos", "archivo_origen": "Pliego General", "pagina_origen": "N/A", "cita_textual": "Tema relacionado", "consulta": "La pregunta redactada de forma profesional"}}
+2. Si el usuario pide ELIMINAR una consulta o inconsistencia (por número ej. 'elimina la consulta 14' o por tema):
+   Identifica el objeto correspondiente por su campo 'numero' o su texto y remuévelo del listado.
+3. Si el usuario pide MODIFICAR o REESCRIBIR:
+   Modifica el texto de la consulta o inconsistencia indicada.
+4. Devuelve ÚNICAMENTE un objeto JSON válido con las dos claves: "consultas_generales" e "inconsistencias". No agregues texto introductorio ni explicaciones fuera del JSON.
 """
-    )
-    
-    prompt_value = prompt.format(
-        json_str=json_str,
-        history_str=history_str,
-        user_instruction=user_instruction,
-        context_rules=context_rules
-    )
-    
+
+    else:
+        # OT (Oferta Técnica)
+        ot_fields = [
+            "TITULO_OBRA", "TEXTO_LUGAR_PRESTACION", "TEXTO_HORARIOS", "TEXTO_ALCANCE_GENERAL", 
+            "TEXTO_TAREAS_DEFINIDAS", "TEXTO_MATERIALES_CLIENTE", "TEXTO_MATERIALES_IMA", 
+            "TEXTO_PERFILES_PERSONAL", "TEXTO_REQUISITOS_ADICIONALES",
+            "TEXTO_ENCUADRE_GREMIAL", "TEXTO_HERRAMIENTAS_Y_EPP", 
+            "TEXTO_SSMA", "TEXTO_CONDICIONES_COMERCIALES", "TEXTO_COMUNICACION"
+        ]
+        dynamic_content = current_json.get("dynamic_content") or {}
+        ot_payload = {
+            "metadata": current_json.get("metadata", {}),
+            "secciones_ot": {}
+        }
+        for fld in ot_fields:
+            ot_payload["secciones_ot"][fld] = current_json.get(fld) or dynamic_content.get(fld, "")
+
+        json_str = json.dumps(ot_payload, ensure_ascii=False, indent=2)
+
+        prompt_text = f"""Eres un ingeniero experto en licitaciones de IMA Servicios Industriales.
+Tu tarea es modificar las secciones de la Oferta Técnica (OT) aplicando ESTRICTAMENTE la instrucción del usuario.
+
+SECCIONES ACTUALES DE LA OFERTA TÉCNICA:
+{json_str}
+
+HISTORIAL RECIENTE:
+{history_str}
+
+INSTRUCCIÓN DEL USUARIO:
+{user_instruction}
+
+REGLAS ESPECÍFICAS:
+1. Identifica qué sección o campo de "secciones_ot" necesita cambiar y modifícalo aplicando lo que pidió el usuario.
+2. Mantén el estilo profesional, directo y en tercera persona ("IMA").
+3. Devuelve ÚNICAMENTE un objeto JSON válido con los campos modificados de "secciones_ot" (o todas las "secciones_ot"). No agregues texto introductorio.
+"""
+
     from src.core.analyzer import invoke_with_retry
-    response = invoke_with_retry(prompt_value)
+    response = invoke_with_retry(prompt_text)
     
     content = response.content
     if isinstance(content, list):
-        texto_res = "".join(
-            c.get("text", "") if isinstance(c, dict) else str(c)
-            for c in content
-        ).strip()
+        clean_text = "".join(c.get("text", "") if isinstance(c, dict) else str(c) for c in content).strip()
     else:
-        texto_res = str(content).strip()
-    # Remover posibles tags markdown
-    if texto_res.startswith("```json"):
-        texto_res = texto_res[7:]
-    if texto_res.startswith("```"):
-        texto_res = texto_res[3:]
-    if texto_res.endswith("```"):
-        texto_res = texto_res[:-3]
-        
+        clean_text = str(content).strip()
+
+    # Limpiar bloques markdown
+    if "```json" in clean_text:
+        clean_text = clean_text.split("```json")[1].split("```")[0]
+    elif "```" in clean_text:
+        clean_text = clean_text.split("```")[1].split("```")[0]
+    else:
+        start = clean_text.find("{")
+        end = clean_text.rfind("}")
+        if start != -1 and end != -1:
+            clean_text = clean_text[start:end+1]
+
+    clean_text = clean_text.strip()
+
     try:
-        # Extraer JSON de bloques markdown o texto circundante
-        clean_text = texto_res
-        if "```json" in clean_text:
-            clean_text = clean_text.split("```json")[1].split("```")[0]
-        elif "```" in clean_text:
-            clean_text = clean_text.split("```")[1].split("```")[0]
-        else:
-            start = clean_text.find("{")
-            end = clean_text.rfind("}")
-            if start != -1 and end != -1:
-                clean_text = clean_text[start:end+1]
-
-        clean_text = clean_text.strip()
-        
+        import json_repair
+        updated_data = json_repair.loads(clean_text)
+    except Exception:
         try:
-            import json_repair
-            updated_json = json_repair.loads(clean_text)
-        except Exception:
-            updated_json = json.loads(clean_text)
+            updated_data = json.loads(clean_text)
+        except Exception as e_json:
+            print(f"[Chat Modifier Error] No se pudo decodificar JSON: {e_json}\nTexto recibido: {clean_text[:200]}")
+            return current_json
 
-        if isinstance(updated_json, dict) and updated_json:
-            # Hacer merge con el original para preservar campos no modificados
-            merged = current_json.copy()
-            merged.update(updated_json)
-
-            # Sincronizar campos de texto hacia dynamic_content si existen
-            if "dynamic_content" not in merged or not isinstance(merged["dynamic_content"], dict):
-                merged["dynamic_content"] = {}
-                
-            ot_fields = [
-                "TITULO_OBRA", "TEXTO_LUGAR_PRESTACION", "TEXTO_HORARIOS", "TEXTO_ALCANCE_GENERAL", 
-                "TEXTO_TAREAS_DEFINIDAS", "TEXTO_MATERIALES_CLIENTE", "TEXTO_MATERIALES_IMA", 
-                "TEXTO_PERFILES_PERSONAL", "TEXTO_REQUISITOS_ADICIONALES",
-                "TEXTO_ENCUADRE_GREMIAL", "TEXTO_HERRAMIENTAS_Y_EPP", 
-                "TEXTO_SSMA", "TEXTO_CONDICIONES_COMERCIALES", "TEXTO_COMUNICACION"
-            ]
-            for fld in ot_fields:
-                if fld in updated_json:
-                    merged["dynamic_content"][fld] = updated_json[fld]
-                elif fld in merged:
-                    merged["dynamic_content"][fld] = merged[fld]
-
-            return merged
+    if not isinstance(updated_data, dict):
+        print(f"[Chat Modifier] Respuesta no es un dict: {clean_text[:100]}")
         return current_json
-    except Exception as e:
-        print(f"Error decodificando el JSON modificado: {e}")
-        return current_json
+
+    result_json = current_json.copy()
+
+    if chat_type == 'CONSULTAS':
+        # Extraer listas actualizadas y limpiar campo 'numero'
+        if "consultas_generales" in updated_data and isinstance(updated_data["consultas_generales"], list):
+            clean_c = []
+            for item in updated_data["consultas_generales"]:
+                if isinstance(item, dict):
+                    c_dict = dict(item)
+                    c_dict.pop("numero", None)
+                    clean_c.append(c_dict)
+            result_json["consultas_generales"] = clean_c
+
+        if "inconsistencias" in updated_data and isinstance(updated_data["inconsistencias"], list):
+            clean_i = []
+            for item in updated_data["inconsistencias"]:
+                if isinstance(item, dict):
+                    i_dict = dict(item)
+                    i_dict.pop("numero", None)
+                    clean_i.append(i_dict)
+            result_json["inconsistencias"] = clean_i
+
+    else:
+        # OT
+        ot_fields = [
+            "TITULO_OBRA", "TEXTO_LUGAR_PRESTACION", "TEXTO_HORARIOS", "TEXTO_ALCANCE_GENERAL", 
+            "TEXTO_TAREAS_DEFINIDAS", "TEXTO_MATERIALES_CLIENTE", "TEXTO_MATERIALES_IMA", 
+            "TEXTO_PERFILES_PERSONAL", "TEXTO_REQUISITOS_ADICIONALES",
+            "TEXTO_ENCUADRE_GREMIAL", "TEXTO_HERRAMIENTAS_Y_EPP", 
+            "TEXTO_SSMA", "TEXTO_CONDICIONES_COMERCIALES", "TEXTO_COMUNICACION"
+        ]
+        sec_ot = updated_data.get("secciones_ot", updated_data)
+        if "dynamic_content" not in result_json or not isinstance(result_json["dynamic_content"], dict):
+            result_json["dynamic_content"] = {}
+
+        if isinstance(sec_ot, dict):
+            for k, v in sec_ot.items():
+                if k in ot_fields:
+                    result_json[k] = v
+                    result_json["dynamic_content"][k] = v
+        
+        if "metadata" in updated_data and isinstance(updated_data["metadata"], dict):
+            result_json["metadata"].update(updated_data["metadata"])
+
+    print(f"[Chat Modifier] Modificación exitosa para {chat_type}.")
+    return result_json
