@@ -75,8 +75,12 @@ def _invoke_llm(llm, prompt_value):
             json_str = content.split("```")[1].split("```")[0]
             
         json_str = json_str.strip()
-        import json_repair
-        return json_repair.loads(json_str)
+        try:
+            import json_repair
+            return json_repair.loads(json_str)
+        except Exception:
+            import json
+            return json.loads(json_str)
     try:
         return _do_invoke()
     except Exception as e:

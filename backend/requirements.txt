@@ -12,6 +12,7 @@ langchain-core>=0.2.35
 langchain-anthropic>=0.1.23
 langchain-community>=0.2.12
 tenacity>=8.5.0
+json-repair>=0.30.0
 
 # Document Parsing & Generators
 pdfplumber>=0.11.4
