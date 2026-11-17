@@ -74,6 +74,7 @@ export const TenderDetail: FC<TenderDetailProps> = ({ tenderId, onBack }) => {
   const [costFile, setCostFile] = useState<File | null>(null);
   const [validatingCost, setValidatingCost] = useState(false);
   const [costReport, setCostReport] = useState<string | null>(null);
+  const [generatingEco, setGeneratingEco] = useState(false);
 
   // Chat modal state
   const [showChatModal, setShowChatModal] = useState(false);
@@ -241,6 +242,20 @@ export const TenderDetail: FC<TenderDetailProps> = ({ tenderId, onBack }) => {
       showToast(err.message || 'Error en validación', 'error');
     } finally {
       setValidatingCost(false);
+    }
+  };
+
+  const handleGenerateEco = async () => {
+    setGeneratingEco(true);
+    try {
+      await api.generateEcoExcel(tenderId);
+      showToast('Planilla Excel de costos generada exitosamente.', 'success');
+      const eco = await api.getEco(tenderId);
+      setEcoData(eco);
+    } catch (err: any) {
+      showToast(err.message || 'Error al generar la planilla de costos', 'error');
+    } finally {
+      setGeneratingEco(false);
     }
   };
 
@@ -696,10 +711,28 @@ export const TenderDetail: FC<TenderDetailProps> = ({ tenderId, onBack }) => {
 
           <div className="md:col-span-2 space-y-4">
             <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-4">
-              <h3 className="font-bold text-slate-800 text-sm">Archivos Excel de Costos Generados</h3>
+              <div className="flex items-center justify-between">
+                <h3 className="font-bold text-slate-800 text-sm">Archivos Excel de Costos Generados</h3>
+                <button
+                  onClick={handleGenerateEco}
+                  disabled={generatingEco}
+                  className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs py-2 px-3.5 rounded-xl flex items-center space-x-1.5 shadow-md shadow-emerald-600/20 disabled:opacity-40 transition-colors cursor-pointer"
+                >
+                  {generatingEco ? <RotateCw size={14} className="animate-spin" /> : <Sparkles size={14} />}
+                  <span>{generatingEco ? 'Generando Excel...' : 'Generar Excel de Costos ✨'}</span>
+                </button>
+              </div>
               {ecoData.versions?.length === 0 ? (
-                <div className="py-8 text-center text-slate-400 text-xs">
-                  No se han generado planillas Excel de costos todavía.
+                <div className="py-8 text-center text-slate-400 text-xs space-y-3">
+                  <div>No se han generado planillas Excel de costos todavía.</div>
+                  <button
+                    onClick={handleGenerateEco}
+                    disabled={generatingEco}
+                    className="inline-flex items-center space-x-1.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs py-2.5 px-4 rounded-xl shadow-md transition-colors cursor-pointer"
+                  >
+                    {generatingEco ? <RotateCw size={14} className="animate-spin" /> : <Sparkles size={14} />}
+                    <span>{generatingEco ? 'Generando Excel...' : 'Generar Planilla de Costos Ahora ✨'}</span>
+                  </button>
                 </div>
               ) : (
                 <div className="space-y-2">

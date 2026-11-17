@@ -510,7 +510,9 @@ def generate_base_cost_excel(tender_id: int):
     cliente = parsed_data.get("metadata", {}).get("cliente", f"Licitacion_{tender_id}")
     safe_cliente = re.sub(r'[^A-Za-z0-9]+', '_', str(cliente))
     
-    out_name = f"Costos_{tender_id}_{safe_cliente}_REV00.xlsx"
+    excel_files = glob.glob(os.path.join(outputs_dir, "Costos_*.xlsx"))
+    rev_num = len(excel_files)
+    out_name = f"Costos_{tender_id}_{safe_cliente}_REV{rev_num:02d}.xlsx"
     out_path = os.path.join(outputs_dir, out_name)
 
     generator = ExcelGenerator()

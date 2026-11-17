@@ -105,6 +105,26 @@ def process_tender(tender_id: int):
                     rfi_template, 
                     rfi_path
                 )
+
+                # 3. Planilla de Costos (Excel)
+                try:
+                    from src.outputs.excel_generator import ExcelGenerator
+                    excel_template = os.path.join(project_root, "templates", "plantilla_costeo.xlsx")
+                    if os.path.exists(excel_template):
+                        excel_files = glob.glob(os.path.join(outputs_dir, "Costos_*.xlsx"))
+                        rev_excel = len(excel_files)
+                        excel_name = f"Costos_{tender_id}_{safe_cliente}_REV{rev_excel:02d}.xlsx"
+                        excel_path = os.path.join(outputs_dir, excel_name)
+                        print(f"Generando planilla de costos {excel_name}...")
+                        ExcelGenerator().generate_cost_excel(
+                            {"parsed_data": parsed_data, "tender_id": tender_id}, 
+                            excel_template, 
+                            excel_path
+                        )
+                        print("Planilla de costos generada exitosamente.")
+                except Exception as e_excel:
+                    print(f"Advertencia al generar Excel de costos: {e_excel}")
+
                 print(f"Documentos generados correctamente (REV{rev_ot:02d}).")
                 
                 # --- SUBIR A SHAREPOINT ---
