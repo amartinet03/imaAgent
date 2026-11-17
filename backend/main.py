@@ -475,7 +475,7 @@ def get_eco_data(tender_id: int):
 
     parsed_data = tender.get("parsed_data") or {}
     outputs_dir = os.path.join(TENDERS_DIR, str(tender_id), "outputs")
-    excel_files = glob.glob(os.path.join(outputs_dir, "Costos_*.xlsx")) + glob.glob(os.path.join(outputs_dir, "*.xlsx"))
+    excel_files = sorted(list(set(glob.glob(os.path.join(outputs_dir, "*.xlsx")))))
     
     versions = []
     for fpath in sorted(excel_files):
