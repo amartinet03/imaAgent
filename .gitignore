@@ -15,3 +15,17 @@ test_outputs_verification/
 data/tenders/
 data/raw/
 data/processed/
+**/data/tenders/
+**/data/outputs/
+**/data/raw/
+**/data/processed/
+
+# Frontend builds and dependencies
+frontend/dist/
+frontend/node_modules/
+dist/
+node_modules/
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db

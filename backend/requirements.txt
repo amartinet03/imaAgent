@@ -1,0 +1,28 @@
+fastapi>=0.115.0
+uvicorn[standard]>=0.30.0
+psycopg2-binary>=2.9.9
+python-multipart>=0.0.9
+pydantic>=2.9.0
+python-dotenv>=1.0.1
+bcrypt>=4.2.0
+
+# LangChain & AI Core (Claude Anthropic)
+langchain>=0.2.14
+langchain-core>=0.2.35
+langchain-anthropic>=0.1.23
+langchain-community>=0.2.12
+tenacity>=8.5.0
+
+# Document Parsing & Generators
+pdfplumber>=0.11.4
+pypdf>=4.3.1
+python-docx>=1.1.2
+openpyxl>=3.1.5
+xlrd>=2.0.1
+pandas>=2.2.2
+
+# External Integrations
+requests>=2.32.3
+requests-oauthlib>=2.0.0
+msal>=1.28.0
+duckduckgo-search>=6.2.10

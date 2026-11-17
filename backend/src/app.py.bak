@@ -1,0 +1,263 @@
+import streamlit as st
+import os
+import sys
+import subprocess
+import shutil
+import time
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from src.db.models import init_db, create_tender, get_all_tenders, get_tender, update_tender_parsed_data, add_message, get_messages
+from src.outputs.excel_generator import ExcelGenerator
+from src.outputs.word_generator import WordGenerator
+from src.outputs.query_generator import QueryGenerator
+
+# Inicializar Base de Datos si no existe
+init_db()
+
+def save_uploaded_files(uploaded_files, tender_id):
+    docs_dir = os.path.join("data", "tenders", str(tender_id), "docs")
+    os.makedirs(docs_dir, exist_ok=True)
+    
+    for file in uploaded_files:
+        file_path = os.path.join(docs_dir, file.name)
+        with open(file_path, "wb") as f:
+            f.write(file.getbuffer())
+
+def launch_background_worker(tender_id):
+    worker_script = os.path.join(os.path.dirname(os.path.abspath(__file__)), "background_worker.py")
+    # Lanzar proceso en segundo plano (no bloqueante)
+    subprocess.Popen([sys.executable, worker_script, str(tender_id)])
+
+def view_dashboard():
+    st.title("Dashboard de Licitaciones 🏢")
+    st.markdown("Revisa el estado de tus licitaciones o crea una nueva.")
+    
+    tenders = get_all_tenders()
+    
+    if not tenders:
+        st.info("No hay licitaciones en el sistema. Crea una nueva desde el menú lateral.")
+        return
+        
+    for tender in tenders:
+        status_color = "🟢" if tender['status'] == 'COMPLETADO' else "🟡" if tender['status'] == 'PROCESANDO' else "🔴" if tender['status'] == 'ERROR' else "⚪"
+        
+        with st.container(border=True):
+            col1, col2, col3, col4 = st.columns([3, 1, 1, 1])
+            with col1:
+                st.write(f"**{tender['name']}**")
+                st.caption(f"Creada: {tender['created_at']}")
+            with col2:
+                st.write(f"{status_color} {tender['status']}")
+                if tender['status'] == 'ERROR':
+                    st.caption(tender['error_message'])
+            with col3:
+                if st.button("Abrir", key=f"open_{tender['id']}", use_container_width=True):
+                    st.session_state['current_tender_id'] = tender['id']
+                    st.rerun()
+            with col4:
+                if st.button("Borrar", key=f"del_{tender['id']}", use_container_width=True, type="secondary"):
+                    from src.db.models import delete_tender
+                    # 1. Borrar de la Base de Datos
+                    delete_tender(tender['id'])
+                    # 2. Borrar archivos del disco
+                    tender_dir = os.path.join("data", "tenders", str(tender['id']))
+                    if os.path.exists(tender_dir):
+                        import shutil
+                        shutil.rmtree(tender_dir, ignore_errors=True)
+                    st.rerun()
+
+def view_new_tender():
+    st.title("Nueva Licitación 📂")
+    st.markdown("Sube los pliegos y anexos. El sistema los procesará en segundo plano.")
+    
+    tender_name = st.text_input("Nombre de la Licitación / Proyecto", placeholder="Ej: Licitación YPF Mantenimiento")
+    uploaded_files = st.file_uploader("Arrastra los pliegos aquí", type=["pdf", "docx", "xlsx", "xls"], accept_multiple_files=True)
+    
+    if st.button("Procesar Archivos en Segundo Plano", type="primary", use_container_width=True):
+        if not tender_name:
+            st.warning("Debes darle un nombre a la licitación.")
+            return
+        if not uploaded_files:
+            st.warning("Debes subir al menos un archivo.")
+            return
+            
+        with st.spinner("Creando entorno seguro..."):
+            # 1. Crear en DB
+            tender_id = create_tender(tender_name)
+            # 2. Guardar en disco
+            save_uploaded_files(uploaded_files, tender_id)
+            # 3. Lanzar worker
+            launch_background_worker(tender_id)
+            
+        st.success("¡Archivos enviados a procesamiento! Puedes revisar el estado en el Dashboard.")
+        time.sleep(2)
+        st.session_state['current_view'] = 'dashboard'
+        st.rerun()
+
+def view_tender_detail():
+    tender_id = st.session_state.get('current_tender_id')
+    tender = get_tender(tender_id)
+    
+    if not tender:
+        st.error("La licitación no existe.")
+        return
+        
+    st.title(f"📁 {tender['name']}")
+    
+    if tender['status'] == 'PROCESANDO':
+        st.info("Esta licitación se está analizando en segundo plano. Esto puede tardar varios minutos dependiendo del tamaño de los pliegos.")
+        st.markdown("Puedes hacer otras cosas o procesar otra licitación mientras esperas.")
+        if st.button("🔄 Refrescar Estado"):
+            st.rerun()
+        return
+    
+    if tender['status'] == 'ERROR':
+        st.error(f"Ocurrió un error en el análisis: {tender['error_message']}")
+        return
+        
+    if tender['status'] != 'COMPLETADO' or not tender['parsed_data']:
+        st.warning("Estado desconocido o datos no disponibles.")
+        return
+        
+    parsed_data = tender['parsed_data']
+    
+    st.divider()
+    st.write("### Entregables Inmediatos")
+    
+    outputs_dir = os.path.join("data", "tenders", str(tender_id), "outputs")
+    os.makedirs(outputs_dir, exist_ok=True)
+    
+    col1, col2 = st.columns(2)
+    with col1:
+        if st.button("Generar Oferta Técnica (Docx)", use_container_width=True):
+            try:
+                with st.spinner("Ensamblando Word..."):
+                    gen = WordGenerator()
+                    meta = parsed_data.get("metadata", {})
+                    # Creamos un contexto simulado compatible con WordGenerator
+                    ctx = {"parsed_data": parsed_data} 
+                    out_name = f"OUTPUT_OT_{tender_id}.docx"
+                    out_path = os.path.join(outputs_dir, out_name)
+                    gen.draft_technical_offer(ctx, "templates/OT_template.docx", out_path, metadata=meta)
+                st.success(f"Archivo generado con éxito.")
+                with open(out_path, "rb") as file:
+                    st.download_button(label="⬇️ Descargar Oferta Técnica", data=file, file_name=out_name, mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document", use_container_width=True, type="primary")
+            except Exception as e:
+                st.error(f"Error al generar la Oferta Técnica: {e}")
+                
+    with col2:
+        if st.button("Generar Excel de Costos", use_container_width=True):
+            try:
+                with st.spinner("Ensamblando Excel..."):
+                    gen = ExcelGenerator()
+                    ctx = {"parsed_data": parsed_data}
+                    out_name = f"OUTPUT_Costos_{tender_id}.xlsx"
+                    out_path = os.path.join(outputs_dir, out_name)
+                    gen.generate_cost_excel(ctx, "1340 - Costeo Pampa.xlsx", out_path)
+                st.success(f"Archivo generado con éxito.")
+                with open(out_path, "rb") as file:
+                    st.download_button(label="⬇️ Descargar Excel de Costos", data=file, file_name=out_name, mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", use_container_width=True, type="primary")
+            except Exception as e:
+                st.error(f"Error: {e}")
+
+    st.write("### Revisión de Consultas (RFI)")
+    import pandas as pd
+    
+    df_consultas = pd.DataFrame(parsed_data.get("consultas_generales", []))
+    df_inconsistencias = pd.DataFrame(parsed_data.get("inconsistencias", []))
+    
+    st.write("#### Consultas Generales")
+    edited_consultas = st.data_editor(df_consultas, num_rows="dynamic", key="editor_consultas")
+    
+    st.write("#### Inconsistencias")
+    edited_inconsistencias = st.data_editor(df_inconsistencias, num_rows="dynamic", key="editor_incons")
+    
+    if st.button("Guardar Cambios y Generar Word de Consultas", type="primary"):
+        with st.spinner("Guardando en base de datos..."):
+            parsed_data["consultas_generales"] = edited_consultas.to_dict('records')
+            parsed_data["inconsistencias"] = edited_inconsistencias.to_dict('records')
+            update_tender_parsed_data(tender_id, parsed_data)
+            
+            gen = QueryGenerator()
+            try:
+                import re
+                meta = parsed_data.get("metadata", {})
+                cliente = meta.get("cliente", "Cliente")
+                safe_name = re.sub(r'[^\w\s-]', '', cliente).strip().replace(' ', '_')[:30]
+                out_name = f"Consultas_{safe_name}_{tender_id}.docx"
+                out_path = os.path.join(outputs_dir, out_name)
+                gen.generate_docx_from_json(
+                    parsed_data, 
+                    "Consultas_Pliego_PAMPA_Obras_Civiles_Menores_PGSM.docx", 
+                    out_path
+                )
+                st.success(f"¡Guardado exitosamente!")
+            except Exception as e:
+                st.error(f"Error al generar consultas: {e}")
+                
+    # Si ya existe el archivo de consultas, mostrar botón de descarga
+    import glob
+    consultas_files = glob.glob(os.path.join(outputs_dir, "Consultas_*.docx"))
+    if consultas_files:
+        latest_consultas = max(consultas_files, key=os.path.getctime)
+        with open(latest_consultas, "rb") as file:
+            st.download_button(label="⬇️ Descargar Último Word de Consultas", data=file, file_name=os.path.basename(latest_consultas), mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document")
+
+    st.divider()
+    st.write("### Chat de la Licitación")
+    st.caption("Añade notas (ej: visitas de terreno) o haz preguntas al pliego.")
+    
+    messages = get_messages(tender_id)
+    if not messages:
+        add_message(tender_id, "assistant", "¡Hola! He terminado de analizar el pliego. Si fuiste a la visita de terreno, cuéntame qué detalles extra debo considerar para la Oferta.")
+        messages = get_messages(tender_id)
+        
+    for msg in messages:
+        with st.chat_message(msg["role"]):
+            st.write(msg["content"])
+            
+    if prompt := st.chat_input("Escribe aquí..."):
+        with st.chat_message("user"):
+            st.write(prompt)
+        add_message(tender_id, "user", prompt)
+        
+        with st.chat_message("assistant"):
+            if "visita" in prompt.lower() or "terreno" in prompt.lower():
+                response = "He guardado en la base de datos las observaciones de la visita a terreno. Lo tendré en cuenta si regeneras la Oferta Técnica."
+            else:
+                response = "Nota registrada. Para preguntas específicas sobre el pliego, el buscador vectorial estará conectado aquí próximamente."
+            st.write(response)
+        add_message(tender_id, "assistant", response)
+
+def main():
+    st.set_page_config(page_title="Tender AI - Gestión de Licitaciones", layout="wide")
+    
+    if 'current_view' not in st.session_state:
+        st.session_state['current_view'] = 'dashboard'
+        
+    with st.sidebar:
+        st.title("Tender AI")
+        st.subheader("Menú Principal")
+        if st.button("🏠 Dashboard", use_container_width=True):
+            st.session_state['current_view'] = 'dashboard'
+        if st.button("➕ Nueva Licitación", use_container_width=True):
+            st.session_state['current_view'] = 'nueva_licitacion'
+        
+        st.divider()
+        st.caption("Arquitectura Asíncrona v2.0")
+
+    if st.session_state['current_view'] == 'dashboard':
+        view_dashboard()
+    elif st.session_state['current_view'] == 'nueva_licitacion':
+        view_new_tender()
+    elif st.session_state['current_view'] == 'detalle':
+        view_tender_detail()
+        
+    # Hack para forzar que si hay un current_tender_id y no estamos en nueva_licitacion, vayamos al detalle
+    if st.session_state.get('current_tender_id') and st.session_state['current_view'] == 'dashboard':
+        st.session_state['current_view'] = 'detalle'
+        st.rerun()
+
+if __name__ == "__main__":
+    main()

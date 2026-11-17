@@ -133,8 +133,13 @@ def process_tender(tender_id: int):
             # Enviar notificación por correo
             try:
                 from src.integrations.notifier import notify_analysis_completed
-                user_email = os.getenv("NOTIFY_EMAIL", "tu_correo@imaservicios.com")
-                notify_analysis_completed(user_email, tender_id, cliente)
+                from src.db.models import get_tender
+                tender_obj = get_tender(tender_id)
+                tender_name = tender_obj.get("name") if tender_obj else None
+                proceso_name = parsed_data.get("metadata", {}).get("proceso") if isinstance(parsed_data, dict) else None
+                tender_title = tender_name or proceso_name or cliente
+                user_email = os.getenv("NOTIFY_EMAIL", "sebastien.martinet@ima-si.com.ar")
+                notify_analysis_completed(user_email, tender_id, cliente=cliente, tender_title=tender_title)
             except Exception as e:
                 print(f"No se pudo enviar la notificación: {e}")
 

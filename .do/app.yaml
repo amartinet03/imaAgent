@@ -1,0 +1,115 @@
+name: imaagent
+region: nyc
+
+# -----------------------------------------------------------------------------
+# 1. FRONTEND: Single Page Application (React 19 + Vite + TypeScript)
+# -----------------------------------------------------------------------------
+static_sites:
+- name: frontend
+  github:
+    branch: develop
+    deploy_on_push: true
+    repo: amartinet03/imaAgent
+  source_dir: frontend
+  build_command: npm run build
+  output_dir: dist
+  catchall_document: index.html
+  routes:
+  - path: /
+
+# -----------------------------------------------------------------------------
+# 2. BACKEND: API REST FastAPI (Uvicorn + Python 3.11)
+# -----------------------------------------------------------------------------
+services:
+- name: backend
+  github:
+    branch: develop
+    deploy_on_push: true
+    repo: amartinet03/imaAgent
+  source_dir: backend
+  dockerfile_path: backend/Dockerfile
+  http_port: 8000
+  instance_count: 1
+  instance_size_slug: basic-xs
+  routes:
+  - path: /api
+  - path: /data
+  envs:
+  # Base de Datos PostgreSQL gestionada en DigitalOcean
+  - key: DATABASE_URL
+    value: ${db.DATABASE_URL}
+    scope: RUN_TIME
+
+  # Motor de Inteligencia Artificial (Anthropic Claude)
+  - key: ANTHROPIC_API_KEY
+    type: SECRET
+    scope: RUN_TIME
+  - key: ANTHROPIC_MODEL
+    value: claude-sonnet-5-5
+    scope: RUN_TIME
+
+  # CRM Pipedrive
+  - key: PIPEDRIVE_API_TOKEN
+    type: SECRET
+    scope: RUN_TIME
+
+  # Microsoft 365 & Azure AD (Graph API)
+  - key: MSGRAPH_TENANT_ID
+    value: 1dc553b0-0450-4d54-9bf2-c73027603588
+    scope: RUN_TIME
+  - key: MSGRAPH_CLIENT_ID
+    value: 776dd426-9cac-4dcd-9335-0e0e378681b2
+    scope: RUN_TIME
+  - key: MSGRAPH_CLIENT_SECRET
+    type: SECRET
+    scope: RUN_TIME
+  - key: MS365_MONITOR_EMAIL
+    value: sebastien.martinet@ima-si.com.ar
+    scope: RUN_TIME
+  - key: MS365_SENDER_EMAIL
+    value: sgih@ima-si.com.ar
+    scope: RUN_TIME
+  - key: SENDER_DISPLAY_NAME
+    value: IMA Licitaciones
+    scope: RUN_TIME
+
+  # SharePoint Online (Sitios y Bibliotecas de Documentos)
+  - key: SHAREPOINT_COMERCIAL_SITE_ID
+    value: imasi.sharepoint.com,a78e6ee5-db65-4f29-b34f-cb57d81ec23c,4f33571e-9b22-4722-b6ff-d889c0921768
+    scope: RUN_TIME
+  - key: SHAREPOINT_COMERCIAL_DRIVE_ID
+    value: b!5W6Op2XbKU-zT8tX2B7CPB5XM08imyJHtv_YicCSF2gLSxGRuc1IQ5jPQGuE-8LF
+    scope: RUN_TIME
+  - key: SHAREPOINT_TENDERS_SITE_ID
+    value: imasi.sharepoint.com,42cc8ccb-7246-41f3-a0a7-eb74d57f8fbc,cf1c41ac-5426-47ae-a216-78ef3a736f94
+    scope: RUN_TIME
+  - key: SHAREPOINT_TENDERS_DRIVE_ID
+    value: b!y4zMQkZy80Ggp-t01X-PvKxBHM8mVK5HohZ47zpzb5T4e2x750yyTYGmPy-z7mQS
+    scope: RUN_TIME
+
+  # Notificaciones por Correo (SMTP Gmail)
+  - key: NOTIFY_EMAIL
+    value: sebastien.martinet@ima-si.com.ar
+    scope: RUN_TIME
+  - key: SMTP_SERVER
+    value: smtp.gmail.com
+    scope: RUN_TIME
+  - key: SMTP_PORT
+    value: "587"
+    scope: RUN_TIME
+  - key: SMTP_USER
+    value: imaholdas21@gmail.com
+    scope: RUN_TIME
+  - key: SMTP_PASSWORD
+    type: SECRET
+    scope: RUN_TIME
+
+# -----------------------------------------------------------------------------
+# 3. BASE DE DATOS: PostgreSQL 16 Gestionada por DigitalOcean
+# -----------------------------------------------------------------------------
+databases:
+- engine: PG
+  name: db
+  num_nodes: 1
+  size: db-s-dev-database
+  version: "16"
