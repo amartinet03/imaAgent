@@ -1,115 +1,123 @@
-name: imaagent
-region: nyc
-
-# -----------------------------------------------------------------------------
-# 1. FRONTEND: Single Page Application (React 19 + Vite + TypeScript)
-# -----------------------------------------------------------------------------
-static_sites:
-- name: frontend
-  github:
-    branch: develop
-    deploy_on_push: true
-    repo: amartinet03/imaAgent
-  source_dir: frontend
-  build_command: npm run build
-  output_dir: dist
-  catchall_document: index.html
-  routes:
-  - path: /
-
-# -----------------------------------------------------------------------------
-# 2. BACKEND: API REST FastAPI (Uvicorn + Python 3.11)
-# -----------------------------------------------------------------------------
-services:
-- name: backend
-  github:
-    branch: develop
-    deploy_on_push: true
-    repo: amartinet03/imaAgent
-  source_dir: backend
-  dockerfile_path: backend/Dockerfile
-  http_port: 8000
-  instance_count: 1
-  instance_size_slug: basic-xs
-  routes:
-  - path: /api
-  - path: /data
-  envs:
-  # Base de Datos PostgreSQL gestionada en DigitalOcean
-  - key: DATABASE_URL
-    value: ${db.DATABASE_URL}
-    scope: RUN_TIME
-
-  # Motor de Inteligencia Artificial (Anthropic Claude)
-  - key: ANTHROPIC_API_KEY
-    type: SECRET
-    scope: RUN_TIME
-  - key: ANTHROPIC_MODEL
-    value: claude-sonnet-5-5
-    scope: RUN_TIME
-
-  # CRM Pipedrive
-  - key: PIPEDRIVE_API_TOKEN
-    type: SECRET
-    scope: RUN_TIME
-
-  # Microsoft 365 & Azure AD (Graph API)
-  - key: MSGRAPH_TENANT_ID
-    value: 1dc553b0-0450-4d54-9bf2-c73027603588
-    scope: RUN_TIME
-  - key: MSGRAPH_CLIENT_ID
-    value: 776dd426-9cac-4dcd-9335-0e0e378681b2
-    scope: RUN_TIME
-  - key: MSGRAPH_CLIENT_SECRET
-    type: SECRET
-    scope: RUN_TIME
-  - key: MS365_MONITOR_EMAIL
-    value: sebastien.martinet@ima-si.com.ar
-    scope: RUN_TIME
-  - key: MS365_SENDER_EMAIL
-    value: sgih@ima-si.com.ar
-    scope: RUN_TIME
-  - key: SENDER_DISPLAY_NAME
-    value: IMA Licitaciones
-    scope: RUN_TIME
-
-  # SharePoint Online (Sitios y Bibliotecas de Documentos)
-  - key: SHAREPOINT_COMERCIAL_SITE_ID
-    value: imasi.sharepoint.com,a78e6ee5-db65-4f29-b34f-cb57d81ec23c,4f33571e-9b22-4722-b6ff-d889c0921768
-    scope: RUN_TIME
-  - key: SHAREPOINT_COMERCIAL_DRIVE_ID
-    value: b!5W6Op2XbKU-zT8tX2B7CPB5XM08imyJHtv_YicCSF2gLSxGRuc1IQ5jPQGuE-8LF
-    scope: RUN_TIME
-  - key: SHAREPOINT_TENDERS_SITE_ID
-    value: imasi.sharepoint.com,42cc8ccb-7246-41f3-a0a7-eb74d57f8fbc,cf1c41ac-5426-47ae-a216-78ef3a736f94
-    scope: RUN_TIME
-  - key: SHAREPOINT_TENDERS_DRIVE_ID
-    value: b!y4zMQkZy80Ggp-t01X-PvKxBHM8mVK5HohZ47zpzb5T4e2x750yyTYGmPy-z7mQS
-    scope: RUN_TIME
-
-  # Notificaciones por Correo (SMTP Gmail)
-  - key: NOTIFY_EMAIL
-    value: sebastien.martinet@ima-si.com.ar
-    scope: RUN_TIME
-  - key: SMTP_SERVER
-    value: smtp.gmail.com
-    scope: RUN_TIME
-  - key: SMTP_PORT
-    value: "587"
-    scope: RUN_TIME
-  - key: SMTP_USER
-    value: imaholdas21@gmail.com
-    scope: RUN_TIME
-  - key: SMTP_PASSWORD
-    type: SECRET
-    scope: RUN_TIME
-
-# -----------------------------------------------------------------------------
-# 3. BASE DE DATOS: PostgreSQL 16 Gestionada por DigitalOcean
-# -----------------------------------------------------------------------------
 databases:
 - engine: PG
   name: db
-  num_nodes: 1
-  size: db-s-dev-database
   version: "16"
+ingress:
+  rules:
+  - component:
+      name: backend
+      rewrite: /api
+    match:
+      path:
+        prefix: /api
+  - component:
+      name: backend
+      rewrite: /data
+    match:
+      path:
+        prefix: /data
+  - component:
+      name: frontend
+    match:
+      path:
+        prefix: /
+name: imaagent
+region: nyc
+services:
+- dockerfile_path: backend/Dockerfile
+  envs:
+  - key: DATABASE_URL
+    scope: RUN_TIME
+    type: SECRET
+    value: EV[1:WJh31JeLz5EfsRI7wSeElihLYihdb/Qo:yd0i1X21fYR3lHiTIJLpUQE5yWyx0T6P/Z1gVFmcCqyEuqbCSNwqPjktGll8NFCOSD7F703mLnFHW0wHAjf91E+pM7hIObUCaA==]
+  - key: ANTHROPIC_API_KEY
+    scope: RUN_TIME
+    type: SECRET
+    value: EV[1:GWTdODa3LenCIt2bs+8n/x3JWkiBbMMb:CiaJIa8yguewF81MyS4X66U2QwftXqjtGgTKxlPO3BghMROSPf06W1YA2+yII6w1sgMXyPKLwilDAvZex8RaiPhii0Cq+W0xUXHJqs8glVHhcjYSy6x739pVVk1faAayaxdJgoTxJ2/nUTTi3KzbYnfsKqfWpMP3RLYmJg==]
+  - key: ANTHROPIC_MODEL
+    scope: RUN_TIME
+    type: SECRET
+    value: EV[1:CofqJ0lnHCVPKcbso3zAk3DomkzY5fD8:39EHTzExiVhtOU8/7lWjkjIze25J2VkF844o64S/VuP0]
+  - key: PIPEDRIVE_API_TOKEN
+    scope: RUN_TIME
+    type: SECRET
+    value: EV[1:YxyLKiWklkdg5E8YRjhuopCcQ8YmZKwd:aQT2GYYzFBfWCJb7efSWlQLa3C1GCGuzjKnNTxvccQ4ZwuN9T4z7Fpsywq4fhMDZADhEp+VLJVI=]
+  - key: MSGRAPH_TENANT_ID
+    scope: RUN_TIME
+    type: SECRET
+    value: EV[1:Mx1/mC4oeLbB2noFItB6RCQVvwU3jq4t:ietrCaC9JmA0CIWWcfCJur5lMODoNDwu+vvQAOeKtSSGpHpb2bliUl0KSIUEvB6C/w74DA==]
+  - key: MSGRAPH_CLIENT_ID
+    scope: RUN_TIME
+    type: SECRET
+    value: EV[1:cq88u9d/dkncrwdtqQIxQx2RJTKgd1mp:fJF/ugSbcVKtTL616oQu/nGI/d4n263lNRHsgdT6nXWOeHqUrHH/nTvElAdtr4UPA7b1KA==]
+  - key: MSGRAPH_CLIENT_SECRET
+    scope: RUN_TIME
+    type: SECRET
+    value: EV[1:aHBRqyW0zkJQ3uYIE6Y12HNPn+TueqnA:+GW3v3Uubfot4RUyXPU1FJr+gIbIyXCBwnLxuCw5pgNtOh+rv3oP1jhufcdIwOwBbUMbchgT5JI=]
+  - key: MS365_MONITOR_EMAIL
+    scope: RUN_TIME
+    type: SECRET
+    value: EV[1:p/mDk2Zrf1rPIN6ekHjGYOFZ6lERtt30:5B3v+ac9LWuEGQwjX+xxn8BL2zvnKsE/5zVQFhEkBHfN5uwjlWmI6JFyp7iv4KSq]
+  - key: MS365_SENDER_EMAIL
+    scope: RUN_TIME
+    type: SECRET
+    value: EV[1:W5lXiaZh0WT6iue+Hxe+1PcLG+fl0pNp:MepTI9Fl/EI/DmHraulFn0m/nZnR1Gkqn7xM4u3wlQUN7g==]
+  - key: SENDER_DISPLAY_NAME
+    scope: RUN_TIME
+    type: SECRET
+    value: EV[1:oh6J1rfAsfwILmBKPSBp9v2lSt0LQiVP:BN9J+X4nBoTH4vHRpaDTk2PA9JiB96RT1ZQtKl75/0k=]
+  - key: SHAREPOINT_COMERCIAL_SITE_ID
+    scope: RUN_TIME
+    type: SECRET
+    value: EV[1:6hbtIN+mDBkVhqxUzLlQLjPC3AW4BVag:cjvOAXms3kd5Uuxso4vfXk1Rfea10/lCDhcm/ruRhalNV2KpcfNMQrJOQLN9fj2G1G2stJNU6mjwzlIigkqlYuGJI5i2PC9TKV9BcozpNa83aHcrd/sQrE+P00ls+MDnMrOgR2mo6WKUNp2kn4E=]
+  - key: SHAREPOINT_COMERCIAL_DRIVE_ID
+    scope: RUN_TIME
+    type: SECRET
+    value: EV[1:4xTmNRgThJGrMwm39mnyG94hiH8UI676:2u5G6I0HrY95J77NPhWrrOz9AKqLFNqu31ukSjFmV1CEXrxuXUCMG6ompFfOSz7L7bSCA7RyCA8QsqbGL1gwX+wGh6Q1/mfCuwORlUFCaTZSnw==]
+  - key: SHAREPOINT_TENDERS_SITE_ID
+    scope: RUN_TIME
+    type: SECRET
+    value: EV[1:gsPsILmB4SeWhqnImnx/bopYU+5qa6bj:sFlDJhfOLUzAsW6599DGrdU21RgRu8PgcrG4S7gVVAwomW+wmCeSdof53aJWlqdRI0vhLC8hxkqvqGCDjoMG4TtyBoE5nFyDBR1jOZV6jf8Anxy5XAz2Gmc4ldkuP7A5CQlKO867+SOStiDBMNs=]
+  - key: SHAREPOINT_TENDERS_DRIVE_ID
+    scope: RUN_TIME
+    type: SECRET
+    value: EV[1:TGxWWx/TeusrapzRBK6ujBLJeCLGzwRy:onLS0nJDNjxC0f62x8h3+o3IkSsJ7t9oqPLrJBAcVyHALsSOp7MaqHTcZcR1ZgpBt4t/9qkM7R1Zi8wLFtHF89fNpWEFIRzd66FRyhLqb3v49w==]
+  - key: NOTIFY_EMAIL
+    scope: RUN_TIME
+    type: SECRET
+    value: EV[1:k7oKPpTzhvejUk4YAoHOt+decXbDwIFI:Foq//Lb27ATujoTYjFOU2sL4CP/Qe4xVo/ijYmnwh3wML4LQf2ucIU43BjQsvknY]
+  - key: SMTP_SERVER
+    scope: RUN_TIME
+    type: SECRET
+    value: EV[1:Up9vIJD3GjhsM+VJCPTH4hPGp1x6694R:v0wc5OrZsy67xIII36b0yE+1P1reS/T2iMPYpS7d]
+  - key: SMTP_PORT
+    scope: RUN_TIME
+    type: SECRET
+    value: EV[1:/4Ye3P7WYmHR6CT9KlokQ3vA8JFbrad/:OKWJxDyq92EkeliPy/K/NTwUwQ==]
+  - key: SMTP_USER
+    scope: RUN_TIME
+    type: SECRET
+    value: EV[1:w46R2evBHrExzKCwn9iBrhFZ83OJ8F1L:xxmOJ1lbFGu/znlSg71BbhsniPXoDTZSTf7mt0MUre69ipHglQ==]
+  - key: SMTP_PASSWORD
+    scope: RUN_TIME
+    type: SECRET
+    value: EV[1:os+ZpDQ7rIYkgSZm30CK1byTXl+ULdtZ:+WGBxsFd4Xz4BZUKrCOeHPpw7kXrosXdvu4p7I0C0j8=]
+  github:
+    branch: develop
+    deploy_on_push: true
+    repo: amartinet03/imaAgent
+  http_port: 8000
+  instance_count: 1
+  instance_size_slug: basic-xs
+  name: backend
+  source_dir: backend
+static_sites:
+- build_command: npm run build
+  catchall_document: index.html
+  github:
+    branch: develop
+    deploy_on_push: true
+    repo: amartinet03/imaAgent
+  name: frontend
+  output_dir: dist
+  source_dir: frontend

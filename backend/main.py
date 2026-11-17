@@ -8,7 +8,7 @@ import time
 from typing import List, Optional
 from datetime import datetime, timedelta
 
-from fastapi import FastAPI, UploadFile, File, Form, HTTPException, BackgroundTasks, Depends
+from fastapi import FastAPI, UploadFile, File, Form, HTTPException, BackgroundTasks, Depends, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
@@ -72,6 +72,15 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Middleware para resolver compatibilidad de rutas con balanceadores y proxies (DigitalOcean App Platform)
+@app.middleware("http")
+async def ensure_api_prefix_compatibility(request: Request, call_next):
+    path = request.scope.get("path", "")
+    # Si la ruta no comienza con /api ni con /data ni endpoints de Swagger, restaurar el prefijo /api
+    if not (path.startswith("/api") or path.startswith("/data") or path.startswith("/docs") or path.startswith("/openapi.json") or path.startswith("/redoc")):
+        request.scope["path"] = f"/api{path}"
+    return await call_next(request)
 
 # Ensure data and template directories exist
 DATA_DIR = os.path.join(backend_dir, "data")
