@@ -77,9 +77,16 @@ app.add_middleware(
 @app.middleware("http")
 async def ensure_api_prefix_compatibility(request: Request, call_next):
     path = request.scope.get("path", "")
-    # Si la ruta no comienza con /api ni con /data ni endpoints de Swagger, restaurar el prefijo /api
-    if not (path.startswith("/api") or path.startswith("/data") or path.startswith("/docs") or path.startswith("/openapi.json") or path.startswith("/redoc")):
-        request.scope["path"] = f"/api{path}"
+    # Caso 1: El proxy concatenó sin barra divisoria (ej: /apiauth/login -> /api/auth/login)
+    if path.startswith("/api") and not path.startswith("/api/"):
+        request.scope["path"] = f"/api/{path[4:].lstrip('/')}"
+    # Caso 2: El proxy recortó /api/ completamente (ej: /auth/login -> /api/auth/login)
+    elif not (path.startswith("/api/") or path.startswith("/data") or path.startswith("/docs") or path.startswith("/openapi.json") or path.startswith("/redoc")):
+        request.scope["path"] = f"/api/{path.lstrip('/')}"
+    # Caso 3: Lo mismo para /data si viniera sin barra (ej: /datatenders -> /data/tenders)
+    elif path.startswith("/data") and not path.startswith("/data/"):
+        request.scope["path"] = f"/data/{path[5:].lstrip('/')}"
+        
     return await call_next(request)
 
 # Ensure data and template directories exist

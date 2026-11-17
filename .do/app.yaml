@@ -6,13 +6,13 @@ ingress:
   rules:
   - component:
       name: backend
-      rewrite: /api
+      rewrite: /api/
     match:
       path:
         prefix: /api
   - component:
       name: backend
-      rewrite: /data
+      rewrite: /data/
     match:
       path:
         prefix: /data
