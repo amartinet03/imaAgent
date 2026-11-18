@@ -80,7 +80,8 @@ def _execute_chat_generation(tender_id: int, chat_type: str, prompt: str):
         os.makedirs(outputs_dir, exist_ok=True)
 
         cliente = updated_data.get("metadata", {}).get("cliente", f"Licitacion_{tender_id}")
-        safe_cliente = re.sub(r'[^A-Za-z0-9]+', '_', str(cliente))
+        from src.utils.text_helpers import get_clean_client_slug
+        safe_cliente = get_clean_client_slug(cliente)
 
         rev_num = 0
         out_name = ""

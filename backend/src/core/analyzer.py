@@ -204,6 +204,7 @@ def analyze_full_tender(docs):
     
     FORMATO DE SALIDA OBLIGATORIO (JSON Estricto):
     Debes devolver ÚNICAMENTE un objeto JSON válido. NO uses bloques de código, devuelve sólo el JSON crudo.
+    IMPORTANTE: En "cliente" pon ÚNICAMENTE el nombre formal corto de la empresa (Ej: "DREAN S.A.", "YPF GAS"). Si hay dudas sobre la razón social o menciones a otras empresas, nómbralas en 'inconsistencias', NUNCA en 'cliente'.
     Estructura esperada:
     {{"metadata":{{"nombre_pliego":"Nombre oficial","cliente":"Empresa","proceso":"Nro","moneda":"Moneda","planta":"Ubicación","requirente":"Req","comprador":"Comp","lista_documentos":"docs"}},"tecnicos":{{"alcance_general":"Resumen exhaustivo","ubicacion_obra":"Planta/lugar","horarios_exigidos":"L a V, etc","normas_ssma":["Cumplimiento 1","etc..."]}}}}
     Textos Extraídos:

@@ -360,7 +360,8 @@ def update_rfi_data(tender_id: int, req: RFIUpdateRequest):
     rfi_template = os.path.join(TEMPLATES_DIR, "Consultas_Pliego_PAMPA_Obras_Civiles_Menores_PGSM.docx")
 
     cliente = parsed_data.get("metadata", {}).get("cliente", f"Licitacion_{tender_id}")
-    safe_cliente = re.sub(r'[^A-Za-z0-9]+', '_', str(cliente))
+    from src.utils.text_helpers import get_clean_client_slug
+    safe_cliente = get_clean_client_slug(cliente)
     existing_files = glob.glob(os.path.join(outputs_dir, "Consultas_*.docx"))
     rev_num = len(existing_files)
     rfi_name = f"Consultas_Pliego_{safe_cliente}_REV{rev_num:02d}.docx"
@@ -508,7 +509,8 @@ def generate_base_cost_excel(tender_id: int):
     
     parsed_data = tender.get("parsed_data") or {}
     cliente = parsed_data.get("metadata", {}).get("cliente", f"Licitacion_{tender_id}")
-    safe_cliente = re.sub(r'[^A-Za-z0-9]+', '_', str(cliente))
+    from src.utils.text_helpers import get_clean_client_slug
+    safe_cliente = get_clean_client_slug(cliente)
     
     excel_files = glob.glob(os.path.join(outputs_dir, "Costos_*.xlsx"))
     rev_num = len(excel_files)

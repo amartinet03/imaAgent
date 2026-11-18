@@ -70,7 +70,8 @@ def process_tender(tender_id: int):
                 parsed_data['sp_folder_id'] = sp_folder_id
                 
                 cliente = parsed_data.get("metadata", {}).get("cliente", f"Licitacion_{tender_id}")
-                safe_cliente = re.sub(r'[^A-Za-z0-9]+', '_', str(cliente))
+                from src.utils.text_helpers import get_clean_client_slug
+                safe_cliente = get_clean_client_slug(cliente)
                 
                 outputs_dir = os.path.join(tender_dir, 'outputs')
                 os.makedirs(outputs_dir, exist_ok=True)
